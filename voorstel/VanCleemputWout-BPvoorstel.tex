@@ -1,0 +1,101 @@
+%==============================================================================
+% Sjabloon onderzoeksvoorstel bachproef
+%==============================================================================
+% Gebaseerd op document class `hogent-article'
+% zie <https://github.com/HoGentTIN/latex-hogent-article>
+
+% Voor een voorstel in het Engels: voeg de documentclass-optie [english] toe.
+% Let op: kan enkel na toestemming van de bachelorproefcoördinator!
+\documentclass{hogent-article}
+
+\usepackage{tikz}
+\usepackage{pgfgantt}
+%\usepackage{mermaid}
+\usepackage{comment}
+
+
+% Invoegen bibliografiebestand
+\usepackage[backend=biber]{biblatex}
+\addbibresource{voorstel.bib}
+
+%\bibliographystyle{plain}
+
+% Informatie over de opleiding, het vak en soort opdracht
+\studyprogramme{Professionele bachelor toegepaste informatica}
+\course{Bachelorproef}
+\assignmenttype{Onderzoeksvoorstel}
+% Voor een voorstel in het Engels, haal de volgende 3 regels uit commentaar
+% \studyprogramme{Bachelor of applied information technology}
+% \course{Bachelor thesis}
+% \assignmenttype{Research proposal}
+
+\academicyear{2023-2024} % TODO: pas het academiejaar aan
+
+% TODO: Werktitel
+\title{Optimalisatie van gegevensopslag in Edge Database-architecturen: Een diepgaande verkenning \\ van efficiënte oplossingen in Edge-omgevingen}
+
+% TODO: Studentnaam en emailadres invullen
+\author{Wout Van Cleemput}
+\email{wout.vancleemput@student.hogent.be}
+
+% TODO: Medestudent
+% Gaat het om een bachelorproef in samenwerking met een student in een andere
+% opleiding? Geef dan de naam en emailadres hier
+% \author{Yasmine Alaoui (naam opleiding)}
+% \email{yasmine.alaoui@student.hogent.be}
+
+% TODO: Geef de co-promotor op
+\supervisor[Co-promotor]{K. Van den Berghe (Optis, \href{mailto:kenneth.vandenberghe@optis.be}{kenneth.vandenberghe@optis.be})}
+
+% Binnen welke specialisatierichting uit 3TI situeert dit onderzoek zich?
+% Kies uit deze lijst:
+%
+% - Mobile \& Enterprise development
+% - AI \& Data Engineering
+% - Functional \& Business Analysis
+% - System \& Network Administrator
+% - Mainframe Expert
+% - Als het onderzoek niet past binnen een van deze domeinen specifieer je deze
+%   zelf
+%
+\specialisation{Mobile \& Enterprise development}
+\keywords{Edge Database, Edge Computing, Decentralized Data Management}
+
+\begin{document}
+
+\begin{abstract}
+ In deze bachelorproef gaan we een diepgaand onderzoek voeren naar efficiënte oplossingen voor het opslaan 
+ van gegevens in Edge-omgevingen.
+  We zullen dit doen door het concept van 'Edge Database' te verkennen
+  en welke impact deze heeft op de wereld van IT.
+
+Eerst moeten we grondig begrijpen wat de term 'Edge Database' inhoudt.
+
+Van daaruit zullen we afleiden waarom dit concept de laatste tijd steeds meer aandacht krijgt
+  en waarom zowel klanten als andere organisaties steeds meer interesse tonen in databases die specifiek ontworpen zijn voor
+    Edge computing-omgevingen.
+ 
+We zullen verder onderzoeken hoe bedrijven kunnen inspelen op de groeiende vraag naar efficiënte \\ gegevensopslag in Edge-omgevingen
+  en welke softwareoplossingen beschikbaar zijn om deze databases te \\ optimaliseren.
+
+Door deze aspecten grondig te bestuderen en samen te vatten in een literatuurstudie,
+ beogen we deze \\ informatie te vergelijken met de praktijk door interviews af te nemen bij enkele relevante bedrijven.
+
+We verwachten inzicht te krijgen in de behoefte aan Edge Database-oplossingen en willen specifiek onderzoeken welke rol
+ verschillende technologieën spelen in het optimaliseren van gegevensopslag in Edge-omgevingen.
+
+ Dit onderzoek zal niet enkel gebaseerd zijn op literatuurstudie, maar we gaan ook de samengevatte notities
+  en antwoorden van de interviews met relevante bedrijven verwerken.
+
+
+\end{abstract}
+
+\tableofcontents
+
+% De hoofdtekst van het voorstel zit in een apart bestand, zodat het makkelijk
+% kan opgenomen worden in de bijlagen van de bachelorproef zelf.
+\input{voorstel-inhoud}
+
+\printbibliography[heading=bibintoc]
+
+\end{document}

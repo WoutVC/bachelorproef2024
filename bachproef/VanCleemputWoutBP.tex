@@ -1,0 +1,216 @@
+ç!%===============================================================================
+% LaTeX sjabloon voor de bachelorproef toegepaste informatica aan HOGENT
+% Meer info op https://github.com/HoGentTIN/latex-hogent-report
+%===============================================================================
+
+\documentclass[dutch,dit,thesis]{hogentreport}
+
+\usepackage{tikz}
+\usepackage{pgfgantt}
+
+% TODO:
+% - If necessary, replace the option `dit`' with your own department!
+%   Valid entries are dbo, dbt, dgz, dit, dlo, dog, dsa, soa
+% - If you write your thesis in English (remark: only possible after getting
+%   explicit approval!), remove the option "dutch," or replace with "english".
+
+\usepackage{lipsum} % For blind text, can be removed after adding actual content
+
+%% Pictures to include in the text can be put in the graphics/ folder
+\graphicspath{{graphics/}}
+
+%% For source code highlighting, requires pygments to be installed
+%% Compile with the -shell-escape flag!
+\usepackage[section]{minted}
+%% If you compile with the make_thesis.{bat,sh} script, use the following
+%% import instead:
+%% \usepackage[section,outputdir=../output]{minted}
+\usemintedstyle{solarized-light}
+\definecolor{bg}{RGB}{253,246,227} %% Set the background color of the codeframe
+
+%% Change this line to edit the line numbering style:
+\renewcommand{\theFancyVerbLine}{\ttfamily\scriptsize\arabic{FancyVerbLine}}
+
+%% Macro definition to load external java source files with \javacode{filename}:
+\newmintedfile[javacode]{java}{
+    bgcolor=bg,
+    fontfamily=tt,
+    linenos=true,
+    numberblanklines=true,
+    numbersep=5pt,
+    gobble=0,
+    framesep=2mm,
+    funcnamehighlighting=true,
+    tabsize=4,
+    obeytabs=false,
+    breaklines=true,
+    mathescape=false
+    samepage=false,
+    showspaces=false,
+    showtabs =false,
+    texcl=false,
+}
+
+% Other packages not already included can be imported here
+
+%%---------- Document metadata -------------------------------------------------
+% TODO: Replace this with your own information
+\author{Wout Van Cleemput}
+\supervisor{Dhr. F. Van Houte}
+\cosupervisor{Mevr. S. Beeckman}
+\title[Optionele ondertitel]%
+    {Optimalisatie van gegevensopslag in Edge Database-architecturen: Een diepgaande verkenning \\ van efficiënte oplossingen in Edge-omgevingen}
+\academicyear{\advance\year by -1 \the\year--\advance\year by 1 \the\year}
+\examperiod{1}
+\degreesought{\IfLanguageName{dutch}{Professionele bachelor in de toegepaste informatica}{Bachelor of applied computer science}}
+\partialthesis{false} %% To display 'in partial fulfilment'
+%\institution{Internshipcompany BVBA.}
+
+%% Add global exceptions to the hyphenation here
+\hyphenation{back-slash}
+
+%% The bibliography (style and settings are  found in hogentthesis.cls)
+\addbibresource{bachproef.bib}            %% Bibliography file
+\addbibresource{../voorstel/voorstel.bib} %% Bibliography research proposal
+\defbibheading{bibempty}{}
+
+%% Prevent empty pages for right-handed chapter starts in twoside mode
+\renewcommand{\cleardoublepage}{\clearpage}
+
+\renewcommand{\arraystretch}{1.2}
+
+%% Content starts here.
+\begin{document}
+
+%---------- Front matter -------------------------------------------------------
+
+\frontmatter
+
+\hypersetup{pageanchor=false} %% Disable page numbering references
+%% Render a Dutch outer title page if the main language is English
+\IfLanguageName{english}{%
+    %% If necessary, information can be changed here
+    \degreesought{Professionele Bachelor toegepaste informatica}%
+    \begin{otherlanguage}{dutch}%
+       \maketitle%
+    \end{otherlanguage}%
+}{}
+
+%% Generates title page content
+\maketitle
+\hypersetup{pageanchor=true}
+
+\input{voorwoord}
+\input{samenvatting}
+
+%---------- Inhoud, lijst figuren, ... -----------------------------------------
+
+\tableofcontents
+
+% In a list of figures, the complete caption will be included. To prevent this,
+% ALWAYS add a short description in the caption!
+%
+%  \caption[short description]{elaborate description}
+%
+% If you do, only the short description will be used in the list of figures
+
+\listoffigures
+
+% If you included tables and/or source code listings, uncomment the appropriate
+% lines.
+%\listoftables
+%\listoflistings
+
+% Als je een lijst van afkortingen of termen wil toevoegen, dan hoort die
+% hier thuis. Gebruik bijvoorbeeld de ``glossaries'' package.
+% https://www.overleaf.com/learn/latex/Glossaries
+
+%---------- Kern ---------------------------------------------------------------
+
+\mainmatter{}
+
+% De eerste hoofdstukken van een bachelorproef zijn meestal een inleiding op
+% het onderwerp, literatuurstudie en verantwoording methodologie.
+% Aarzel niet om een meer beschrijvende titel aan deze hoofdstukken te geven of
+% om bijvoorbeeld de inleiding en/of stand van zaken over meerdere hoofdstukken
+% te verspreiden!
+
+\input{inleiding}
+\input{standvanzaken}
+\input{methodologie}
+
+% Voeg hier je eigen hoofdstukken toe die de ``corpus'' van je bachelorproef
+% vormen. De structuur en titels hangen af van je eigen onderzoek. Je kan bv.
+% elke fase in je onderzoek in een apart hoofdstuk bespreken.
+
+%\input{...}
+%\input{...}
+%...
+
+Om de onderzoeksvraag te beantwoorden, gaan we gebruik maken van een combinatie van literatuurstudie,
+ interviews met relevante bedrijven en een grondige vergelijkende studie. \\
+ 
+Specifieke methoden, zoals requirements-analyse en experimenten, worden toegepast.
+
+We gaan geen enquetes uitvoeren, omdat we de voorkeur geven aan een meer persoonlijke aanpak. \\
+ 
+De technische diepte van deze bachelorproef wordt benadrukt,
+ inclusief de beschrijving van gebruikte tools zoals hardware, software en \\ diensten. \\
+
+Een gedetailleerde tijdsplanning wordt \\ opgesteld om de duur van elke onderzoeksfase en de concrete deliverables te definiëren.
+Deze tijdsplanning wordt opgesteld in de vorm van een Gantt chart. Deze zal u vinden op de laatste \\ pagina van dit voorstel.
+
+
+\input{conclusie}
+
+%---------- Bijlagen -----------------------------------------------------------
+
+\appendix
+
+\chapter{Onderzoeksvoorstel}
+
+Het onderwerp van deze bachelorproef is gebaseerd op een onderzoeksvoorstel dat vooraf werd beoordeeld door de promotor. Dat voorstel is opgenomen in deze bijlage.
+
+%% TODO: 
+%\section*{Samenvatting}
+
+% Kopieer en plak hier de samenvatting (abstract) van je onderzoeksvoorstel.
+In deze bachelorproef gaan we een diepgaand onderzoek voeren naar efficiënte oplossingen voor het opslaan 
+ van gegevens in Edge-omgevingen.
+  We zullen dit doen door het concept van 'Edge Database' te verkennen
+  en welke impact deze heeft op de wereld van IT.
+
+Eerst moeten we grondig begrijpen wat de term 'Edge Database' inhoudt.
+
+Van daaruit zullen we afleiden waarom dit concept de laatste tijd steeds meer aandacht krijgt
+  en waarom zowel klanten als andere organisaties steeds meer interesse tonen in databases die specifiek ontworpen zijn voor
+    Edge computing-omgevingen.
+ 
+We zullen verder onderzoeken hoe bedrijven kunnen inspelen op de groeiende vraag naar efficiënte \\ gegevensopslag in Edge-omgevingen
+  en welke softwareoplossingen beschikbaar zijn om deze databases te \\ optimaliseren.
+
+Door deze aspecten grondig te bestuderen en samen te vatten in een literatuurstudie,
+ beogen we deze \\ informatie te vergelijken met de praktijk door interviews af te nemen bij enkele relevante bedrijven.
+
+We verwachten inzicht te krijgen in de behoefte aan Edge Database-oplossingen en willen specifiek onderzoeken welke rol
+ verschillende technologieën spelen in het optimaliseren van gegevensopslag in Edge-omgevingen.
+
+ Dit onderzoek zal niet enkel gebaseerd zijn op literatuurstudie, maar we gaan ook de samengevatte notities
+  en antwoorden van de interviews met relevante bedrijven verwerken.
+
+% Verwijzing naar het bestand met de inhoud van het onderzoeksvoorstel
+\input{../voorstel/voorstel-inhoud}
+
+%%---------- Andere bijlagen --------------------------------------------------
+% TODO: Voeg hier eventuele andere bijlagen toe. Bv. als je deze BP voor de
+% tweede keer indient, een overzicht van de verbeteringen t.o.v. het origineel.
+%\input{...}
+
+%%---------- Backmatter, referentielijst ---------------------------------------
+
+\backmatter{}
+
+\setlength\bibitemsep{2pt} %% Add Some space between the bibliograpy entries
+\printbibliography[heading=bibintoc]
+
+\end{document}
