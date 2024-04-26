@@ -1,18 +1,71 @@
 \chapter{\IfLanguageName{dutch}{Stand van zaken}{State of the art}}%
 \label{ch:stand-van-zaken}
 
-% Tip: Begin elk hoofdstuk met een paragraaf inleiding die beschrijft hoe
-% dit hoofdstuk past binnen het geheel van de bachelorproef. Geef in het
-% bijzonder aan wat de link is met het vorige en volgende hoofdstuk.
+Dit hoofdstuk biedt een uitgebreide literatuurstudie over EdgeDB als een tijdreeksdatabase voor het beheren van grote hoeveelheden tijdreeksgegevens, als onderdeel van deze bachelorproef.
 
-% Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
+Het is bedoeld om een grondige analyse te geven van de huidige stand van zaken binnen het onderzoeksdomein.
 
-Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
+De inhoud van dit hoofdstuk bouwt voort op de inleiding en heeft als doel de lezer volledig op de hoogte te brengen van recente ontwikkelingen, technologieën en benaderingen die relevant zijn voor dit onderwerp, zodat zij het verdere verloop van de bachelorproef kunnen begrijpen zonder verdere opzoekingen te moeten doen.
 
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.
+\section{Bronnen zoekmethode}
+De bronnen voor deze literatuurstudie werden gevonden door middel van een systematische zoekmethode, waarbij gebruik werd gemaakt van verschillende zoekmachines en databases, waaronder Google Scholar, IEEE Xplore, Semanthic Scolar en Elicit.
+Als zoektermen gebruikten we "EdgeDB", "Database on Edge" en "Edge Computing".
 
-\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
+\section{Database on Edge}
 
-Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, dus niet pas op het einde van een paragraaf.
+Database on Edge is een opkomende benadering binnen database technologie, voortkomend uit het gebruik van Edge computing \autocite{Yang2019EdgeDBAE}.
 
-\lipsum[7-20]
+In tegenstelling tot traditionele databases worden Edge databases verspreid over verschillende lokale apparaten, waardoor gegevens lokaal verwerkt en opgeslagen kunnen worden, in plaats van centraal in de cloud.
+
+Deze innovatieve benadering richt zich, vergelijkbaar met moderne bedrijven die streven naar efficiëntie en innovatie, op het verminderen van latency en het verbeteren van de prestaties.
+
+Het concept is ontstaan uit de noodzaak om real-time interacties mogelijk te maken, wat cruciaal is in diverse toepassingen \autocite{Yang2019EdgeDBAE}.
+
+Voordelen van Database on Edge omvatten lokale gegevensverwerking, verminderde latency en verbeterde prestaties, waardoor het geschikt is voor toepassingen waar snelle respons cruciaal is.
+
+Echter, zoals bij elke technologische benadering, zijn er uitdagingen verbonden aan Database on Edge, waaronder het beheer van diverse databases over verschillende apparaten, optimalisatie van resourcegebruik op Edge Devices, en het waarborgen van consistente prestaties.
+
+De optimalisatie van Database on Edge is een actief onderzoeksgebied en omvat het verkennen van efficiënte algoritmen voor gegevensverwerking, verbeteringen in gegevensopslag, en het beheer van gedistribueerde databases om de prestaties te maximaliseren.
+
+\section{Tijdreeksdatabases}
+
+Tijdreeksdatabases zijn van essentieel belang in moderne informatiesystemen, met toepassingen variërend van IoT (Internet of Things) tot financiële analyses en meer.
+
+Dit gespecialiseerde type database is geoptimaliseerd voor het opslaan, beheren en analyseren van tijdreeksgegevens, waarbij elk gegevenspunt wordt geassocieerd met een tijdstempel. 
+
+In de afgelopen jaren zijn verschillende tijdreeksdatabases ontwikkeld om te voldoen aan de specifieke behoeften van verschillende toepassingsgebieden.
+
+Voorbeelden hiervan zijn BTrDB en InfluxDB, twee bekende tijdreeksdatabases die elk hun eigen benaderingen en optimalisaties bieden voor het verwerken van tijdreeksgegevens \autocite{Yang2019EdgeDBAE}.
+
+\section{EdgeDB: Een nieuwe benadering voor tijdreeksdatabases}
+
+EdgeDB is een recente toevoeging aan het landschap van tijdreeksdatabases en belooft een innovatieve benadering te bieden voor het beheren van tijdreeksgegevens.
+
+Deze nieuwe database introduceert nieuwe indexstructuren en queryverwerkingstechnieken om de prestaties en efficiëntie te verbeteren.
+
+Een van de belangrijkste kenmerken van EdgeDB is het gebruik van TMTree, een geoptimaliseerde indexstructuur die is ontworpen om schrijfoperaties te optimaliseren en het geheugengebruik te minimaliseren \autocite{Yang2019EdgeDBAE}.
+
+\section{Vergelijkende evaluatie van EdgeDB}
+
+Een grondige evaluatie van EdgeDB is essentieel om de prestaties en bruikbaarheid van deze nieuwe tijdreeksdatabase te begrijpen in vergelijking met bestaande oplossingen zoals BTrDB en InfluxDB.
+
+Verschillende evaluatiemetrics worden gebruikt, waaronder insert-prestaties, schrijfprestaties, query-prestaties, geheugenoverhead en invoersnelheid van TMTree.
+
+Deze evaluatie biedt inzicht in de sterke punten en beperkingen van EdgeDB en helpt bij het bepalen van de geschiktheid ervan voor verschillende toepassingsgebieden en gebruiksscenario's \autocite{Yang2019EdgeDBAE}.
+
+\section{VergeDB: Een innovatieve tijdreeksdatabase voor Edge Computing}
+
+Een recente ontwikkeling op het gebied van tijdreeksdatabases is VergeDB, een database die specifiek is ontworpen voor IoT-analytics op Edge-apparaten \autocite{Paparrizos2021VergeDBAD}. VergeDB belooft een innovatieve benadering te bieden voor het beheren van tijdreeksgegevens op de rand van het netwerk, wat cruciaal is voor real-time toepassingen waarbij snelle respons vereist is.
+
+Deze nieuwe database introduceert nieuwe compressiemethoden, indexstructuren en queryverwerkingstechnieken om de prestaties en efficiëntie te verbeteren. Een van de belangrijkste kenmerken van VergeDB is de mogelijkheid om gegevens lokaal op te slaan en te verwerken op Edge-apparaten, waardoor de latentie wordt verminderd en de prestaties worden verbeterd.
+
+VergeDB biedt ook ondersteuning voor geavanceerde analysetaken en machine learning-taken, zoals trendanalyse, patroonherkenning en anomaliedetectie, waardoor het een veelzijdige oplossing is voor diverse toepassingen op het gebied van IoT-analytics.
+
+Deze nieuwe benadering van tijdreeksdatabases op de rand van het netwerk opent nieuwe mogelijkheden voor het efficiënt beheren en analyseren van tijdreeksgegevens in real-time, wat essentieel is voor het succes van IoT-toepassingen in verschillende domeinen.
+
+\section{Conclusie}
+Database on Edge, voortkomend uit het gebruik van Edge computing, biedt veelbelovende voordelen zoals lokale gegevensverwerking, verminderde latency en verbeterde prestaties. Echter, er zijn ook uitdagingen verbonden aan deze benadering, zoals het beheer van diverse databases over verschillende apparaten en het optimaliseren van resourcegebruik op Edge Devices.
+
+EdgeDB en VergeDB vertegenwoordigen nieuwe benaderingen voor het beheren van tijdreeksgegevens op de rand van het netwerk, met innovatieve functies zoals geoptimaliseerde indexstructuren en queryverwerkingstechnieken. Deze benaderingen openen nieuwe mogelijkheden voor het efficiënt beheren en analyseren van tijdreeksgegevens in real-time, wat essentieel is voor het succes van IoT-toepassingen in verschillende domeinen.
+
+De volgende stap in dit onderzoek is de methodologie voor de vergelijkende evaluatie van EdgeDB te beschrijveb. Dit zal helpen bij het beoordelen van de prestaties en bruikbaarheid van EdgeDB in vergelijking met andere tijdreeksdatabases, en zal verdere inzichten bieden in de geschiktheid ervan voor verschillende toepassingsgebieden en gebruiksscenario's.
