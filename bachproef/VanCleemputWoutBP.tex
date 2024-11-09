@@ -5,9 +5,6 @@
 
 \documentclass[dutch,dit,thesis]{hogentreport}
 
-\usepackage{tikz}
-\usepackage{pgfgantt}
-
 % TODO:
 % - If necessary, replace the option `dit`' with your own department!
 %   Valid entries are dbo, dbt, dgz, dit, dlo, dog, dsa, soa
@@ -17,38 +14,35 @@
 \usepackage{lipsum} % For blind text, can be removed after adding actual content
 
 %% Pictures to include in the text can be put in the graphics/ folder
-\graphicspath{{graphics/}}
+\graphicspath{{../graphics/}}
 
 %% For source code highlighting, requires pygments to be installed
 %% Compile with the -shell-escape flag!
-\usepackage[section]{minted}
+%% \usepackage[chapter]{minted}
 %% If you compile with the make_thesis.{bat,sh} script, use the following
 %% import instead:
-%% \usepackage[section,outputdir=../output]{minted}
+\usepackage[chapter,outputdir=../output]{minted}
 \usemintedstyle{solarized-light}
-\definecolor{bg}{RGB}{253,246,227} %% Set the background color of the codeframe
 
-%% Change this line to edit the line numbering style:
-\renewcommand{\theFancyVerbLine}{\ttfamily\scriptsize\arabic{FancyVerbLine}}
+%% Formatting for minted environments.
+\setminted{%
+    autogobble,
+    frame=lines,
+    breaklines,
+    linenos,
+    tabsize=4
+}
 
-%% Macro definition to load external java source files with \javacode{filename}:
-\newmintedfile[javacode]{java}{
-    bgcolor=bg,
-    fontfamily=tt,
-    linenos=true,
-    numberblanklines=true,
-    numbersep=5pt,
-    gobble=0,
-    framesep=2mm,
-    funcnamehighlighting=true,
-    tabsize=4,
-    obeytabs=false,
-    breaklines=true,
-    mathescape=false
-    samepage=false,
-    showspaces=false,
-    showtabs =false,
-    texcl=false,
+%% Ensure the list of listings is in the table of contents
+\renewcommand\listoflistingscaption{%
+    \IfLanguageName{dutch}{Lijst van codefragmenten}{List of listings}
+}
+\renewcommand\listingscaption{%
+    \IfLanguageName{dutch}{Codefragment}{Listing}
+}
+\renewcommand*\listoflistings{%
+    \cleardoublepage\phantomsection\addcontentsline{toc}{chapter}{\listoflistingscaption}%
+    \listof{listing}{\listoflistingscaption}%
 }
 
 % Other packages not already included can be imported here
@@ -175,31 +169,21 @@ Het onderwerp van deze bachelorproef is gebaseerd op een onderzoeksvoorstel dat 
 %\section*{Samenvatting}
 
 % Kopieer en plak hier de samenvatting (abstract) van je onderzoeksvoorstel.
-In deze bachelorproef gaan we een diepgaand onderzoek voeren naar efficiënte oplossingen voor het opslaan 
- van gegevens in Edge-omgevingen.
-  We zullen dit doen door het concept van 'Edge Database' te verkennen
-  en welke impact deze heeft op de wereld van IT.
+In deze bachelorproef wordt de geschiktheid van verschillende databasetechnologieën voor Edge Computing-toepassingen bestudeerd,
+  met een specifieke focus op data-partitioneringstechnieken zoals consistent hashing en range-based partitionering en hun effect op de prestaties van edge-geoptimaliseerde databases, zoals ObjectBox en SQLite.
 
-Eerst moeten we grondig begrijpen wat de term 'Edge Database' inhoudt.
+Het onderzoek start met een uitgebreide analyse van het concept 'Edge Database' en de functie van partitioneringsmethoden in deze context. Er wordt bestudeerd welke kenmerken cruciaal zijn om aan de vereisten van Edge Computing te voldoen, zoals snelheid, schaalbaarheid en lage latentie. Partitioneringsmethoden worden gezien als essentieel voor een effectieve verspreiding van gegevens en het gebruik van netwerken in gedistribueerde netwerken,
+  vooral in situaties waarin middelen beperkt zijn en de connectiviteit niet altijd stabiel is.
 
-Van daaruit zullen we afleiden waarom dit concept de laatste tijd steeds meer aandacht krijgt
-  en waarom zowel klanten als andere organisaties steeds meer interesse tonen in databases die specifiek ontworpen zijn voor
-    Edge computing-omgevingen.
- 
-We zullen verder onderzoeken hoe bedrijven kunnen inspelen op de groeiende vraag naar efficiënte \\ gegevensopslag in Edge-omgevingen
-  en welke softwareoplossingen beschikbaar zijn om deze databases te \\ optimaliseren.
+Naast een uitgebreide literatuurstudie worden diverse databasetechnologieën vergeleken in een proof of concept, waarbij specifiek wordt onderzocht op welke manier data-partitioneringsmethoden de prestaties van databases zoals ObjectBox en SQLite beïnvloeden op het gebied van snelheid,
+ efficiëntie en betrouwbaarheid in een edge-omgeving.
 
-Door deze aspecten grondig te bestuderen en samen te vatten in een literatuurstudie,
- beogen we deze \\ informatie te vergelijken met de praktijk door interviews af te nemen bij enkele relevante bedrijven.
+De resultaten van deze vergelijking geven inzicht in de manier waarop bedrijven zoals Optis de meest geschikte data-partitioneringsmethoden
+ en databases kunnen selecteren om aan de groeiende vereisten voor effectieve opslag en verwerking van gegevens in Edge Computing-omgevingen te voldoen.
 
-We verwachten inzicht te krijgen in de behoefte aan Edge Database-oplossingen en willen specifiek onderzoeken welke rol
- verschillende technologieën spelen in het optimaliseren van gegevensopslag in Edge-omgevingen.
-
- Dit onderzoek zal niet enkel gebaseerd zijn op literatuurstudie, maar we gaan ook de samengevatte notities
-  en antwoorden van de interviews met relevante bedrijven verwerken.
 
 % Verwijzing naar het bestand met de inhoud van het onderzoeksvoorstel
-\input{../voorstel/voorstel-inhoud}
+\includepdf[pages=-]{../voorstel/voorstel.pdf}
 
 %%---------- Andere bijlagen --------------------------------------------------
 % TODO: Voeg hier eventuele andere bijlagen toe. Bv. als je deze BP voor de

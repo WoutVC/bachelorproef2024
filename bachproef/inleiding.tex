@@ -1,30 +1,51 @@
 \chapter{\IfLanguageName{dutch}{Inleiding}{Introduction}}%
 \label{ch:inleiding}
 
-In deze inleiding geef ik een overzicht van het onderwerp van mijn bachelorproef en waarom het de moeite waard is om te onderzoeken. Ik zal de context en achtergrond van het onderwerp schetsen, de probleemstelling en onderzoeksvraag uiteenzetten, en de opzet van deze bachelorproef bespreken.
+In deze inleiding geef ik een overzicht van het onderwerp van mijn bachelorproef, waarin ik de impact van data-partitioneringstechnieken, zoals consistent hashing en range-based partitionering, op de prestaties van databases zoals ObjectBox en SQLite in Edge Computing-omgevingen onderzoek. Het doel is om de geschiktheid van specifieke data-partitioneringstechnieken te evalueren voor gebruik in edge-omgevingen bij Optis, een bedrijf dat momenteel te maken heeft met problemen op het gebied van latentie, bandbreedteverbruik en opslagkosten door traditionele databases die mogelijk niet optimaal presteren voor Edge Computing. 
 
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-Het onderzoek richt zich op het begrijpen van de complexiteit rond gegevensopslag in Edge-omgevingen, met als specifieke focus Edge Database-architecturen. De uitdagingen en mogelijkheden van deze architecturen hebben directe relevantie voor bedrijven die streven naar efficiënte gegevensopslag in moderne IT-infrastructuren.
+De kernprobleemstelling van deze studie is het optimaliseren van gegevensopslag in Edge-omgevingen binnen Optis. Het bedrijf wordt geconfronteerd met uitdagingen zoals hoge latentie, verhoogd bandbreedteverbruik en hoge opslagkosten door het gebruik van traditionele databases. Deze databases presteren mogelijk niet optimaal in een Edge Computing-context, wat de behoefte creëert aan oplossingen die specifiek afgestemd zijn op de unieke vereisten van deze omgeving.
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
-De centrale onderzoeksvraag van dit onderzoek luidt: "Hoe kunnen Edge Database-architecturen geoptimaliseerd worden om efficiënte gegevensopslag in Edge-omgevingen te faciliteren?" Deze vraag richt zich op het verkennen van nieuwe inzichten en oplossingen voor gegevensbeheer in Edge-omgevingen.
+De centrale onderzoeksvraag die in deze studie wordt behandeld luidt: 
+"Hoe beïnvloeden specifieke data-partitioneringstechnieken, zoals consistent hashing en range-based partitionering, de prestaties van databases zoals ObjectBox en SQLite in Edge-omgevingen?" 
+Deze vraag richt zich op het identificeren en testen van data-partitioneringstechnieken die de efficiëntie van gegevensbeheer in Edge Computing-omgevingen kunnen verbeteren.
 
 \section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research objective}}%
 \label{sec:onderzoeksdoelstelling}
 
-Het doel van dit onderzoek is niet alleen om praktische aanbevelingen te formuleren, maar ook om nieuwe inzichten en kennis op het gebied van gegevensopslag in Edge-omgevingen te verkennen. Het beoogde resultaat is een diepgaand begrip van Edge Database-architecturen en hun optimalisatiestrategieën.
+Het doel van dit onderzoek is om praktische aanbevelingen te formuleren voor Optis door de impact van verschillende data-partitioneringstechnieken op de prestaties van databases te analyseren. Deze studie zal niet alleen helpen bij het begrijpen van de mogelijkheden van deze technieken, maar ook bijdragen aan de ontwikkeling van optimalisatiestrategieën voor efficiëntere gegevensopslag en -verwerking in Edge Computing-omgevingen.
+
+De specifieke doelstellingen zijn:
+\begin{itemize}
+  \item Het uitvoeren van een gedetailleerde evaluatie van de impact van data-partitioneringstechnieken op de prestaties van databases in Edge-omgevingen.
+  \item Het ontwikkelen van een proof of concept om te onderzoeken hoe deze technieken latentie, bandbreedteverbruik en opslagkosten beïnvloeden.
+  \item Het formuleren van praktische aanbevelingen voor Optis op basis van de resultaten van de vergelijkende studie en de proof of concept.
+\end{itemize}
 
 \section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this bachelor thesis}}%
 \label{sec:opzet-bachelorproef}
 
 De rest van deze bachelorproef is als volgt opgebouwd:
 
-In Hoofdstuk 2 wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein, op basis van een literatuurstudie.
+In Hoofdstuk 2 wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein door middel van een literatuurstudie. Deze studie richt zich op de mogelijkheden en uitdagingen van Edge Computing, relevante data-partitioneringstechnieken, en de prestaties van bestaande Edge-databases zoals ObjectBox en SQLite.
 
-In Hoofdstuk 3 wordt de methodologie toegelicht en worden de gebruikte onderzoekstechnieken besproken om een antwoord te kunnen formuleren op de onderzoeksvragen.
+In Hoofdstuk 3 wordt de methodologie besproken. Hier worden de gekozen onderzoeksmethoden en gebruikte technieken toegelicht, waaronder de proof of concept om de impact van data-partitioneringstechnieken te evalueren.
 
-In Hoofdstuk 4 wordt de conclusie gegeven en een antwoord geformuleerd op de onderzoeksvragen. Daarbij wordt ook een aanzet gegeven voor toekomstig onderzoek binnen dit domein.
+In Hoofdstuk 4 worden de resultaten gepresenteerd en geanalyseerd, waarbij een antwoord wordt geformuleerd op de onderzoeksvraag en aanbevelingen voor toekomstig onderzoek in dit domein worden besproken.
+
+\section{\IfLanguageName{dutch}{Deelvragen}{Sub-questions}}%
+\label{sec:deelvragen}
+
+Om de onderzoeksvraag verder te verduidelijken en te structureren, worden de volgende deelvragen behandeld:
+\begin{itemize}
+    \item Hoe verhouden verschillende data-partitioneringstechnieken zich in termen van latentie in een Edge-omgeving?
+    \item Wat is de invloed van data-partitioneringstechnieken op bandbreedteverbruik en netwerkprestaties in gedistribueerde Edge-netwerken?
+    \item Hoe beïnvloeden deze technieken de schaalbaarheid van databases in een dynamische Edge-omgeving?
+    \item Welke data-partitioneringstechniek levert de meeste kostenbesparing op in termen van opslag- en netwerkbeheer binnen Edge-omgevingen?
+    \item Welke bestaande Edge-database technologieën (zoals ObjectBox en SQLite) presteren het best in combinatie met de onderzochte partitioneringstechnieken binnen de context van Optis?
+\end{itemize}

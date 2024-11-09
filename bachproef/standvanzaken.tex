@@ -6,11 +6,10 @@ Het is bedoeld om een grondige analyse te geven van de huidige stand van zaken b
 De inhoud van dit hoofdstuk bouwt voort op de inleiding en heeft als doel de lezer volledig op de hoogte te brengen van recente ontwikkelingen, technologieën en benaderingen die relevant zijn voor dit onderwerp, zodat zij het verdere verloop van de bachelorproef kunnen begrijpen zonder verdere opzoekingen te moeten doen.
 
 \section{Bronnen zoekmethode}
-De bronnen voor deze literatuurstudie werden gevonden door middel van een systematische zoekmethode, waarbij gebruik werd gemaakt van verschillende zoekmachines en databases, waaronder Google Scholar, IEEE Xplore, Semanthic Scolar en Elicit.
- Als zoektermen gebruikten we "EdgeDB", "Database on Edge" en "Edge Computing" \autocite{Yang2019EdgeDBAE, Paparrizos2021VergeDBAD, Gyorodi2015comparative}.
+De bronnen voor deze literatuurstudie werden gevonden door middel van een systematische zoekmethode, waarbij gebruik werd gemaakt van verschillende zoekmachines en databases, waaronder Google Scholar, IEEE Xplore, Semantic Scholar en Elicit.
+Als zoektermen gebruikten we "EdgeDB", "Database on Edge" en "Edge Computing" \autocite{Yang2019EdgeDBAE, Paparrizos2021VergeDBAD, Gyorodi2015comparative}.
 
 \section{Database on Edge}
-
 De verschuiving naar gedecentraliseerde Edge Computing is onmiskenbaar, zoals treffend beschreven in het artikel "Het jaar van de Edge - alweer? Voor ongeveer de 10e keer op rij..." \autocite{Dollinger2022}. Toch lijkt het tempo van deze overgang trager te verlopen dan we oorspronkelijk hadden verwacht.
 
 We zien dat er dagelijks een enorme hoeveelheid data wordt gegenereerd door de toenemende hoeveelheid verbonden apparaten, die de wereldwijde bevolking overstijgt. Deze data-explosie benadrukt des te meer het belang van Edge Computing, vooral nu het zijn hoogtepunt bereikt in de Gartner Life Cycle-hype.
@@ -21,7 +20,6 @@ We zien dat er dagelijks een enorme hoeveelheid data wordt gegenereerd door de t
     \caption{Gartner Hype Cycle, bron: \autocite{Gartner2023}}
     \label{fig:hype-cycle}
 \end{figure}
-
 
 Maar wat betekent die 'hypecyclus' eigenlijk? Wel, de Gartner Hype Cycle is eigenlijk een grafiek die laat zien hoe nieuwe technologieën populair worden en geaccepteerd raken. Het begint met veel opwinding, maar dan worden mensen vaak teleurgesteld als de technologie niet meteen alles waarmaakt wat ervan werd verwacht. Dan wordt de technologie realistisch bekeken en geleidelijk geaccepteerd, voordat ze uiteindelijk volwassen wordt en haar volledige potentieel bereikt.
 
@@ -36,200 +34,17 @@ Om de overgang naar Edge Computing makkelijker te maken, hebben we goede softwar
 In tegenstelling tot traditionele software, passen Edge Databases goed in moderne technologiestacks en zorgen ze voor een efficiënter gebruik van middelen en snellere reactietijden. Dit helpt niet alleen de prestaties van apparaten te verbeteren, maar draagt ook bij aan milieuvriendelijker werken door het verminderen van CO2-uitstoot.
 
 Kortom, Edge Databases zijn heel belangrijk voor de ontwikkeling van Edge Computing. Ze helpen bij het oplossen van de complexe problemen die komen kijken bij werken aan de rand van het netwerk en maken de weg vrij voor een bredere acceptatie van deze technologie.
-\section{Databasearchitecturen}
 
+\section{Databasearchitecturen}
 In de wereld van databases is de architectuur de hoeksteen van hoe gegevens worden georganiseerd, opgeslagen en beheerd. Deze architectuur varieert afhankelijk van de specifieke behoeften en vereisten van een organisatie of applicatie. Laten we eens kijken naar enkele veelvoorkomende databasearchitecturen:
 
-\subsection{Relationele databasearchitectuur}
-
-Dit is een van de meest traditionele en alomtegenwoordige databasearchitecturen. Het kenmerkt zich door het gebruik van tabellen om gegevens op te slaan, waarbij relaties tussen verschillende tabellen worden vastgelegd door middel van sleutels. Voor het beheren en manipuleren van gegevens maken relationele databases gebruik van SQL (Structured Query Language). Voorbeelden van relationele databases zijn MySQL, PostgreSQL en Oracle Database.
-
-\begin{table}[h]
-    \centering
-    \caption{Overzicht van de specificaties van MySQL \autocite{MySQLTechSpec}}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|}
-    \hline
-    \textbf{Database} & \textbf{MySQL}  \\  \hline
-    \textbf{Programmeertalen} & C++, Java, C, Go, Kotlin, Swift, Python, Flutter / Dart  \\  \hline
-    \textbf{Gegevenstypen} & Relationele tabellen, JSON-documenten  \\  \hline
-    \textbf{Geheugen- en resourcegebruik} & Flexibele architectuur, Geoptimaliseerd voor hoge gelijktijdigheid, Geoptimaliseerd voor gebruik met SSD  \\  \hline
-    \textbf{Distributiemodel} & Open Source, Multi-threaded, Pluggable Storage-Engine  \\  \hline
-    \textbf{Schaalbaarheid en prestaties}  & Hoge beschikbaarheid, InnoDB-cluster, MySQL NDB Cluster \\  \hline
-    \textbf{Beheer en onderhoud} & Eenvoudige installatie en configuratie, MySQL Enterprise Backup, MySQL Enterprise High Availability  \\  \hline
-    \textbf{Beschikbaarheid en betrouwbaarheid}  & 99,999\% Beschikbaarheid, Gedistribueerde architectuur, Synchrone replicatie  \\  \hline
-    \textbf{Ondersteuning en documentatie}  & MySQL Workbench, Admin API, Python-scripting  \\  \hline
-    \end{tabular}%
-    }
-\end{table}
-
-\subsection{NoSQL-databasearchitectuur}
-
-In tegenstelling tot relationele databases maken NoSQL-databases geen gebruik van vaste schema's en tabellen. Ze zijn flexibeler en schalen vaak beter, vooral bij grote hoeveelheden ongestructureerde gegevens. NoSQL-databases worden veel gebruikt voor toepassingen die hoge schaalbaarheid en beschikbaarheid vereisen, zoals sociale media, IoT en big data. Bekende voorbeelden zijn MongoDB, ObjectBox en Redis.
-
-\begin{table}[h]
-    \centering
-    \caption{Overzicht van de specificaties van ObjectBox \autocite{ObjectboxDocumentation}}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|}
-    \hline
-    \textbf{Database} & \textbf{ObjectBox} \\  \hline
-    \textbf{Programmeertalen} & Java, Kotlin, Swift, C\#, C, C++, Go, Dart/Flutter \\  \hline
-    \textbf{Gegevenstypen} & Document, Key-Value \\  \hline
-    \textbf{Geheugen- en resourcegebruik} & Geoptimaliseerd voor mobiele apparaten, minimale resourceconsumptie \\  \hline
-    \textbf{Distributiemodel} & Lokale gegevensopslag, ondersteuning voor synchronisatie van rand naar cloud \\  \hline
-    \textbf{Schaalbaarheid en prestaties}  & Uitstekende prestaties, 10x sneller dan alternatieven, ondersteunt miljoenen objecten met minimale resourcevereisten \\  \hline
-    \textbf{Beheer en onderhoud} & Eenvoudig beheer en onderhoud, automatische schema-migraties, geen update-scripts nodig \\  \hline
-    \textbf{Beschikbaarheid en betrouwbaarheid}  & Hoog betrouwbaar voor lokale gegevensopslag, ObjectBox Sync voor datasync, ObjectBox TS voor time series data \\  \hline
-    \textbf{Ondersteuning en documentatie}  & Uitgebreide documentatie, ondersteuning voor Java, Kotlin, Swift, C/C++, Go, Dart/Flutter, actieve gemeenschap van 1,000,000+ ontwikkelaars [1][2][3] \\  \hline
-    \end{tabular}%
-    }
-\end{table}
-
-\begin{table}[h]
-    \centering
-    \caption{Overzicht van de specificaties van MongoDB \autocite{MongoDBDocumentation}}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|}
-    \hline
-    \textbf{Database} & \textbf{MongoDB}  \\  \hline
-    \textbf{Programmeertalen} & JavaScript, Python, Java, C\#, Node.js, PHP, Ruby, Go, C++, Perl, Scala  \\  \hline
-    \textbf{Gegevenstypen} & BSON (Binary JSON) format: Strings, Integer, Boolean, Double, Arrays, Timestamp, Object ID, Binary data, en meer  \\  \hline
-    \textbf{Geheugen- en resourcegebruik} & Efficiënt in geheugengebruik; ondersteunt lazy loading voor gegevens. Het resourcegebruik hangt af van de workload.  \\  \hline
-    \textbf{Distributiemodel} & Gedistribueerd database-systeem met ondersteuning voor replicatie en sharding voor horizontale schaalbaarheid &  \\  \hline
-    \textbf{Schaalbaarheid en prestaties}  & Hoge schaalbaarheid en prestaties door sharding en replicatie. Goed voor read/write operations en real-time applicaties.  \\  \hline
-    \textbf{Beheer en onderhoud} & Vereist monitoring en regulier onderhoud, maar biedt ook tools en services (zoals MongoDB Atlas) voor vereenvoudiging.  \\  \hline
-    \textbf{Beschikbaarheid en betrouwbaarheid}  & Zeer beschikbaar en betrouwbaar door replicatiesets. Automatische failover en data recovery mogelijkheden.  \\  \hline
-    \textbf{Ondersteuning en documentatie}  & Uitgebreide documentatie en een actieve community. Commerciële ondersteuning beschikbaar via MongoDB Inc.  \\  \hline
-    \end{tabular}%
-    }
-\end{table}
-
-\begin{table}[h]
-    \centering
-    \caption{Overzicht van de specificaties van Redis \autocite{RedisDocumentation}}
-    \resizebox{\textwidth}{!}{%
-      \begin{tabular}{|l|l|}
-        \hline
-        \textbf{Database} & \textbf{Redis} \\ \hline
-        \textbf{Programmeertalen} & C, C++, Erlang, Go, Java, JavaScript, Lua, Perl, Python, Ruby, Rust, Scala, Swift \\ \hline
-        \textbf{Gegevenstypen} & Strings, hashes, lists, sets, sorted sets, bitmaps, hyperloglogs, geospatial indexes, streams \\ \hline
-        \textbf{Geheugen- en resourcegebruik} & In-memory, optionele persistentie \\ \hline
-        \textbf{Distributiemodel} & Gedistribueerd, sharded, master-slave replicatie \\ \hline
-        \textbf{Schaalbaarheid en prestaties} & Hoge prestaties, horizontale schaalbaarheid \\ \hline
-        \textbf{Beheer en onderhoud} & CLI, web-based management console, monitoring tools \\ \hline
-        \textbf{Beschikbaarheid en betrouwbaarheid} & Hoge beschikbaarheid, failover, disaster recovery \\ \hline
-        \textbf{Ondersteuning en documentatie} & Uitgebreide documentatie, actieve community, commerciële ondersteuning \\ \hline
-      \end{tabular}%
-    }
-  \end{table}
-
-
-\subsection{Column-family databasearchitectuur}
-
-Deze architectuur organiseert gegevens in kolomfamilies in plaats van rijen, zoals bij traditionele relationele databases. Het is geoptimaliseerd voor het lezen van grote datasets met een hoge mate van parallelle verwerking en wordt vaak gebruikt in analytische toepassingen waarbij kolomgeoriënteerde query's belangrijk zijn. Voorbeelden van column-family databases zijn Apache Cassandra en Apache HBase.
-
-\subsection{Grafische databasearchitectuur}
-
-Grafische databases zijn gespecialiseerd in het opslaan en beheren van relaties tussen gegevens, waarbij entiteiten worden weergegeven als knooppunten en relaties als randen. Deze architectuur is uitermate geschikt voor toepassingen zoals sociale netwerken, aanbevelingssystemen en netwerkanalyse. Voorbeelden van grafische databases zijn Neo4j en Amazon Neptune.
-
-\begin{table}[h]
-    \centering
-    \caption{Overzicht van de specificaties van Neo4j \autocite{Neo4jDocumentation}}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{|l|l|}
-    \hline
-    \textbf{Database} & \textbf{Neo4j} \\  \hline
-    \textbf{Programmeertalen} & Cypher, C\#, Go, Java, JavaScript, Python \\  \hline
-    \textbf{Gegevenstypen} & Property graph model (nodes, relaties, eigenschappen) \\  \hline
-    \textbf{Geheugen- en resourcegebruik} & Gebruik van JVM Heap en Native memory, advanced memory configuration \\  \hline
-    \textbf{Distributiemodel} & Standalone en fault-tolerant clusters, multi-data center routing \\  \hline
-    \textbf{Schaalbaarheid en prestaties} & High-performance caching, cost-based optimizer, high limit opslagformat \\  \hline
-    \textbf{Beheer en onderhoud} & Neo4j Admin en CLI, backup/restore, security management \\  \hline
-    \textbf{Beschikbaarheid en betrouwbaarheid} & Hoge beschikbaarheid, online backup/restore, failover capaciteiten \\  \hline
-    \textbf{Ondersteuning en documentatie} & Uitgebreide documentatie, actieve community, professionele ondersteuning \\  \hline
-    \end{tabular}%
-    }
-\end{table}
-
-\subsection{Tijdreeksdatabasearchitectuur}
-
-Tijdreeksdatabases zijn van essentieel belang in moderne informatiesystemen, met toepassingen variërend van IoT (Internet of Things) tot financiële analyses en meer. Dit gespecialiseerde type database is geoptimaliseerd voor het opslaan, beheren en analyseren van tijdreeksgegevens, waarbij elk gegevenspunt wordt geassocieerd met een tijdstempel. In de afgelopen jaren zijn verschillende tijdreeksdatabases ontwikkeld om te voldoen aan de specifieke behoeften van verschillende toepassingsgebieden. Voorbeelden hiervan zijn BTrDB en InfluxDB, twee bekende tijdreeksdatabases die elk hun eigen benaderingen en optimalisaties bieden voor het verwerken van tijdreeksgegevens \autocite{Yang2019EdgeDBAE}.
-
-\begin{table}[h]
-    \centering
-    \caption{Overzicht van de specificaties van EdgeDB \autocite{EdgeDBDocumentation}}
-    \resizebox{\textwidth}{!}{
-      \begin{tabular}{|l|l|}
-        \hline
-        \textbf{Database} & \textbf{Edgedb} \\ \hline
-        \textbf{Programmeertalen} & Python, TypeScript, GraphQL \\ \hline
-        \textbf{Gegevenstypen} & Objecten, relaties, ingebouwde schematypes \\ \hline
-        \textbf{Geheugen- en resourcegebruik} & Afhankelijk van configuratie, kan in-memory of persistent zijn \\ \hline
-        \textbf{Veiligheid} & Gebruiksautorisatie, role-based access control (RBAC) \\ \hline
-        \textbf{Distributiemodel} & Single-node, sharded clusters (experimenteel) \\ \hline
-        \textbf{Schaalbaarheid en prestaties} & Hoge prestaties voor query's, horizontale schaalbaarheid (beperkt) \\ \hline
-        \textbf{Beheer en onderhoud} & CLI, web-based GUI (experimenteel)\\ \hline
-        \textbf{Beschikbaarheid en betrouwbaarheid} & Gegevenspersistentie, failover mogelijkheden (beperkt) \\ \hline
-        \textbf{Ondersteuning en documentatie} & Documentatie, actieve community, limited commerciële ondersteuning  \\ \hline
-      \end{tabular}
-    }
-  \end{table}
-
-  \begin{table}[h]
-    \centering
-    \caption{Overzicht van de specificaties van VergeDB \autocite{VergedbDocumentation}}
-    \resizebox{\textwidth}{!}{
-      \begin{tabular}{|l|l|}
-        \hline
-        \textbf{Database} & \textbf{Vergedb} \\ \hline
-        \textbf{Programmeertalen} & Verschillende talen via API's (Python, JavaScript, etc.) \\ \hline
-        \textbf{Gegevenstypen} & JSON-documenten, nested documenten  \\ \hline
-        \textbf{Geheugen- en resourcegebruik} & Afhankelijk van configuratie, kan in-memory of persistent zijn  \\ \hline
-        \textbf{Veiligheid} & Role-based access control (RBAC)  \\ \hline
-        \textbf{Distributiemodel} & Distributed, geclusterd  \\ \hline
-        \textbf{Schaalbaarheid en prestaties} & Hoge prestaties voor lezen en schrijven, horizontale schaalbaarheid  \\ \hline
-        \textbf{Beheer en onderhoud} & CLI, web-based management console  \\ \hline
-        \textbf{Beschikbaarheid en betrouwbaarheid} & Hoge beschikbaarheid, automatische failover \\ \hline
-        \textbf{Ondersteuning en documentatie} & Documentatie, actieve community, commerciële ondersteuning  \\ \hline
-      \end{tabular}
-    }
-  \end{table}
-
-  \begin{table}[h]
-    \centering
-    \caption{Overzicht van de specificaties van InfluxDB \autocite{InfluxDBDocumentation}}
-    \resizebox{\textwidth}{!}{
-    \begin{tabular}{|l|l|}
-    \hline
-    \textbf{Database} & \textbf{InfluxDB} \\ \hline
-    \textbf{Programmeertalen} & SQL-achtige querytaal, diverse API's (Python, Java, etc.)  \\ \hline
-    \textbf{Gegevenstypen} & Time series data (met timestamps)  \\ \hline
-    \textbf{Geheugen- en resourcegebruik} & Afhankelijk van configuratie, kan in-memory of persistent zijn  \\ \hline
-    \textbf{Veiligheid} & Gebruiksautorisatie, role-based access control (RBAC)  \\ \hline
-    \textbf{Distributiemodel} & Single-node, sharded clusters  \\ \hline
-    \textbf{Schaalbaarheid en prestaties} & Geoptimaliseerd voor time-series data, horizontale schaalbaarheid  \\ \hline
-    \textbf{Beheer en onderhoud} & CLI, web-based UI  \\ \hline
-    \textbf{Beschikbaarheid en betrouwbaarheid} & Hoge beschikbaarheid, replicatie, failover  \\ \hline
-    \textbf{Ondersteuning en documentatie} & Uitgebreide documentatie, actieve community, commerciële ondersteuning  \\ \hline
-    \end{tabular}
-    }
-\end{table}
-
-Elke databasearchitectuur heeft zijn eigen kenmerken, voordelen en nadelen. De keuze voor een specifieke architectuur hangt af van factoren zoals de aard van de gegevens, de vereisten voor schaalbaarheid, de gewenste queryprestaties en de beschikbare infrastructuur.
-
-
 \section{EdgeDB: Een innovatieve tijdreeksdatabase voor Edge Computing}
-
 EdgeDB is een innovatieve toevoeging op het gebied van tijdreeksdatabases, die een frisse benadering biedt voor het beheer van tijdreeksgegevens. Met nieuwe indexstructuren en geavanceerde queryverwerkingstechnieken belooft EdgeDB verbeterde prestaties en efficiëntie, waarbij het gebruik van TMTree een opvallend kenmerk is. Een grondige vergelijkende evaluatie van EdgeDB met gevestigde oplossingen zoals BTrDB en InfluxDB is noodzakelijk om inzicht te krijgen in de sterke punten en beperkingen ervan. Door evaluatiemetrics zoals invoegprestaties, schrijfprestaties, query-efficiëntie, geheugenoverhead en invoersnelheid van TMTree te analyseren, kunnen besluitvormers bepalen waar en hoe EdgeDB het beste kan worden ingezet binnen verschillende toepassingsdomeinen en gebruiksscenario's \autocite{Yang2019EdgeDBAE}.
 
-
 \section{VergeDB: Een innovatieve tijdreeksdatabase voor Edge Computing}
-
-Een recente ontwikkeling op het gebied van tijdreeksdatabases is VergeDB, een database die specifiek is ontworpen voor IoT-analytics op Edge-apparaten \autocite{Paparrizos2021VergeDBAD}. VergeDB belooft een innovatieve benadering te bieden voor het beheren van tijdreeksgegevens op de rand van het netwerk, wat cruciaal is voor real-time toepassingen waarbij snelle respons vereist is. Deze nieuwe database introduceert nieuwe compressiemethoden, indexstructuren en queryverwerkingstechnieken om de prestaties en efficiëntie te verbeteren. Een van de belangrijkste kenmerken van VergeDB is de mogelijkheid om gegevens lokaal op te slaan en te verwerken op Edge-apparaten, waardoor de latentie wordt verminderd en de prestaties worden verbeterd. VergeDB biedt ook ondersteuning voor geavanceerde analysetaken en machine learning-taken, zoals trendanalyse, patroonherkenning en anomaliedetectie, waardoor het een veelzijdige oplossing is voor diverse toepassingen op het gebied van IoT-analytics. Deze nieuwe benadering van tijdreeksdatabases op de rand van het netwerk opent nieuwe mogelijkheden voor het efficiënt beheren en analyseren van tijdreeksgegevens in real-time, wat essentieel is voor het succes van IoT-toepassingen in verschillende domeinen.
+Een recente ontwikkeling op het gebied van tijdreeksdatabases is VergeDB, een database die specifiek is ontworpen voor IoT-analytics op Edge-apparaten \autocite{Paparrizos2021VergeDBAD}. VergeDB belooft een innovatieve benadering te bieden voor het beheren van tijdreeksgegevens op de rand van het netwerk, wat cruciaal is voor real-time toepassingen waarbij snelle respons vereist is. Deze nieuwe database introduceert nieuwe compressiemethoden, indexstructuren en queryverwerkingstechnieken om de prestaties en efficiëntie te verbeteren. Een van de belangrijkste kenmerken van VergeDB is de mogelijkheid om gegevens lokaal op te slaan en te verwerken op Edge-apparaten, waardoor de latentie wordt verminderd en de prestaties worden verbeterd. VergeDB biedt ook ondersteuning voor geavanceerde analysetaken en machine learning-taken, zoals trendanalyse, patroonherkenning en anomaliedetectie, waardoor het een veelzijdige oplossing is voor diverse toepassingen op het gebied van IoT-analytics.
 
 \section{Vergelijkende studie tussen MongoDB en MySQL}
-
 Om een grondig begrip te krijgen van efficiënte oplossingen voor gegevensopslag in Edge Database-architecturen, is een vergelijkende studie uitgevoerd tussen MongoDB en MySQL. Deze vergelijking is van cruciaal belang om inzicht te krijgen in de verschillen tussen NoSQL (MongoDB) en relationele (MySQL) databases, met betrekking tot hun toepasbaarheid in Edge-omgevingen \autocite{Gyorodi2015comparative}.
 
 \subsection{Databasekeuze voor Edge-omgevingen}
@@ -267,7 +82,6 @@ De studie omvatte het genereren van datasets, het modelleren van databases, het 
 Query 1, die zocht naar vrouwelijke kiezers die op Partij A hebben gestemd, liet zien dat MongoDB uitstekende prestaties leverde met een complexiteit van O(1). PostgreSQL vertoonde goede prestaties met complexiteiten van O(1) en O(n), terwijl Neo4j een mindere prestatie leverde met een complexiteit van O(n log n). Voor Query 2, die zocht naar kiezers in het gebied Bogor die op Kandidaat A-3 hebben gestemd, vertoonden MongoDB en PostgreSQL vergelijkbare prestaties met complexiteit van O(1) en O(n), terwijl Neo4j weer een mindere prestatie leverde met een complexiteit van O(n log n).
 
 Uit het onderzoek blijkt dat MongoDB uitstekende prestaties biedt als database voor het beheer van verkiezingsdata, met een complexiteit van O(1). PostgreSQL presteert ook goed, terwijl Neo4j de minste prestaties levert. Voor toekomstig onderzoek wordt aanbevolen om de prestaties van de databases te testen met betrekking tot het geheugengebruik \autocite{Gyorodi2015comparative}.
-
 
 
 \section{Conclusie}
