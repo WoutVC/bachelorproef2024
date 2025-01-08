@@ -20,9 +20,12 @@
 %% Compile with the -shell-escape flag!
 %% \usepackage[chapter]{minted}
 %% If you compile with the make_thesis.{bat,sh} script, use the following
-%% import instead:
+%% import instead:s
 \usepackage[chapter,outputdir=../output]{minted}
 \usemintedstyle{solarized-light}
+\usepackage{graphicx} % Voor het gebruik van \resizebox
+\usepackage{placeins} % Voor strikt plaatsen van tabellen en figuren
+\usepackage{float} % Voor H-plaatsing van figuren
 
 %% Formatting for minted environments.
 \setminted{%
@@ -50,10 +53,10 @@
 %%---------- Document metadata -------------------------------------------------
 % TODO: Replace this with your own information
 \author{Wout Van Cleemput}
-\supervisor{Dhr. F. Van Houte}
-\cosupervisor{Mevr. S. Beeckman}
+\supervisor{Karine Samyn}   
+\cosupervisor{Kenneth Van den Berghe}
 \title
-    {Welke database-optimalisatiestrategieën zijn het meest effectief voor het maximaliseren van de prestatie en efficiëntie van gegevensopslag in edge computing-omgevingen met beperkte middelen?}
+    {Hoe beïnvloeden \\ data-partitioneringstechnieken in combinatie met edge-databases de \\ prestaties van een \\ Edge Computing omgeving van \\ Optis?}
 \academicyear{\advance\year by -1 \the\year--\advance\year by 1 \the\year}
 \examperiod{1}
 \degreesought{\IfLanguageName{dutch}{Professionele bachelor in de toegepaste informatica}{Bachelor of applied computer science}}
@@ -82,7 +85,7 @@
 
 \hypersetup{pageanchor=false} %% Disable page numbering references
 %% Render a Dutch outer title page if the main language is English
-\IfLanguageName{english}{%
+\IfLanguageName{english}{%s
     %% If necessary, information can be changed here
     \degreesought{Professionele Bachelor toegepaste informatica}%
     \begin{otherlanguage}{dutch}%
@@ -112,8 +115,9 @@
 
 % If you included tables and/or source code listings, uncomment the appropriate
 % lines.
-%\listoftables
-%\listoflistings
+\listoftables
+
+\listoflistings
 
 % Als je een lijst van afkortingen of termen wil toevoegen, dan hoort die
 % hier thuis. Gebruik bijvoorbeeld de ``glossaries'' package.
@@ -141,18 +145,21 @@
 %\input{...}
 %...
 
+\input{proof-of-concept}
+
 Om de onderzoeksvraag te beantwoorden, gaan we gebruik maken van een combinatie van literatuurstudie,
- interviews met relevante bedrijven en een grondige vergelijkende studie. \\
+ interviews met relevante bedrijven en een grondige vergelijkende studie.
  
 Specifieke methoden, zoals requirements-analyse en experimenten, worden toegepast.
 
-We gaan geen enquetes uitvoeren, omdat we de voorkeur geven aan een meer persoonlijke aanpak. \\
+We gaan geen enquetes uitvoeren, omdat we de voorkeur geven aan een meer persoonlijke aanpak.
  
 De technische diepte van deze bachelorproef wordt benadrukt,
- inclusief de beschrijving van gebruikte tools zoals hardware, software en \\ diensten. \\
+ inclusief de beschrijving van gebruikte tools zoals hardware, software en diensten.
 
-Een gedetailleerde tijdsplanning wordt \\ opgesteld om de duur van elke onderzoeksfase en de concrete deliverables te definiëren.
-Deze tijdsplanning wordt opgesteld in de vorm van een Gantt chart. Deze zal u vinden op de laatste \\ pagina van dit voorstel.
+Een gedetailleerde tijdsplanning wordt opgesteld om de duur van elke onderzoeksfase en de concrete deliverables te definiëren.
+Deze tijdsplanning wordt opgesteld in de vorm van een Gantt chart. Deze zal u vinden op de laatste pagina van dit voorstel.
+
 
 
 \input{conclusie}
@@ -169,21 +176,9 @@ Het onderwerp van deze bachelorproef is gebaseerd op een onderzoeksvoorstel dat 
 %\section*{Samenvatting}
 
 % Kopieer en plak hier de samenvatting (abstract) van je onderzoeksvoorstel.
-In deze bachelorproef wordt de geschiktheid van verschillende databasetechnologieën voor Edge Computing-toepassingen bestudeerd,
-  met een specifieke focus op data-partitioneringstechnieken zoals consistent hashing en range-based partitionering en hun effect op de prestaties van edge-geoptimaliseerde databases, zoals ObjectBox en SQLite.
-
-Het onderzoek start met een uitgebreide analyse van het concept 'Edge Database' en de functie van partitioneringsmethoden in deze context. Er wordt bestudeerd welke kenmerken cruciaal zijn om aan de vereisten van Edge Computing te voldoen, zoals snelheid, schaalbaarheid en lage latentie. Partitioneringsmethoden worden gezien als essentieel voor een effectieve verspreiding van gegevens en het gebruik van netwerken in gedistribueerde netwerken,
-  vooral in situaties waarin middelen beperkt zijn en de connectiviteit niet altijd stabiel is.
-
-Naast een uitgebreide literatuurstudie worden diverse databasetechnologieën vergeleken in een proof of concept, waarbij specifiek wordt onderzocht op welke manier data-partitioneringsmethoden de prestaties van databases zoals ObjectBox en SQLite beïnvloeden op het gebied van snelheid,
- efficiëntie en betrouwbaarheid in een edge-omgeving.
-
-De resultaten van deze vergelijking geven inzicht in de manier waarop bedrijven zoals Optis de meest geschikte data-partitioneringsmethoden
- en databases kunnen selecteren om aan de groeiende vereisten voor effectieve opslag en verwerking van gegevens in Edge Computing-omgevingen te voldoen.
-
 
 % Verwijzing naar het bestand met de inhoud van het onderzoeksvoorstel
-\includepdf[pages=-]{../voorstel/voorstel.pdf}
+\input{../voorstel/voorstel-inhoud}
 
 %%---------- Andere bijlagen --------------------------------------------------
 % TODO: Voeg hier eventuele andere bijlagen toe. Bv. als je deze BP voor de
