@@ -13,6 +13,31 @@
 % niet duidelijk zijn?
 % Heeft het onderzoek geleid tot nieuwe vragen die uitnodigen tot verder 
 %onderzoek?
+Deze studie onderzocht hoe data-partitioneringstechnieken en edge-databases de prestaties van een Edge Computing-omgeving beïnvloeden. De resultaten tonen aan dat geen enkele technologie een universele oplossing biedt; de keuze hangt sterk af van de specifieke eisen van de workload en de operationele omgeving.
 
-\lipsum[76-80]
+Cassandra excelleert in fouttolerantie en schaalbaarheid dankzij consistent hashing, wat het geschikt maakt voor dynamische en gedistribueerde omgevingen. TimescaleDB biedt superieure latentieprestaties voor gestructureerde tijdsgebonden gegevens, terwijl MongoDB flexibiliteit levert bij ongestructureerde datasets, maar minder goed presteert bij extreme schaalvergroting. 
+
+De belangrijkste aanbeveling voor Optis is om de technologie te kiezen op basis van prioriteiten:
+\begin{itemize}
+    \item Voor schaalbare en robuuste systemen: \textbf{Cassandra}.
+    \item Voor real-time toepassingen met lage latentie: \textbf{TimescaleDB}.
+    \item Voor flexibele dataverwerking: \textbf{MongoDB}.
+\end{itemize}
+
+\subsection{Beantwoording van de Deelvragen}
+\begin{itemize}
+    \item \textbf{Hoe verhouden verschillende data-partitioneringstechnieken zich in termen van latentie in een Edge-omgeving?} \\
+    De simulaties toonden aan dat range-based partitionering de laagste latentie biedt voor gestructureerde tijdsgebonden workloads. Hash-based partitionering leverde een constante maar hogere latentie, terwijl list-based partitionering sterk afhankelijk was van de datasetindeling.
+
+    \item \textbf{Wat is de invloed van data-partitioneringstechnieken op bandbreedteverbruik en netwerkprestaties?} \\
+    Range-based partitionering minimaliseerde het netwerkverkeer door alleen relevante partities aan te spreken. Hash-based partitionering verdeelde de belasting gelijkmatig, maar verhoogde het netwerkverkeer bij complexere queries. List-based partitionering bood stabiele prestaties, maar was minder flexibel in dynamische omgevingen.
+
+    \item \textbf{Hoe beïnvloeden deze technieken de schaalbaarheid van databases in een dynamische Edge-omgeving?} \\
+    Hash-based partitionering bleek het meest schaalbaar vanwege de eenvoud waarmee nodes konden worden toegevoegd. List-based partitionering had beperkingen bij het dynamisch toevoegen van categorieën, terwijl range-based partitionering effectief bleef bij gestructureerde gegevens.
+
+    \item \textbf{Welke bestaande Edge-databasetechnologieën leveren, gemeten aan de hand van latentie, fouttolerantie en schaalbaarheid, de beste prestaties in combinatie met de onderzochte partitioneringstechnieken binnen de context van Optis?} \\
+    Cassandra blonk uit in schaalbaarheid en fouttolerantie dankzij consistent hashing. TimescaleDB bood de beste latentieprestaties voor tijdsgebonden gegevens, en MongoDB was geschikt voor ongestructureerde data, maar presteerde minder goed bij zware schaalvergroting.
+\end{itemize}
+
+Deze inzichten benadrukken het belang van een contextspecifieke aanpak bij de implementatie van Edge Computing-oplossingen. Ze bieden waardevolle richtlijnen voor organisaties zoals Optis en dragen bij aan verdere optimalisatie en onderzoek binnen dit domein.
 

@@ -1,0 +1,178 @@
+  services:
+    # Cassandra (Centralized)
+    cassandra_centralized:
+      image: cassandra:latest
+      container_name: cassandra-central-node
+      ports:
+        - "9052:9042"
+      volumes:
+        - cassandra_central_data:/var/lib/cassandra
+      environment:
+        - MAX_HEAP_SIZE=512M
+        - HEAP_NEWSIZE=100M
+
+    # Cassandra (Consistent Hashing)
+    cassandra:
+      image: cassandra:latest
+      container_name: cassandra-node
+      ports:
+        - "9042:9042"
+      volumes:
+        - cassandra_data:/var/lib/cassandra
+      environment:
+        - MAX_HEAP_SIZE=512M
+        - HEAP_NEWSIZE=100M
+
+    # Alternative Cassandra (Range-Based Partitioning)
+    cassandra_alt:
+      image: cassandra:latest
+      container_name: cassandra-node-alt
+      ports:
+        - "9043:9042"
+      volumes:
+        - cassandra_data_alt:/var/lib/cassandra
+      environment:
+        - MAX_HEAP_SIZE=512M
+        - HEAP_NEWSIZE=100M
+
+    # MongoDB (Centralized)
+    mongodb_centralized:
+      image: mongo:4.4
+      container_name: mongodb-central-node
+      ports:
+        - "27030:27017"
+      volumes:
+        - mongodb_central_data:/data/db
+
+    # MongoDB Sharded Cluster (Hash-based Partitioning)
+    configsvr:
+      image: mongo:4.4
+      container_name: configsvr
+      command: mongod --configsvr --replSet configReplSet --port 27017
+      ports:
+        - "27017:27017"
+      volumes:
+        - configsvr_data:/data/db
+
+    shard1:
+      image: mongo:4.4
+      container_name: shard1
+      command: mongod --shardsvr --replSet shard1ReplSet --port 27018
+      ports:
+        - "27018:27018"
+      volumes:
+        - shard1_data:/data/db
+
+    shard2:
+      image: mongo:4.4
+      container_name: shard2
+      command: mongod --shardsvr --replSet shard2ReplSet --port 27020
+      ports:
+        - "27020:27020"
+      volumes:
+        - shard2_data:/data/db
+
+    mongos:
+      image: mongo:4.4
+      container_name: mongos
+      command: mongos --configdb configReplSet/configsvr:27017 --bind_ip_all --port 27019
+      ports:
+        - "27019:27019"
+      depends_on:
+        - configsvr
+        - shard1
+        - shard2
+
+    # MongoDB Sharded Cluster (Range-based Partitioning)
+    configsvr2:
+      image: mongo:4.4
+      container_name: configsvr2
+      command: mongod --configsvr --replSet configReplSet2 --port 27017
+      ports:
+        - "27022:27017"
+      volumes:
+        - configsvr2_data:/data/db
+
+    shard3:
+      image: mongo:4.4
+      container_name: shard3
+      command: mongod --shardsvr --replSet shard3ReplSet --port 27018
+      ports:
+        - "27023:27018"
+      volumes:
+        - shard3_data:/data/db
+
+    shard4:
+      image: mongo:4.4
+      container_name: shard4
+      command: mongod --shardsvr --replSet shard4ReplSet --port 27020
+      ports:
+        - "27024:27020"
+      volumes:
+        - shard4_data:/data/db
+
+    mongos2:
+      image: mongo:4.4
+      container_name: mongos2
+      command: mongos --configdb configReplSet2/configsvr2:27017 --bind_ip_all --port 27025
+      ports:
+        - "27025:27025"
+      depends_on:
+        - configsvr2
+        - shard3
+        - shard4
+    
+    # TimescaleDB (Centralized)
+    timescaledb_centralized:
+      image: timescale/timescaledb:latest-pg14
+      container_name: timescaledb-central-node
+      ports:
+        - "5444:5432"
+      environment:
+        POSTGRES_USER: central_user
+        POSTGRES_PASSWORD: central_pass
+        POSTGRES_DB: central_db
+      volumes:
+        - timescaledb_central_data:/var/lib/postgresql/data
+
+
+    # TimescaleDB (Range-Based Partitioning)
+    timescaledb:
+      image: timescale/timescaledb:latest-pg14
+      container_name: timescaledb-node
+      ports:
+        - "5432:5432"
+      environment:
+        POSTGRES_USER: edge_user
+        POSTGRES_PASSWORD: edge_pass
+        POSTGRES_DB: edge_db
+      volumes:
+        - timescaledb_data:/var/lib/postgresql/data
+
+    # Alternative TimescaleDB (List-Based Partitioning)
+    timescaledb_alt:
+      image: timescale/timescaledb:latest-pg14
+      container_name: timescaledb-node-alt
+      ports:
+        - "5433:5432"
+      environment:
+        POSTGRES_USER: edge_user_alt
+        POSTGRES_PASSWORD: edge_pass_alt
+        POSTGRES_DB: edge_db_alt
+      volumes:
+        - timescaledb_data_alt:/var/lib/postgresql/data
+
+  volumes:
+    cassandra_data:
+    cassandra_data_alt:
+    configsvr_data:
+    shard1_data:
+    shard2_data:
+    timescaledb_data:
+    timescaledb_data_alt:
+    configsvr2_data:
+    shard3_data:
+    shard4_data:
+    cassandra_central_data:
+    mongodb_central_data:
+    timescaledb_central_data:
