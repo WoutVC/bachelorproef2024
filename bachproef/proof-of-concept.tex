@@ -39,13 +39,13 @@ Deze tabel wordt geïmplementeerd in de volgende databases:
 De Docker Compose-configuratie definieert containers voor Cassandra, MongoDB en TimescaleDB. Elke container bevat een instance van de respectieve database, geconfigureerd om de tabel \texttt{sensor\_data} te hosten.
 
 \subsection{Workload Simulatie}
-De workload-simulatie is ontworpen om de prestaties van de databases in een Edge Computing-omgeving te evalueren. De volgende stappen worden uitgevoerd:
+De workload-simulatie is ontworpen om de prestaties van de databases in een Edge Computing-omgeving te evalueren.
 
 \paragraph{Data Generatie}
 De \texttt{Faker.js}-bibliotheek wordt gebruikt om synthetische data te genereren. Elke record bevat velden zoals \texttt{sensor\_id}, \texttt{timestamp}, \texttt{temperature}, \texttt{humidity}, \texttt{status} en \texttt{log\_level}. De records zijn representatief voor typische IoT-sensordata.
 
 \paragraph{Data Load}
-Scripts in Node.js laden de data in Cassandra, MongoDB en TimescaleDB. Hieronder staat een fragment van een invoerscript voor Cassandra:
+Scripts in Node.js laden de data in Cassandra, MongoDB en TimescaleDB. Dit bestand toont hoe de data aan de database wordt toegevoegd: \href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/AddFakeDataToDatabase.js}{AddFakeDataToDatabase.js}.
 
 \paragraph{Testen en Analyse}
 De volgende tests worden uitgevoerd om de prestaties te meten:
@@ -132,7 +132,7 @@ Naast de grafieken biedt deze tabel een samenvatting van de testresultaten.
 \begin{table}[h]
 	\centering
 	\resizebox{\textwidth}{!}{
-		\begin{tabular}{|l|c|c|c|c|c|c|}
+		\begin{tabular}{|l|c|c|c|c|c|c|c|}
 			\hline
 			\textbf{Database}                              	  & \textbf{Latency} & \textbf{Throughput} & \textbf{Scalability} & \textbf{Consistency} & \textbf{Fault Tolerance} & \textbf{Network Load Latency} & \textbf{Edge Performance} \\ \hline
 			Cassandra (Consistent Hashing)                    & 2.58             & 8500.37             & 2.34                 & 15985                & 1                        & 63.4                        & 8.05                      \\ \hline
