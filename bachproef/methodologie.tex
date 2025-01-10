@@ -56,7 +56,7 @@ Het onderzoek verloopt in vier fases, die elk gericht zijn op bepaalde doelstell
     \begin{itemize}
     \item \textbf{Hoe verhouden verschillende data-partitioneringstechnieken zich in termen van latentie in een Edge-omgeving?} \\
       De literatuurstudie zal inzicht geven in welke partitioneringstechnieken momenteel worden toegepast en wat hun verwachte invloed is op latentie.
-    \item \textbf{Wat is de invloed van data-partitioneringstechnieken op bandbreedteverbruik en netwerkprestaties in gedistribueerde Edge-netwerken?} \\
+    \item \textbf{Wat is de invloed van data-partitioneringstechnieken op netwerkprestaties in gedistribueerde Edge-netwerken?} \\
       Dit wordt onderzocht door bestaande studies en metingen die zich richten op de impact van partitionering op bandbreedte en netwerkprestaties.
     \item \textbf{Hoe beïnvloeden deze technieken de schaalbaarheid van databases in een dynamische Edge-omgeving?} \\
       Door literatuur te analyseren over schaalbaarheidsuitdagingen in Edge Computing.
@@ -87,24 +87,26 @@ Het onderzoek verloopt in vier fases, die elk gericht zijn op bepaalde doelstell
     \textbf{Resultaat, deliverable(s):} Tabellen en grafieken die de prestaties van databases tonen op basis van de gebruikte partitioneringstechniek.\newline\newline
     \textbf{Deadline:} 05/12/2024\newline\newline
 \textbf{Fase 3: PoC implementeren}\newline\newline
-    \textbf{Doelstelling:} Twee of meer geselecteerde databasetechnologieën uit de shortlist implementeren en testen om hun praktische prestaties te vergelijken in een gesimuleerde edge-omgeving.\newline\newline
-    \textbf{Aanpak:}
+\textbf{Doelstelling:} Het implementeren en testen van meerdere geselecteerde databasetechnologieën uit de shortlist om hun praktische prestaties te vergelijken in een gesimuleerde edge-omgeving.\newline\newline
+\textbf{Aanpak:}
     \begin{itemize}
-        \item Twee of meer databasetechnologieën uit de shortlist kiezen en implementeren in een testomgeving.
-        \item Identieke datasets gebruiken om een eerlijke vergelijking tussen de databases te garanderen.
-        \item De benodigde software en tools installeren en configureren (bijvoorbeeld SQLiteStudio voor SQLite).
-        \item De prestaties meten en evalueren op basis van de gedefinieerde criteria zoals snelheid en schaalbaarheid.\\ \\
+        \item Selecteren van meerdere databasetechnologieën (zoals Cassandra, MongoDB en TimescaleDB) uit de shortlist, gebaseerd op relevantie voor edge-toepassingen.
+        \item Opzetten van een gesimuleerde edge-omgeving met behulp van Docker Compose om consistente testomstandigheden te garanderen.
+        \item Gebruik van identieke datasets, zoals gesynthetiseerde IoT-sensordata, om een eerlijke vergelijking tussen de databases mogelijk te maken.
+        \item Installeren en configureren van de benodigde software en tools, inclusief scriptbestanden voor dataloading en simulatie.
+        \item Meten van prestaties op basis van vooraf gedefinieerde criteria, waaronder latentie, schaalbaarheid, throughput en fouttolerantie.
+        \item Het analyseren en visualiseren van de resultaten met behulp van grafieken en tabellen, om duidelijke vergelijkingen te presenteren.
     \end{itemize}
     \textbf{Beantwoorde deelvragen}:
     \begin{itemize}
     \item \textbf{Hoe verhouden verschillende data-partitioneringstechnieken zich in termen van latentie in een Edge-omgeving?} \\
       Door latency-tests uit te voeren op de verschillende partitioneringstechnieken in een gecontroleerde omgeving.
-    \item \textbf{Wat is de invloed van data-partitioneringstechnieken op bandbreedteverbruik en netwerkprestaties in gedistribueerde Edge-netwerken?} \\
-      Door bandbreedte en netwerkprestaties te meten in de PoC, kunnen we concrete data verzamelen om de efficiëntie van elke techniek te bepalen.
+    \item \textbf{Wat is de invloed van data-partitioneringstechnieken op netwerkprestaties in gedistribueerde Edge-netwerken?} \\
+      Door de netwerkprestaties te meten in de PoC, kunnen we concrete data verzamelen om de efficiëntie van elke techniek te bepalen.
     \item \textbf{Hoe beïnvloeden deze technieken de schaalbaarheid van databases in een dynamische Edge-omgeving?} \\
       Door schaalbaarheid te testen onder verschillende netwerkcondities en datasetgroottes.
     \end{itemize}
-    \textbf{Resultaat, deliverable(s):} Een gedetailleerd PoC-rapport met testresultaten met grafieken, tabellen en screenshots die de prestaties van de verschillende databasetechnologieën tonen.\newline\newline
+    \textbf{Resultaat, deliverable(s):} Een gedetailleerd PoC-rapport met testresultaten met grafieken en tabellen die de prestaties van de verschillende databasetechnologieën tonen.\newline\newline
     \textbf{Deadline:} 24/12/2024\newline\newline
 \textbf{Fase 4: Analyse en evaluatie}\newline\newline
     \textbf{Doelstelling:} De resultaten uit de PoC analyseren en evalueren om conclusies en aanbevelingen te formuleren.\newline\newline
