@@ -2,11 +2,9 @@ const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const fs = require('fs');
 const path = require('path');
 
-// File paths
 const resultsFile = path.join(__dirname, 'testResults.json');
 const outputDir = path.join(__dirname, 'charts');
 
-// Check for file existence
 if (!fs.existsSync(resultsFile)) {
   console.error(`File not found: ${resultsFile}`);
   process.exit(1);
@@ -14,7 +12,6 @@ if (!fs.existsSync(resultsFile)) {
 
 const testResults = JSON.parse(fs.readFileSync(resultsFile, 'utf-8'));
 
-// Ensure output directory exists
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir);
 }
@@ -23,7 +20,7 @@ const width = 800;
 const height = 600;
 const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
 
-// Helper function to determine if a value is numeric
+// Function to determine if a value is numeric
 const isNumeric = (value) => !isNaN(parseFloat(value)) && isFinite(value);
 
 // Function to create bar charts

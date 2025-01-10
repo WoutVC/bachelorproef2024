@@ -87,19 +87,19 @@ Edge-databases daarentegen zijn ontworpen met specifieke optimalisaties voor lok
     Gegevens die lokaal worden verwerkt en opgeslagen, blijven dichter bij de bron, wat het risico op datalekken tijdens transmissie vermindert. Veel edge-databases bieden encryptie op apparaatniveau, waardoor gevoelige gegevens zoals medische dossiers, beschermd blijven tegen ongeautoriseerde toegang. Daarnaast maken fijnmazige toegangscontroles het mogelijk om de rechten per gebruiker of apparaat nauwkeurig te beheren \autocite{Taheri2020}.
 \end{itemize}
 
-\paragraph{Eisen van een Edge Computing-omgeving:}
+\subsection{Eisen van een Edge Computing-omgeving:}
 Edge-databases moeten voldoen aan specifieke eisen die essentieel zijn aan gedecentraliseerde omgevingen, waar gegevensverwerking direct bij de bron plaatsvindt. Deze vereisten zijn essentieel voor het effectief functioneren van Edge Computing-toepassingen zoals IoT-systemen, slimme steden en real-time monitoring.
 
-\textbf{Lagere latentie:} 
+\paragraph{Lagere latentie:} 
    Edge-databases moeten de latentie minimaliseren door gegevens lokaal te verwerken, zonder afhankelijk te zijn van centrale servers. Dit is cruciaal voor toepassingen waarbij de responstijd van groot belang is, zoals in IoT-toepassingen voor slimme apparaten en autonome systemen. De verwerking van data dicht bij de bron zorgt voor snellere reacties en betere prestaties zoals beschreven door Taheri en Deng, die de voordelen van lokale gegevensverwerking in Edge omgevingen benadrukken \autocite{Taheri2020}.
 
-\textbf{Netwerkonafhankelijkheid:}
+\paragraph{Netwerkonafhankelijkheid:}
    Edge-databases moeten in staat zijn om te functioneren bij beperkte of intermitterende netwerkverbindingen. Gegevens moeten lokaal kunnen worden opgeslagen en verwerkt, zelfs wanneer de verbinding met een centrale server tijdelijk verloren is. Dit maakt het mogelijk voor systemen om operationeel te blijven in afgelegen of netwerkbeperkte omgevingen. Rahmani en Kleppmann onderstrepen het belang van deze functie in gedistribueerde systemen, waar netwerkonderbrekingen niet mogen leiden tot systeemuitval \autocite{Rahmani2018, Kleppmann2017}.
 
-\textbf{Schaalbaarheid en Flexibiliteit:}
+\paragraph{Schaalbaarheid en Flexibiliteit:}
    Edge-databases moeten eenvoudig opschaalbaar zijn om duizenden tot miljoenen verbonden apparaten te ondersteunen. Deze apparaten kunnen dynamisch worden toegevoegd of verwijderd, zonder dat dit invloed heeft op de algehele systeemfunctionaliteit. Het vermogen om automatisch nieuwe nodes in het netwerk te integreren zonder handmatige interventie is van cruciaal belang voor de groei van IoT-netwerken en slimme steden \autocite{Rahmani2018}.
 
-\textbf{Beveiliging en Privacy:}
+\paragraph{Beveiliging en Privacy:}
    Gegevens die lokaal worden opgeslagen, moeten beschermd worden tegen ongeautoriseerde toegang. Dit vereist dat Edge-databases sterke beveiligingsmechanismen moeten ondersteunen zoals versleuteling en gedetailleerde toegangscontrole. Vooral in gevoelige omgevingen zoals de gezondheidszorg en de financiële sector, is het essentieel om de privacy van gegevens te waarborgen. Taheri benadrukt dat encryptie op apparaatniveau de gegevensbeveiliging verbetert door de gegevens dichtbij de bron te beschermen \autocite{Taheri2020}.
 
 Door deze eisen te vervullen, bieden Edge-databases zoals SQLite en TimescaleDB, een gedecentraliseerde oplossing die perfect aansluit bij de behoeften van Edge Computing-omgevingen. In tegenstelling tot traditionele databases, die sterk afhankelijk zijn van centrale datacenters, kunnen Edge-databases efficiënt omgaan met de vereisten van real-time verwerking, netwerkonafhankelijkheid en schaalbaarheid in gedistribueerde systemen.

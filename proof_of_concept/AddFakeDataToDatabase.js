@@ -57,7 +57,6 @@ const mongoCentralUrl = "mongodb://localhost:27030";
 const mongoHashUrl = "mongodb://localhost:27019";
 const mongoRangeUrl = "mongodb://localhost:27025";
 
-// Main Function
 (async () => {
   try {
     // ** Cassandra Initialization **

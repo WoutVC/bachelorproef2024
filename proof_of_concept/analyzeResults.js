@@ -1,6 +1,5 @@
 const fs = require('fs');
 
-// Load test results
 const testResults = JSON.parse(fs.readFileSync('testResults.json', 'utf8'));
 
 const metricsToAnalyze = ["Latency", "Throughput", "Scalability", "Consistency", "Fault Tolerance", "Network Load Latency", "Edge Performance"];

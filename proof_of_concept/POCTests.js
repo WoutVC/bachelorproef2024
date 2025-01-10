@@ -21,76 +21,12 @@ const cassClientAlt = new cassandra.Client({
   keyspace: "edge_keyspace_alt",
 });
 
-// ** Centralized Cassandra Client Initialization **
-const cassClientCentralWithoutKeyspace = new cassandra.Client({
-  contactPoints: ["127.0.0.1:9052"], // Centralized Cassandra
-  localDataCenter: "datacenter1",
-  socketOptions: { readTimeout: 30000 },
-});
-
 const cassCentralClient = new cassandra.Client({
   contactPoints: ["127.0.0.1:9052"],
   localDataCenter: "datacenter1",
   keyspace: "edge_keyspace_central",
   socketOptions: { readTimeout: 30000 },
 });
-
-// ** Centralized Cassandra Initialization and Data Insertion **
-/*(async () => {
-  try {
-    console.log("Initializing Centralized Cassandra...");
-    await cassClientCentralWithoutKeyspace.connect();
-
-    await cassClientCentralWithoutKeyspace.execute(`
-      CREATE KEYSPACE IF NOT EXISTS edge_keyspace_central
-      WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
-    `);
-
-    cassCentralClient = new cassandra.Client({
-      contactPoints: ["127.0.0.1:9052"],
-      localDataCenter: "datacenter1",
-      keyspace: "edge_keyspace_central",
-      socketOptions: { readTimeout: 30000 },
-    });
-
-    await cassCentralClient.connect();
-
-    await cassCentralClient.execute(`
-      CREATE TABLE IF NOT EXISTS sensor_data (
-        sensor_id UUID,
-        timestamp TIMESTAMP,
-        temperature DOUBLE,
-        humidity DOUBLE,
-        status TEXT,
-        log_level TEXT,
-        PRIMARY KEY (sensor_id, timestamp)
-      ) WITH CLUSTERING ORDER BY (timestamp DESC);
-    `);
-
-    console.log("Centralized Cassandra initialized.");
-
-    // ** Data Insertion into Centralized Cassandra **
-    console.log("Inserting data into Centralized Cassandra...");
-    const NUM_RECORDS = 100;
-    for (let i = 0; i < NUM_RECORDS; i++) {
-      await cassCentralClient.execute(
-        `INSERT INTO sensor_data (sensor_id, timestamp, temperature, humidity, status, log_level)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [
-          uuidv4(),
-          new Date(),
-          Math.random() * 60 - 20, // Random temperature between -20 and 40
-          Math.random() * 100, // Random humidity between 0 and 100
-          Math.random() > 0.5 ? "active" : "offline", // Random status
-          Math.random() > 0.5 ? "INFO" : "ERROR", // Random log level
-        ]
-      );
-    }
-    console.log("Centralized Cassandra data inserted.");
-  } catch (err) {
-    console.error("Error:", err);
-  }
-})();*/
 
 const pgClient = new Client({
   user: "edge_user",
@@ -308,31 +244,6 @@ async function testOfflineScenario(client, label) {
 
   } catch (error) {
     console.error(`${label} Offline: Error during simulation - ${error.message}`);
-  }
-}
-
-async function testBandwidth(client, label, dataSizeInMB = 10) {
-  console.log(`Testing Bandwidth for ${label}...`);
-
-  const data = "x".repeat(dataSizeInMB * 1024 * 1024);
-
-  try {
-    const start = performance.now();
-    for (let i = 0; i < NUM_RECORDS; i++) {
-      await executeQuery(client, async () => {
-        await client.db().collection("bandwidth_test").insertOne({ largeData: data });
-      });
-    }
-    const end = performance.now();
-
-    const totalTime = (end - start) / 1000;
-    const totalDataTransferred = dataSizeInMB * NUM_RECORDS;
-    const bandwidth = (totalDataTransferred / totalTime).toFixed(2);
-
-    console.log(`${label} Bandwidth: ${bandwidth} MB/s`);
-    testResults.push({ metric: "Bandwidth", label, value: `${bandwidth} MB/s` });
-  } catch (error) {
-    console.error(`${label} Bandwidth Test Error:`, error);
   }
 }
 
