@@ -2,47 +2,93 @@ const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const fs = require('fs');
 const path = require('path');
 
+const width = 800;
+const height = 600;
+const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
+
 const resultsFile = path.join(__dirname, 'testResults.json');
 const outputDir = path.join(__dirname, 'charts');
-
-if (!fs.existsSync(resultsFile)) {
-  console.error(`File not found: ${resultsFile}`);
-  process.exit(1);
-}
-
 const testResults = JSON.parse(fs.readFileSync(resultsFile, 'utf-8'));
 
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir);
 }
 
-const width = 800;
-const height = 600;
-const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
-
-// Function to determine if a value is numeric
 const isNumeric = (value) => !isNaN(parseFloat(value)) && isFinite(value);
 
-// Function to create bar charts
-async function createBarChart(metric, data, outputFile) {
-  const combinedData = data.reduce((acc, entry) => {
-    if (entry.metric === metric && isNumeric(entry.value)) {
-      acc.labels.push(entry.label);
-      acc.values.push(parseFloat(entry.value));
-    }
+const labelColorMap = {
+  "MongoDB Hash-Based Sharding": "hsl(0, 80%, 50%)",
+  "MongoDB Range-Based Sharding": "hsl(10, 80%, 50%)",
+  "MongoDB Centralized": "hsl(20, 80%, 50%)",
+  "Cassandra Consistent Hashing": "hsl(120, 70%, 50%)",
+  "Cassandra Range-Based Partitioning": "hsl(140, 70%, 50%)",
+  "Cassandra Centralized": "hsl(160, 70%, 50%)",
+  "TimescaleDB Range-Based Partitioning": "hsl(240, 70%, 50%)",
+  "TimescaleDB List-Based Partitioning": "hsl(260, 70%, 50%)",
+  "TimescaleDB Centralized": "hsl(280, 70%, 50%)",
+};
+
+const groupByLabel = (data) => {
+  return data.reduce((acc, entry) => {
+    const key = entry.label.split(' (')[0];
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(entry);
     return acc;
-  }, { labels: [], values: [] });
+  }, {});
+};
+
+const calculateAverages = (groupedData) => {
+  const averages = {};
+  
+  for (const [label, entries] of Object.entries(groupedData)) {
+    const values10 = entries.filter(e => e.label.includes("(10 records)")).map(e => e.value);
+    const values50 = entries.filter(e => e.label.includes("(50 records)")).map(e => e.value);
+    const values100 = entries.filter(e => e.label.includes("(100 records)")).map(e => e.value);
+
+    const averageValue = (values10.concat(values50, values100).reduce((sum, value) => sum + value, 0)) / (values10.length + values50.length + values100.length);
+    
+    averages[label] = averageValue;
+  }
+
+  return averages;
+};
+
+const darkenColor = (hslColor) => {
+  const hsl = hslColor.match(/^hsl\((\d+), (\d+)%, (\d+)%\)$/);
+  if (hsl) {
+    const lightness = Math.max(0, parseInt(hsl[3]) - 10);
+    return `hsl(${hsl[1]}, ${hsl[2]}%, ${lightness}%)`;
+  }
+  return hslColor;
+};
+
+async function createBarChart(metric, data, outputFile) {
+  let labels, values;
+  
+  if (metric === "Scalability") {
+    const groupedData = groupByLabel(data);
+    const averages = calculateAverages(groupedData);
+    
+    labels = Object.keys(averages);
+    values = Object.values(averages);
+  } else {
+    labels = data.map(entry => entry.label);
+    values = data.map(entry => entry.value);
+  }
+
+  const colors = labels.map(label => labelColorMap[label] || "hsl(0, 0%, 50%)");
+  const borderColors = labels.map(label => labelColorMap[label] ? darkenColor(labelColorMap[label]) : "hsl(0, 0%, 30%)");
 
   const configuration = {
     type: 'bar',
     data: {
-      labels: combinedData.labels,
+      labels,
       datasets: [
         {
           label: metric,
-          data: combinedData.values,
-          backgroundColor: 'rgba(75, 192, 192, 0.6)',
-          borderColor: 'rgba(75, 192, 192, 1)',
+          data: values,
+          backgroundColor: colors,
+          borderColor: borderColors,
           borderWidth: 1,
         },
       ],
@@ -50,11 +96,27 @@ async function createBarChart(metric, data, outputFile) {
     options: {
       responsive: false,
       plugins: {
-        legend: { display: true },
-        title: { display: true, text: `${metric} Results` },
+        legend: {
+          display: true,
+          labels: {
+            generateLabels: (chart) => {
+              return labels.map((label) => ({
+                text: label,
+                fillStyle: labelColorMap[label],
+              }));
+            },
+          },
+        },
+        title: {
+          display: true,
+          text: `${metric} Results`,
+          font: {
+            size: 24,
+          },
+        },
       },
       scales: {
-        x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } },
+        x: { display: false, ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 } },
         y: { beginAtZero: true },
       },
     },
@@ -65,7 +127,6 @@ async function createBarChart(metric, data, outputFile) {
   console.log(`Chart saved: ${outputFile}`);
 }
 
-// Function to create pie charts for qualitative data
 async function createPieChart(metric, data, outputFile) {
   const counts = data.reduce((acc, entry) => {
     if (entry.metric === metric && !isNumeric(entry.value)) {
@@ -109,16 +170,13 @@ async function createPieChart(metric, data, outputFile) {
   console.log(`Chart saved: ${outputFile}`);
 }
 
-// Generate charts for all metrics
 const metrics = Array.from(new Set(testResults.map((entry) => entry.metric)));
 
 (async () => {
   for (const metric of metrics) {
     const data = testResults.filter((entry) => entry.metric === metric);
-    const hasNumericValues = data.some((entry) => isNumeric(entry.value));
-
     const outputFile = path.join(outputDir, `${metric.replace(' ', '_')}.png`);
-    if (hasNumericValues) {
+    if (metric != "Fault Tolerance" && metric != "Offline Scenario") {
       await createBarChart(metric, data, outputFile);
     } else {
       await createPieChart(metric, data, outputFile);

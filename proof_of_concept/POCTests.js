@@ -161,91 +161,34 @@ async function testConsistency(client, query, label) {
 async function testFaultTolerance(client, label, createNewClient) {
   console.log(`Testing Fault Tolerance for ${label}...`);
   try {
-    console.log("Simulating failure...");
-    if (client instanceof cassandra.Client || client instanceof MongoClient) {
+    console.log("Simulating failure by closing client...");
+    
+    if (client instanceof cassandra.Client) {
+      await client.shutdown();
+      client = createNewClient();
       await client.connect();
-    } else if (client instanceof Client && createNewClient) {
+    } else if (client instanceof Client) {
       await client.end();
+      client = createNewClient();
+      await client.connect();
+    } else if (client instanceof MongoClient) {
+      await client.close();
       client = createNewClient();
       await client.connect();
     } else {
       throw new Error("Unhandled client type for fault tolerance test.");
     }
+
     console.log(`${label} Fault Tolerance: Successfully recovered`);
     testResults.push({ metric: "Fault Tolerance", label, value: "Success" });
   } catch (error) {
     console.error(`${label} Fault Tolerance: Error encountered - ${error.message}`);
     testResults.push({ metric: "Fault Tolerance", label, value: "Failed" });
   }
+
+  return client;
 }
 
-async function testEdgeSpecificPerformance(client, query, label) {
-  console.log(`Testing Edge-Specific Performance for ${label}...`);
-  
-  try {
-    const start = performance.now();
-    if (typeof query === "function") {
-      await query();
-    } else if (client instanceof cassandra.Client) {
-      await client.execute(query);
-    } else if (client instanceof Client) {
-      await client.query(query);
-    }
-    const end = performance.now();
-    const latency = (end - start).toFixed(2);
-    console.log(`${label} Latency: ${latency} ms`);
-    testResults.push({ metric: "Edge Performance", label, value: parseFloat(latency) });
-  } catch (error) {
-    console.error(`Error during ${label}:`, error.message);
-  }  
-}
-
-async function testNetworkLoad(client, query, label) {
-  console.log(`Simulating network load for ${label}...`);
-  const start = performance.now();
-  
-  for (let i = 0; i < NUM_RECORDS; i++) {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, Math.random() * 100));
-      await executeQuery(client, query);
-    } catch (error) {
-      console.error(`Error during ${label} at record ${i}:`, error);
-    }
-  }
-
-  const end = performance.now();
-  const latency = ((end - start) / NUM_RECORDS).toFixed(2);
-  testResults.push(
-    { metric: "Network Load Latency", label, value: parseFloat(latency) }
-  );
-  console.log(`${label} Network Load Latency: ${latency} ms per operation`);
-}
-
-async function testOfflineScenario(client, label) {
-  console.log(`Simulating offline scenario for ${label}...`);
-  
-  // Simulating a network failure
-  try {
-    if (client instanceof cassandra.Client) {
-      await client.shutdown();
-    } else if (client instanceof Client) {
-      await client.end();
-    } else if (client instanceof MongoClient) {
-      await client.close();
-    }
-
-    console.log(`${label} Offline: Simulated disconnection successful`);
-
-    
-    await client.connect();
-
-    console.log(`${label} Offline: Successfully reconnected`);
-    testResults.push({ metric: "Offline Scenario", label, value: "Reconnection Successful" });
-
-  } catch (error) {
-    console.error(`${label} Offline: Error during simulation - ${error.message}`);
-  }
-}
 
 (async () => {
   try {
@@ -271,9 +214,6 @@ async function testOfflineScenario(client, label) {
     const mongoHashQuery = async () => mongoHashDb.collection("sensor_data").insertOne({ sensor_id: uuidv4(), timestamp: new Date(), temperature: Math.random() * 100, humidity: Math.random() * 100, status: "actief", log_level: "INFO" });
     const mongoRangeQuery = async () => mongoRangeDb.collection("sensor_data").insertOne({ sensor_id: uuidv4(), timestamp: new Date(), temperature: Math.random() * 100, humidity: Math.random() * 100, status: "actief", log_level: "INFO" });
     const centralizedMongoQuery = async () => mongoCentralDb.collection("sensor_data").insertOne({ sensor_id: uuidv4(), timestamp: new Date(), temperature: Math.random() * 100, humidity: Math.random() * 100, status: "actief", log_level: "INFO" });
-    const performanceQuery = `SELECT * FROM sensor_data LIMIT 100`;
-    const performanceMongoHashQuery = async () => mongoHashDb.collection("sensor_data").find({}).limit(100).toArray();
-    const performanceMongoRangeQuery = async () => mongoRangeDb.collection("sensor_data").find({}).limit(100).toArray();
 
     await testLatency(cassClient, cassWriteQuery, "Cassandra Consistent Hashing"); 
     await testLatency(cassClientAlt, cassAltWriteQuery, "Cassandra Range-Based Partitioning");
@@ -314,61 +254,32 @@ async function testOfflineScenario(client, label) {
     await testConsistency(cassCentralClient, cassWriteQuery, "Cassandra Centralized");
     await testConsistency(centralizedPgClient, pgWriteQuery, "TimescaleDB Centralized");
     await testConsistency(mongoCentralClient, centralizedMongoQuery, "MongoDB Centralized");
-
-    await testNetworkLoad(cassClient, cassWriteQuery, "Cassandra Consistent Hashing");
-    await testNetworkLoad(cassClientAlt, cassAltWriteQuery, "Cassandra Range-Based Partitioning");
-    await testNetworkLoad(pgClient, pgWriteQuery, "TimescaleDB Range-Based Partitioning");
-    await testNetworkLoad(pgClientAlt, pgWriteQuery, "TimescaleDB List-Based Partitioning");
-    await testNetworkLoad(mongoHashClient, mongoHashQuery, "MongoDB Hash-Based Sharding");
-    await testNetworkLoad(mongoRangeClient, mongoRangeQuery, "MongoDB Range-Based Sharding");
-    await testNetworkLoad(cassCentralClient, cassWriteQuery, "Cassandra Centralized");
-    await testNetworkLoad(centralizedPgClient, pgWriteQuery, "TimescaleDB Centralized");
-    await testNetworkLoad(mongoCentralClient, centralizedMongoQuery, "MongoDB Centralized");
     
-    await testEdgeSpecificPerformance(cassClient, performanceQuery, "Cassandra Consistent Hashing");
-    await testEdgeSpecificPerformance(cassClientAlt, performanceQuery, "Cassandra Range-Based Partitioning");
-    await testEdgeSpecificPerformance(pgClient, performanceQuery, "TimescaleDB Range-Based Partitioning");
-    await testEdgeSpecificPerformance(pgClientAlt, performanceQuery, "TimescaleDB List-Based Partitioning");
-    await testEdgeSpecificPerformance(mongoHashClient, performanceMongoHashQuery, "MongoDB Hash-Based Sharding");
-    await testEdgeSpecificPerformance(mongoRangeClient, performanceMongoRangeQuery, "MongoDB Range-Based Sharding");
+    await testFaultTolerance(cassClient, "Cassandra Consistent Hashing", () => new cassandra.Client({
+      contactPoints: ["127.0.0.1"],
+      localDataCenter: "datacenter1",
+      keyspace: "edge_keyspace",
+    }));
     
-    await testFaultTolerance(cassClient, "Cassandra Consistent Hashing");
-    await testFaultTolerance(cassClientAlt, "Cassandra Range-Based Partitioning");
-    await testFaultTolerance(pgClient, "TimescaleDB Range-Based Partitioning", () => new Client({
-      user: "edge_user",
-      host: "localhost",
-      database: "edge_db",
-      password: "edge_pass",
-      port: 5432,
+    await testFaultTolerance(cassClientAlt, "Cassandra Range-Based Partitioning", () => new cassandra.Client({
+      contactPoints: ["127.0.0.1:9043"],
+      localDataCenter: "datacenter1",
+      keyspace: "edge_keyspace_alt",
     }));
-    await testFaultTolerance(pgClientAlt, "TimescaleDB List-Based Partitioning", () => new Client({
-      user: "edge_user_alt",
-      host: "localhost",
-      database: "edge_db_alt",
-      password: "edge_pass_alt",
-      port: 5433,
+    
+    await testFaultTolerance(mongoHashClient, "MongoDB Hash-Based Sharding", () => new MongoClient(mongoHashUrl));
+    
+    await testFaultTolerance(mongoRangeClient, "MongoDB Range-Based Sharding", () => new MongoClient(mongoRangeUrl));
+    
+    await testFaultTolerance(cassCentralClient, "Cassandra Centralized", () => new cassandra.Client({
+      contactPoints: ["127.0.0.1:9052"],
+      localDataCenter: "datacenter1",
+      keyspace: "edge_keyspace_central",
+      socketOptions: { readTimeout: 30000 },
     }));
-    await testFaultTolerance(mongoHashClient, "MongoDB Hash-Based Sharding");
-    await testFaultTolerance(mongoRangeClient, "MongoDB Range-Based Sharding");
-    await testFaultTolerance(cassCentralClient, "Cassandra Centralized");
-    await testFaultTolerance(centralizedPgClient, "TimescaleDB Centralized", () => new Client({
-      user: "central_user",
-      host: "central_server_ip",
-      database: "central_db",
-      password: "central_pass",
-      port: 5432,
-    }));
-    await testFaultTolerance(mongoCentralClient, "MongoDB Centralized");
+    
+    await testFaultTolerance(mongoCentralClient, "MongoDB Centralized", () => new MongoClient(mongoCentralizedUrl));
 
-    await testOfflineScenario(cassClient, "Cassandra Consistent Hashing");
-    await testOfflineScenario(cassClientAlt, "Cassandra Range-Based Partitioning");
-    await testOfflineScenario(pgClient, "TimescaleDB Range-Based Partitioning");
-    await testOfflineScenario(pgClientAlt, "TimescaleDB List-Based Partitioning");
-    await testOfflineScenario(mongoHashClient, "MongoDB Hash-Based Sharding");
-    await testOfflineScenario(mongoRangeClient, "MongoDB Range-Based Sharding");
-    await testOfflineScenario(cassCentralClient, "Cassandra Centralized");
-    await testOfflineScenario(centralizedPgClient, "TimescaleDB Centralized");
-    await testOfflineScenario(mongoCentralClient, "MongoDB Centralized");
 
     /*await testBandwidth(cassClient, "Cassandra Consistent Hashing");
     await testBandwidth(cassClientAlt, "Cassandra Range-Based Partitioning");

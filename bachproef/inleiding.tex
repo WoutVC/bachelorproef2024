@@ -5,32 +5,56 @@
 \chapter{\IfLanguageName{dutch}{Inleiding}{Introduction}}%
 \label{ch:inleiding}
 
-In deze inleiding geef ik een overzicht van het onderwerp van mijn bachelorproef, waarin ik de impact van data-partitioneringstechnieken op de prestaties van databases.
-Het doel is om te evalueren hoe deze technieken kunnen worden ingezet in een eenvoudige en praktische Edge Computing-context die relevant is voor Optis, een consultancybedrijf gespecialiseerd in IT-oplossingen. Als concrete use case wordt het optimaliseren van data-opslag en verwerking in een IoT-omgeving onderzocht, waarbij uitdagingen zoals hoge latentie en inefficiënt bandbreedtegebruik aangepakt worden.
-
+In deze inleiding wordt een overzicht gegeven van het onderwerp van de bachelorproef, waarin de impact van data-partitioneringstechnieken op de prestaties van databases wordt onderzocht. 
+Het doel is om te onderzoeken hoe data-partitioneringstechnieken en edge-databases kunnen bijdragen aan het verbeteren van de prestaties voor het verwerken van sensordata.
+De aanleiding voor dit onderzoek is de toenemende inzet van IoT-apparaten binnen organisaties, wat leidt tot grote hoeveelheden gegenereerde data die snel en efficiënt verwerkt moeten worden. 
+Als demonstratie wordt gebruik gemaakt van een hypothetische use case bij HoGent, waarbij elk lokaal is uitgerust met een apparaat dat periodiek meetgegevens doorstuurt. 
+Hoewel deze case niet echt is, werd ze ontworpen om een realistische en toepasbare context te simuleren.
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-De kernprobleemstelling van deze studie is het verbeteren van de efficiëntie van gegevensopslag en -verwerking in een IoT-omgeving. 
-Optis ondersteunt klanten bij het implementeren van IT-oplossingen in gedistribueerde systemen. Veel van deze klanten werken met IoT-apparaten zoals sensoren en monitoringtools. Deze apparaten genereren grote hoeveelheden gegevens die moeten worden opgeslagen en verwerkt. 
-Dit leidt vaak tot problemen zoals lange responstijden, inefficiënte data-overdracht en schaalbaarheidsbeperkingen. Deze uitdagingen vereisen oplossingen die gericht zijn op lokaal databeheer, ondersteund door effectieve data-partitioneringstechnieken.
+In deze bachelorproef wordt er onderzocht hoe Edge Computing kan helpen om data sneller en efficiënter te verwerken en op te slaan in  systemen die gegevens ontvangen van sensoren die verspreid opgesteld zijn. 
+Hiervoor gebruik ik een fictieve use case binnen HoGent, waarbij elk lokaal voorzien is van een IoT-apparaat dat elke vijf seconden drie metingen doorstuurt: CO₂, druk en temperatuur.
+Deze continue stroom aan data zorgt voor uitdagingen rond latentie, bandbreedtegebruik en schaalbaarheid. 
+Dit onderzoek bekijkt hoe Edge Computing en data-partitioneringstechnieken kunnen helpen om deze problemen op te lossen.
+
+\subsection*{Context van de HoGent-use case}
+In deze bachelorproef wordt gewerkt met een fictief scenario binnen HoGent. Elk leslokaal is uitgerust met een IoT-sensor die om de vijf seconden gegevens meet zoals CO₂, temperatuur en luchtdruk. Deze gegevens worden niet rechtstreeks naar de cloud gestuurd, maar eerst lokaal verwerkt via zogeheten edge-nodes. In veel bestaande systemen gebeurt die verwerking nog volledig centraal, wat kan zorgen voor vertraging, hoge netwerkbelasting en problemen bij een slechte internetverbinding. Deze case werd gekozen om te onderzoeken hoe edge computing en data-partitionering die uitdagingen kunnen aanpakken.
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
 De centrale onderzoeksvraag die in deze studie wordt behandeld, is: 
-\\ "Hoe beïnvloeden data-partitioneringstechnieken in combinatie met edge-databases de prestaties \\ van een Edge Computing omgeving van Optis?" \\ 
-  Deze vraag richt zich op hoe data-partitioneringstechnieken de prestaties van edge-databases beïnvloeden binnen een Edge Computing-omgeving. Het doel van het onderzoek is om zowel de prestaties van databases te verbeteren als een geschikte edge-database te identificeren voor gebruik in deze context.
+\\ "Hoe kan Edge Computing bijdragen aan de optimalisatie van dataverwerking en opslag in real-time omgevingsmonitoring met gedistribueerde sensornetwerken?" \\ 
+
+\section{\IfLanguageName{dutch}{Deelvragen}{Sub-questions}}%
+\label{sec:deelvragen}
+
+Om de centrale onderzoeksvraag te concretiseren en gestructureerd te beantwoorden, worden zowel probleemgerichte als oplossingsgerichte deelvragen behandeld:
+
+\subsection*{Probleemgerichte deelvragen (Probleemdomein)}
+\begin{itemize}
+    \item Welke uitdagingen ontstaan bij het verwerken van grote hoeveelheden IoT-data in een centrale cloudomgeving?
+    \item Wat zijn de functionele vereisten van databases voor het verwerken van real-time sensordata in een edge-context met beperkte connectiviteit?
+\end{itemize}
+
+\subsection*{Oplossingsgerichte deelvragen (Opplossingsdomein)}
+\begin{itemize}
+    \item Hoe beïnvloeden verschillende data-partitioneringstechnieken de latentie bij dataverwerking in een Edge Computing-omgeving?
+    \item Wat is het effect van verschillende data-partitioneringstechnieken op de netwerkbelasting bij het verwerken van real-time sensordata in een gedistribueerd sensornetwerk?
+    \item Wat is de impact van partitioneringsstrategieën op de schaalbaarheid van edge-databases bij toenemende datavolumes?
+    \item Welke van de geselecteerde edge-databases leveren de beste prestaties op vlak van latentie, fouttolerantie en schaalbaarheid binnen de HoGent-use case?
+\end{itemize}
 
 \section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research objective}}%
 \label{sec:onderzoeksdoelstelling}
-
-Het doel van dit onderzoek is om praktische aanbevelingen te formuleren voor Optis door de impact van verschillende data-partitioneringstechnieken op de prestaties van databases te analyseren binnen een eenvoudige simulatie. Deze studie zal bijdragen aan het begrijpen van de toepasbaarheid van partitioneringstechnieken in een kleine, schaalbare context en zal praktische inzichten bieden die door Optis verder kunnen worden toegepast.
+Het doel van dit onderzoek is om praktische inzichten te bieden in hoe Edge Computing kan worden ingezet voor efficiëntere dataverwerking en -opslag bij real-time monitoring. Door een proof of concept te ontwikkelen, wordt geanalyseerd welke technieken het meest effectief zijn voor lokale dataverwerking, met specifieke aandacht voor de rol van geschikte edge-databases en data-partitionering. De bevindingen kunnen bijdragen aan betere besluitvorming rond Edge Computing-implementaties.
 
 \begin{itemize}
-  \item Het uitvoeren van een gedetailleerde evaluatie van de impact van data-partitioneringstechnieken op de prestaties van edge-databases in een IoT-omgeving.
-  \item Het ontwikkelen van een proof of concept om te onderzoeken hoe deze technieken de latentie, bandbreedte en schaalbaarheid beïnvloeden in een Edge Computing-context.
-  \item Het formuleren van praktische aanbevelingen voor Optis op basis van de resultaten van de proof of concept.
+\item Het evalueren van Edge Computing als oplossing voor snelle dataverwerking in real-time monitoring, met focus op de vermindering van latentie en bandbreedtegebruik.
+\item Het onderzoeken van geschikte databases voor edge-apparaten en hun prestaties in een gedistribueerde IoT-omgeving.
+\item Het analyseren van de invloed van verschillende data-partitioneringstechnieken op de efficiëntie en schaalbaarheid van edge-databases.
+\item Het ontwikkelen van een proof of concept om praktische inzichten te bieden in lokale dataverwerking en de beste presterende technieken te identificeren.
 \end{itemize}
 
 \section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this bachelor thesis}}%
@@ -43,14 +67,3 @@ In Hoofdstuk 2 wordt een overzicht gegeven van de stand van zaken binnen het ond
 In Hoofdstuk 3 wordt de methodologie besproken. Hier worden de gekozen onderzoeksmethoden en gebruikte technieken toegelicht, waaronder de proof of concept om de impact van data-partitioneringstechnieken te evalueren.
 
 In Hoofdstuk 4 worden de resultaten gepresenteerd en geanalyseerd, waarbij een antwoord wordt geformuleerd op de onderzoeksvraag en aanbevelingen voor toekomstig onderzoek in dit domein worden besproken.
-
-\section{\IfLanguageName{dutch}{Deelvragen}{Sub-questions}}%
-\label{sec:deelvragen}
-
-Om de onderzoeksvraag verder te verduidelijken en te structureren, worden de volgende deelvragen behandeld:
-\begin{itemize}
-    \item Hoe verhouden verschillende data-partitioneringstechnieken zich in termen van latentie in een Edge-omgeving?
-    \item Wat is de invloed van data-partitioneringstechnieken op netwerkprestaties in gedistribueerde Edge-netwerken?
-    \item Hoe beïnvloeden deze technieken de schaalbaarheid van databases in een dynamische Edge-omgeving?
-    \item Welke bestaande Edge-databasetechnologieën leveren, gemeten aan de hand van latentie, fouttolerantie en schaalbaarheid, de beste prestaties in combinatie met de onderzochte partitioneringstechnieken binnen de context van Optis?
-\end{itemize}

@@ -26,15 +26,11 @@
 %% Maak voor elke fase (behalve het literatuuronderzoek) een NIEUW HOOFDSTUK aan
 %% en geef het een gepaste titel.
 
-In dit hoofdstuk wordt de aanpak van het onderzoek toegelicht.
+In dit hoofdstuk wordt de aanpak van het onderzoek toegelicht. 
+ Om de onderzoeksvraag te beantwoorden wordt een combinatie van literatuurstudie, een vergelijkende analyse en een proof of concept toegepast.
 
-Om de onderzoeksvraag te beantwoorden wordt er een combinatie van literatuurstudie,
- een vergelijkende studie en een proof of concept toegepast waarin de databasetechnologieën ObjectBox en SQLite getest worden. \\
-
-De literatuurstudie zal inzicht bieden in de huidige stand van zaken met betrekking tot data-partitioneringstechnieken in Edge-omgevingen. \\
- 
-De proof of concept zal zich richten op het implementeren en testen van databases die gebruik maken van consistent hashing en range-based partitionering.
- De prestaties van deze databases worden gemeten op basis van gedefinieerde criteria zoals snelheid, schaalbaarheid, en betrouwbaarheid in een Edge-omgeving.
+De proof of concept richt zich op het implementeren en testen van databases die gebruikmaken van verschillende partitioneringstechnieken.
+ De prestaties van deze databases worden gemeten op basis van gedefinieerde criteria zoals snelheid, schaalbaarheid en betrouwbaarheid in een Edge-omgeving.
 
 De technische diepte van deze bachelorproef wordt benadrukt,
  inclusief de beschrijving van gebruikte tools zoals hardware, software en diensten. \\
@@ -44,83 +40,95 @@ Deze tijdsplanning wordt opgesteld in de vorm van een Gantt chart en een flowcha
 
 Het onderzoek verloopt in vier fases, die elk gericht zijn op bepaalde doelstellingen en methoden. \\
 
-\textbf{Fase 1: Literatuuronderzoek}\newline\newline
-    \textbf{Doelstelling:} Het opzoeken van bestaande studies met betrekking tot Edge Computing en data-partitioneringstechnieken zoals consistent hashing en range-based partitionering.\newline\newline
-    \textbf{Aanpak:}
-    \begin{itemize}
-      \item Identificeren van relevante studies en trends in Edge Computing en data-partitionering.
-      \item De belangrijkste bevindingen die betrekking tot de impact van partitionering op databaseprestatie hebben documenteren.
-      \item Opstellen van een long list van mogelijke databasetechnologieën.
-    \end{itemize}
-    \textbf{Beantwoorde deelvragen}:
-    \begin{itemize}
-    \item \textbf{Hoe verhouden verschillende data-partitioneringstechnieken zich in termen van latentie in een Edge-omgeving?} \\
-      De literatuurstudie zal inzicht geven in welke partitioneringstechnieken momenteel worden toegepast en wat hun verwachte invloed is op latentie.
-    \item \textbf{Wat is de invloed van data-partitioneringstechnieken op netwerkprestaties in gedistribueerde Edge-netwerken?} \\
-      Dit wordt onderzocht door bestaande studies en metingen die zich richten op de impact van partitionering op bandbreedte en netwerkprestaties.
-    \item \textbf{Hoe beïnvloeden deze technieken de schaalbaarheid van databases in een dynamische Edge-omgeving?} \\
-      Door literatuur te analyseren over schaalbaarheidsuitdagingen in Edge Computing.
-    \end{itemize}
-    \textbf{Resultaat, deliverable(s):} Een overzicht van relevante literatuur met betrekking tot Edge Computing en data-partitioneringstechnieken.\newline\newline
-    \textbf{Deadline:} 21/11/2024\newline\newline
-\textbf{Fase 2: Shortlist en Vergelijkende Studie}\newline\newline
-    \textbf{Doelstelling:} De databasetechnologieën uit de longlist beoordelen en een shortlist samenstellen, gevolgd door een gedetailleerde vergelijking van de geselecteerde technologieën op basis van hun prestaties.\newline\newline
-    \textbf{Aanpak:}
-    \begin{itemize}
-        \item De long list van databasetechnologieën evalueren op basis van criteria zoals prestaties, schaalbaarheid, kosten en ondersteuning.
-        \begin{itemize}
-          \item \textbf{Prestaties}: Bepalen aan de hand van responstijd en doorvoersnelheid (het aantal verzoeken dat de database per seconde kan verwerken).
-          \item \textbf{Schaalbaarheid}: Testen hoe databases omgaan met toenemende datahoeveelheden en gebruikersbelasting, en hoe ze presteren bij het toevoegen of verwijderen van nodes.
-        \end{itemize}
-        \item Opstellen van een short list van de meest geschikte databasetechnologieën.
-        \item Gedetailleerde vergelijkingen uitvoeren tussen de databasetechnologieën op basis van gedefinieerde criteria.
+\section*{Fase 1: Literatuurstudie}
 
-        \item Gebruik van identieke datasets en testomgevingen om consistentie in de resultaten te garanderen.
-        \item De gegevens in tabellen en grafieken presenteren om de vergelijkingen visueel te maken.
-        \item De sterke en zwakke punten van elke databasetechnologie identificeren en documenteren.
-    \end{itemize}
-    \textbf{Beantwoorde deelvragen}:
-    \begin{itemize}
-    \item \textbf{Welke bestaande Edge-databasetechnologieën leveren, gemeten aan de hand van latentie, fouttolerantie en schaalbaarheid, de beste prestaties in combinatie met de onderzochte partitioneringstechnieken binnen de context van Optis?} \\
-      De vergelijkende studie onderzoekt de prestaties van de databases en hun mogelijke geschiktheid voor Optis.
-    \end{itemize}
-    \textbf{Resultaat, deliverable(s):} Tabellen en grafieken die de prestaties van databases tonen op basis van de gebruikte partitioneringstechniek.\newline\newline
-    \textbf{Deadline:} 05/12/2024\newline\newline
-\textbf{Fase 3: PoC implementeren}\newline\newline
-\textbf{Doelstelling:} Het implementeren en testen van meerdere geselecteerde databasetechnologieën uit de shortlist om hun praktische prestaties te vergelijken in een gesimuleerde edge-omgeving.\newline\newline
+\textbf{Doelstelling:}  
+Inzicht krijgen in data-partitioneringstechnieken, vereisten van edge-databases en toepassingen in sensornetwerken.
+
 \textbf{Aanpak:}
-    \begin{itemize}
-        \item Selecteren van meerdere databasetechnologieën (zoals Cassandra, MongoDB en TimescaleDB) uit de shortlist, gebaseerd op relevantie voor edge-toepassingen.
-        \item Opzetten van een gesimuleerde edge-omgeving met behulp van Docker Compose om consistente testomstandigheden te garanderen.
-        \item Gebruik van identieke datasets, zoals gesynthetiseerde IoT-sensordata, om een eerlijke vergelijking tussen de databases mogelijk te maken.
-        \item Installeren en configureren van de benodigde software en tools, inclusief scriptbestanden voor dataloading en simulatie.
-        \item Meten van prestaties op basis van vooraf gedefinieerde criteria, waaronder latentie, schaalbaarheid, throughput en fouttolerantie.
-        \item Het analyseren en visualiseren van de resultaten met behulp van grafieken en tabellen, om duidelijke vergelijkingen te presenteren.
-    \end{itemize}
-    \textbf{Beantwoorde deelvragen}:
-    \begin{itemize}
-    \item \textbf{Hoe verhouden verschillende data-partitioneringstechnieken zich in termen van latentie in een Edge-omgeving?} \\
-      Door latency-tests uit te voeren op de verschillende partitioneringstechnieken in een gecontroleerde omgeving.
-    \item \textbf{Wat is de invloed van data-partitioneringstechnieken op netwerkprestaties in gedistribueerde Edge-netwerken?} \\
-      Door de netwerkprestaties te meten in de PoC, kunnen we concrete data verzamelen om de efficiëntie van elke techniek te bepalen.
-    \item \textbf{Hoe beïnvloeden deze technieken de schaalbaarheid van databases in een dynamische Edge-omgeving?} \\
-      Door schaalbaarheid te testen onder verschillende netwerkcondities en datasetgroottes.
-    \end{itemize}
-    \textbf{Resultaat, deliverable(s):} Een gedetailleerd PoC-rapport met testresultaten met grafieken en tabellen die de prestaties van de verschillende databasetechnologieën tonen.\newline\newline
-    \textbf{Deadline:} 24/12/2024\newline\newline
-\textbf{Fase 4: Analyse en evaluatie}\newline\newline
-    \textbf{Doelstelling:} De resultaten uit de PoC analyseren en evalueren om conclusies en aanbevelingen te formuleren.\newline\newline
-    \textbf{Aanpak:}
-    \begin{itemize}
-        \item De verzamelde gegevens en testresultaten grondig analyseren.
-        \item Vergelijkingen maken op basis van de gedefinieerde criteria en prestaties.
-        \item De belangrijkste bevindingen samenvatten en aanbevelingen formuleren voor de beste databasetechnologieën op basis van de analyse.\newline
-    \end{itemize}
-    \textbf{Beantwoorde deelvragen}:
-    \begin{itemize}
-    \item \textbf{Welke bestaande Edge-databasetechnologieën leveren, gemeten aan de hand van latentie, fouttolerantie en schaalbaarheid, de beste prestaties in combinatie met de onderzochte partitioneringstechnieken binnen de context van Optis?} \\
-      De evaluatie maakt duidelijk welke technologieën daadwerkelijk presteren in de Edge-omgeving, rekening houdend met de specifieke behoeftes van Optis.
-    \end{itemize}
-    \textbf{Resultaat, deliverable(s):} Een uitgebreid evaluatierapport met conclusies, aanbevelingen en een overzicht van de belangrijkste bevindingen uit de PoC.\newline\newline
-    \textbf{Deadline:} 05/01/2025\newline\newline
+\begin{itemize}
+    \item Analyse van wetenschappelijke literatuur en officiële documentatie.
+    \item Identificatie van functionele en niet-functionele vereisten voor databases in edge-omgevingen.
+    \item Opstellen van een longlist van mogelijke databases en technieken.
+\end{itemize}
 
+\textbf{Beantwoorde deelvragen:}
+\begin{itemize}
+    \item \textbf{Welke uitdagingen ontstaan bij het verwerken van grote hoeveelheden IoT-data in een centrale cloudomgeving?} \\ 
+    Literatuur toont aan waar cloudverwerking tekortschiet in netwerken met veel sensoren.
+    \item \textbf{Wat zijn de functionele vereisten van databases voor het verwerken van real-time sensordata in een edge-context met beperkte connectiviteit?} \\
+    Deze vraag wordt beantwoord aan de hand van een literatuurstudie naar bestaande databaseoplossingen die geschikt zijn voor gebruik in edge-omgevingen met sensornetwerken.
+\end{itemize}
+
+\textbf{Deliverable:} Een overzicht van de belangrijkste inzichten omtrent partitionering, edge computing en real-time monitoring. \\
+\textbf{Deadline:} 21/11/2024
+
+\section*{Fase 2: Selectie en vergelijking van databases}
+
+\textbf{Doelstelling:}  
+Databasetechnologieën identificeren die geschikt zijn voor edge-omgevingen en deze theoretisch vergelijken op basis van relevante criteria.
+
+\textbf{Aanpak:}
+\begin{itemize}
+    \item Opstellen van evaluatiecriteria zoals latentie, fouttolerantie, schaalbaarheid en gebruiksgemak.
+    \item Selectie van drie geschikte databases: Cassandra, MongoDB en TimescaleDB.
+    \item Vergelijkende analyse van deze databases aan de hand van documentatie en bestaande benchmarks.
+\end{itemize}
+
+\textbf{Beantwoorde deelvraag:}
+\begin{itemize}
+    \item \textbf{Welke van de geselecteerde edge-databases leveren de beste prestaties op vlak van latentie, fouttolerantie en schaalbaarheid binnen de HoGent-use case?} \\
+    De vergelijkende studie onderzoekt de prestaties van de databases en hun mogelijke geschiktheid voor de use case.
+\end{itemize}
+
+\textbf{Deliverable:} Een gemotiveerde shortlist met drie geschikte edge-databases. \\
+\textbf{Deadline:} 05/12/2024
+
+\section*{Fase 3: Proof of Concept}
+
+\textbf{Doelstelling:}  
+De geselecteerde databases implementeren in een gesimuleerde edge-omgeving en hun prestaties testen met voorbeeldgegevens.
+
+\textbf{Aanpak:}
+\begin{itemize}
+    \item Opzetten van een testomgeving met Docker Compose die een edge-scenario nabootst.
+    \item Genereren van testdata die sensorwaardes simuleert (CO₂, druk, temperatuur om de 5 seconden).
+    \item Implementeren van list-based en range-based partitionering.
+    \item Testen op latency, schaalbaarheid, foutafhandeling en beschikbaarheid.
+    \item Verzamelen en analyseren van meetgegevens via scripts.
+\end{itemize}
+
+\textbf{Beantwoorde deelvragen:}
+\begin{itemize}
+    \item \textbf{Hoe beïnvloeden verschillende data-partitioneringstechnieken de latentie bij dataverwerking in een Edge Computing-omgeving?} \\
+    Door latency te meten in verschillende opstellingen met verschillende technieken.
+    \item \textbf{Wat is het effect van verschillende data-partitioneringstechnieken op de netwerkbelasting bij het verwerken van real-time sensordata in een gedistribueerd sensornetwerk?} \\
+    Netwerkverkeer wordt gemeten tijdens het testen van de technieken.
+    \item \textbf{Wat is de impact van partitioneringsstrategieën op de schaalbaarheid van edge-databases bij toenemende datavolumes?} \\
+    Door het effect van groeiende datasets te analyseren bij elke techniek.
+\end{itemize}
+
+\textbf{Deliverable:} Een rapport met testresultaten, grafieken en evaluatie per techniek en database. \\
+\textbf{Deadline:} 24/12/2024
+
+\section*{Fase 4: Analyse en evaluatie}
+
+\textbf{Doelstelling:}  
+Conclusies trekken over welke database en partitioneringstechniek de beste prestaties leveren in deze edge-context.
+
+\textbf{Aanpak:}
+\begin{itemize}
+    \item Analyse van testresultaten uit de PoC.
+    \item Vergelijking op basis van prestatiecriteria.
+    \item Formuleren van aanbevelingen voor toekomstige toepassingen.
+    \item Bepalen van een totaalscore per database aan de hand van genormaliseerde prestatie-indicatoren, waarbij elke indicator gewogen wordt op basis van de relevantie voor edge computing.
+\end{itemize}
+
+\textbf{Beantwoorde deelvraag:}
+\begin{itemize}
+    \item \textbf{Welke van de geselecteerde edge-databases leveren de beste prestaties op vlak van latentie, fouttolerantie en schaalbaarheid binnen de HoGent-use case?} \\
+    De analyse van de testresultaten toont welke oplossing het best past bij de gesimuleerde toepassing.
+\end{itemize}
+
+\textbf{Deliverable:} Een eindrapport met visuele samenvattingen, conclusies en aanbevelingen. Inclusief een rangschikking van alle databases op basis van genormaliseerde prestatiecriteria en bijbehorende wegingsfactoren. \\
+\textbf{Deadline:} 05/01/2025

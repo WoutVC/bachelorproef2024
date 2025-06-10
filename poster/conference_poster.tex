@@ -9,78 +9,111 @@
 % Info over de opleiding
 \course{Bachelorproef}
 \studyprogramme{toegepaste informatica}
-\academicyear{2022-2023}
+\academicyear{2024-2025}
 \institution{Hogeschool Gent, Valentin Vaerwyckweg 1, 9000 Gent}
 
 % Info over de bachelorproef
-\title{Titel van uw bachelorproef}
-\subtitle{Ondertitel (eventueel)}
-\author{Voornaam Naam}
-\email{voornaam.familienaam@student.hogent.be}
-\supervisor{Voornaam Naam}
-\cosupervisor{Voornaam Naam (Bedrijf)}
+\title{Hoe beïnvloeden data-partitioneringstechnieken in combinatie met edge-databases de prestaties van een Edge Computing-omgeving bij Optis?}
+% \subtitle{Ondertitel (eventueel)}
+\author{Wout Van Cleemput}
+\email{wout.vancleemput@student.hogent.be}
+\supervisor{Karine Samyn}
+\cosupervisor{Kenneth Van den Berghe (Optis)}
 
 % Indien ingevuld, wordt deze informatie toegevoegd aan het einde van de
 % abstract. Zet in commentaar als je dit niet wilt.
 \specialisation{Systeem- en Netwerkbeheer}
-\keywords{Lambda-calculus, Scheme}
-\projectrepo{https://github.com/user/repo}
+\keywords{Edge Database, Edge Computing, Data Partitioning}
+\projectrepo{https://github.com/WoutVC/bachelorproef2024}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-It's only a model.
-You don't vote for kings. Who's that then? We found them. Ni! Ni! Ni! Ni!
-The nose? On second thoughts, let's not go there. It is a silly place. Bloody Peasant! And the hat. She's a witch! Where'd you get the coconuts?
+  Deze bachelorproef richt zich op de invloed van data-partitioneringstechnieken en edge-databases op de prestaties van een Edge Computing-omgeving, met een specifieke focus op de toepassing bij Optis.
+
+  Het doel is om praktische aanbevelingen te formuleren voor Optis door de impact van verschillende partitioneringstechnieken op databaseprestaties te analyseren binnen een simulatie. 
+  
+  Dit onderzoek helpt bij het begrijpen van de toepasbaarheid van partitionering in schaalbare omgevingen en levert praktische inzichten die door Optis kunnen worden toegepast.
+  
+  Om een grondige basis te leggen, werd een uitgebreide literatuurstudie uitgevoerd naar bestaande Edge Database-technologieën en data-partitioneringstechnieken.
+  
+  Op basis van deze inzichten werd er een Proof of Concept aangemaakt. In deze PoC gebruikten we een testomgeving waarin verschillende databases zoals Cassandra, MongoDB en TimescaleDB werden geëvalueerd op belangrijke prestaties zoals latentie, throughput, schaalbaarheid en fouttolerantie.
+  
+  Het onderzoek biedt een combinatie van theoretische en praktische bijdragen, waaronder een duidelijk overzicht van de huidige ontwikkelingen binnen Edge Database-architecturen met bijzondere aandacht voor de vereisten van organisaties zoals Optis.
+  
+  De resultaten dragen bij aan de verbetering en toepassing van Edge Computing-technologieën in verschillende sectoren.
 \end{abstract}
 
 \begin{multicols}{2} % This is how many columns your poster will be broken into, a portrait poster is generally split into 2 columns
 
 \section{Introductie}
 
-Be quiet! Found them? In Mercia?! The coconut's tropical! But you are dressed as one… Well, what do you want? Knights of Ni, we are but simple travelers who seek the enchanter who lives beyond these woods.
 
-Well, what do you want? It's only a model. Camelot! We found them. We shall say `Ni' again to you, if you do not appease us.
-
-The nose? Shut up! Burn her! I am your king. You don't vote for kings.
-
-You can't expect to wield supreme power just `cause some watery tart threw a sword at you! Well, we did do the nose. I don't want to talk to you no more, you empty-headed animal food trough water! I fart in your general direction! Your mother was a hamster and your father smelt of elderberries! Now leave before I am forced to taunt you a second time!
-
-Why do you think that she is a witch? We want a shrubbery!! I don't want to talk to you no more, you empty-headed animal food trough water! I fart in your general direction! Your mother was a hamster and your father smelt of elderberries! Now leave before I am forced to taunt you a second time!
 
 \section{Experimenten}
 
-A newt? Camelot! Why? No, no, no! Yes, yes. A bit. But she's got a wart.
-
-Shut up! I dunno. Must be a king. Who's that then? Look, my liege! On second thoughts, let's not go there. It is a silly place.
-
-Shut up! Will you shut up?! No, no, no! Yes, yes. A bit. But she's got a wart. He hasn't got shit all over him. It's only a model. It's only a model.
-
-Bring her forward! I don't want to talk to you no more, you empty-headed animal food trough water! I fart in your general direction! Your mother was a hamster and your father smelt of elderberries! Now leave 
-
-\section{Sectie met figuur}
-
-De {\LaTeX} figure-omgeving bepaalt zelf waar een afbeelding komt en dat is meestal niet op de plek in de tekst waar de figure-omgeving gedefinieerd wordt. Als je wilt forceren dat afbeeldingen toch in de flow van de tekst blijven, dan kan je dat zoals hieronder:
+\section{Resultaten}
 
 \begin{center}
   \captionsetup{type=figure}
-  \includegraphics[width=1.0\linewidth]{grail}
-  \captionof{figure}{He hasn't got shit all over him. The nose? Where'd you get the coconuts? What do you mean? We shall say `Ni' again to you, if you do not appease us}
+  \includegraphics[width=0.75\linewidth]{Latency.png}
+  \captionof{figure}{Vergelijking van latentie tussen Cassandra, MongoDB en TimescaleDB.}
 \end{center}
 
-Let er wel op dat dit tot problemen met bladschikking kan leiden.
+\paragraph{Analyse van latentie:}
+De grafiek laat zien dat \textit{MongoDB (Range-Based Sharding)} met een latentie van 1.37 ms de laagste latentie behaalt, wat het geschikt maakt voor toepassingen met hoge snelheidseisen. \textit{Cassandra (Alternative Range-Based Partitioning)} scoort eveneens goed met 1.82 ms. \textit{TimescaleDB (Range-Based Partitioning)} presteert met een latentie van 1.61 ms relatief goed, maar is minder efficiënt dan MongoDB.
+
+\begin{center}
+  \captionsetup{type=figure}
+  \includegraphics[width=0.75\linewidth]{Throughput.png}
+  \captionof{figure}{Vergelijking van throughput tussen Cassandra, MongoDB en TimescaleDB.}
+\end{center}
+
+\paragraph{Analyse van throughput:}
+\textit{Cassandra (Consistent Hashing)} behaalt de hoogste throughput met 8500.37 records per seconde, wat het ideaal maakt voor omgevingen met zware invoerbelastingen. \textit{MongoDB (Range-Based Sharding)} presteert redelijk met 1452.75 records per seconde. \textit{TimescaleDB (Alternative List-Based Partitioning)} heeft een significant lagere throughput van 628.02 records per seconde.
+
+\begin{center}
+  \captionsetup{type=figure}
+  \includegraphics[width=0.75\linewidth]{Scalability.png}
+  \captionof{figure}{Vergelijking van schaalbaarheid tussen Cassandra, MongoDB en TimescaleDB.}
+\end{center}
+
+\paragraph{Analyse van schaalbaarheid:}
+Uit de grafiek blijkt dat \textit{Cassandra (Consistent Hashing)} de hoogste schaalbaarheid biedt met een score van 2.34, gevolgd door \textit{Alternative Cassandra (Range-Based Partitioning)} met 2.28. \textit{TimescaleDB (Range-Based Partitioning)} scoort lager met 1.53, wat wijst op beperkingen bij het schalen naar hogere workloads.
+
+\begin{center}
+  \captionsetup{type=figure}
+  \includegraphics[width=0.75\linewidth]{Edge_Performance.png}
+  \captionof{figure}{Vergelijking van edge performance tussen Cassandra, MongoDB en TimescaleDB.}
+\end{center}
+
+\paragraph{Analyse van edge performance:}
+De grafiek toont aan dat \textit{Alternative Cassandra (Range-Based Partitioning)} de beste edge performance behaalt met 8.38, gevolgd door \textit{Cassandra (Consistent Hashing)} met 8.05. \textit{TimescaleDB (Alternative List-Based Partitioning)} scoort het laagst met 4.24.
+
+\begin{center}
+  \captionsetup{type=figure}
+  \includegraphics[width=0.75\linewidth]{Network_Load Latency.png}
+  \captionof{figure}{Vergelijking van netwerklatentie tussen Cassandra, MongoDB en TimescaleDB.}
+\end{center}
+
+\paragraph{Analyse van netwerklatentie:}
+Netwerklatentie wordt het laagst gehouden door \textit{MongoDB (Hash-Based Sharding)} met een score van 54.96, gevolgd door \textit{Alternative TimescaleDB (List-Based Partitioning)} met 55.91. \textit{Cassandra (Alternative Range-Based Partitioning)} toont een iets hogere score van 59.06, maar blijft stabiel onder hoge netwerkbelasting.
 
 \section{Conclusies}
 
-Don't underestimate the Force. Oh God, my uncle. How am I ever gonna explain this? I suggest you try it again, Luke. This time, let go your conscious self and act on instinct. Don't be too proud of this technological terror you've constructed. The ability to destroy a planet is insignificant next to the power of the Force.
+\begin{center}
+	\captionsetup{type=figure}
+	\includegraphics[width=1.0\linewidth]{Resultaten.png}
+	\captionof{figure}{Samenvatting van de resultaten van de experimenten.}
+  \end{center}
 
 \section{Toekomstig onderzoek}
 
-I care. So, what do you think of her, Han? No! Alderaan is peaceful. We have no weapons. You can't possibly… I have traced the Rebel spies to her. Now she is my only link to finding their secret base.
-
-Kid, I've flown from one side of this galaxy to the other. I've seen a lot of strange stuff, but I've never seen anything to make me believe there's one all-powerful Force controlling everything. There's no mystical energy field that controls my destiny. It's all a lot of simple tricks and nonsense. You are a part of the Rebel Alliance and a traitor! Take her away! 
+- Onderzoek naar hybride databasesystemen.
+- Uitbreiding met meer fouttolerantie- en beveiligingstests.
+- Integratie van edge computing met cloud-native applicaties.
 
 \end{multicols}
 \end{document}
