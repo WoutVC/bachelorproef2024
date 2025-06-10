@@ -1,0 +1,301 @@
+version: '3.8'
+
+services:
+  # === CENTRALIZED (Gebouw A) ===
+  cassandra_centralized:
+    image: cassandra:latest
+    container_name: cassandra-central-node
+    ports:
+      - 9052:9042
+    volumes:
+      - cassandra_central_data:/var/lib/cassandra
+    environment:
+      MAX_HEAP_SIZE: 512M
+      HEAP_NEWSIZE: 100M
+    networks:
+      - central_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe keyspaces' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  mongodb_centralized:
+    image: mongo:4.4
+    container_name: mongodb-central-node
+    ports:
+      - 27030:27017
+    volumes:
+      - mongodb_central_data:/data/db
+    networks:
+      - central_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  timescaledb_centralized:
+    image: timescale/timescaledb:latest-pg14
+    container_name: timescaledb-central-node
+    ports:
+      - 5444:5432
+    environment:
+      POSTGRES_USER: central_user
+      POSTGRES_PASSWORD: central_pass
+      POSTGRES_DB: central_db
+    volumes:
+      - timescaledb_central_data:/var/lib/postgresql/data
+    networks:
+      - central_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "central_user", "-d", "central_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # === EDGE (Gebouw B) ===
+  cassandra_list:
+    image: cassandra:latest
+    container_name: cassandra-edge-list
+    ports:
+      - 9042:9042
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    environment:
+      MAX_HEAP_SIZE: 512M
+      HEAP_NEWSIZE: 100M
+    networks:
+      - edge_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe keyspaces' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  cassandra_range:
+    image: cassandra:latest
+    container_name: cassandra-edge-range
+    ports:
+      - 9043:9042
+    volumes:
+      - cassandra_data_alt:/var/lib/cassandra
+    networks:
+      - edge_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe keyspaces' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  configsvr:
+    image: mongo:4.4
+    container_name: configsvr
+    command: mongod --configsvr --replSet configReplSet --port 27017
+    volumes:
+      - configsvr_data:/data/db
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  shard1:
+    image: mongo:4.4
+    container_name: shard1
+    command: mongod --shardsvr --replSet shard1ReplSet --port 27018
+    volumes:
+      - shard1_data:/data/db
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  shard2:
+    image: mongo:4.4
+    container_name: shard2
+    command: mongod --shardsvr --replSet shard2ReplSet --port 27020
+    volumes:
+      - shard2_data:/data/db
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  mongos:
+    image: mongo:4.4
+    container_name: mongos
+    command: mongos --configdb configReplSet/configsvr:27017 --bind_ip_all --port 27019
+    ports:
+      - 27019:27019
+    networks:
+      - edge_net
+    depends_on:
+      - configsvr
+      - shard1
+      - shard2
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongo", "--port", "27019", "--eval", "sh.status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  configsvr2:
+    image: mongo:4.4
+    container_name: configsvr2
+    command: mongod --configsvr --replSet configReplSet2 --port 27017
+    ports:
+      - 27022:27017
+    volumes:
+      - configsvr2_data:/data/db
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  shard3:
+    image: mongo:4.4
+    container_name: shard3
+    command: mongod --shardsvr --replSet shard3ReplSet --port 27018
+    ports:
+      - 27023:27018
+    volumes:
+      - shard3_data:/data/db
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  shard4:
+    image: mongo:4.4
+    container_name: shard4
+    command: mongod --shardsvr --replSet shard4ReplSet --port 27020
+    ports:
+      - 27024:27020
+    volumes:
+      - shard4_data:/data/db
+    networks:
+      - edge_net
+    restart: unless-stopped
+
+  mongos2:
+    image: mongo:4.4
+    container_name: mongos2
+    command: mongos --configdb configReplSet2/configsvr2:27017 --bind_ip_all --port 27025
+    ports:
+      - 27025:27025
+    networks:
+      - edge_net
+    depends_on:
+      - configsvr2
+      - shard3
+      - shard4
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongo", "--port", "27025", "--eval", "sh.status()"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  timescaledb_range:
+    image: timescale/timescaledb:latest-pg14
+    container_name: timescaledb-edge-range
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: edge_user
+      POSTGRES_PASSWORD: edge_pass
+      POSTGRES_DB: edge_db
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    networks:
+      - edge_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "edge_user", "-d", "edge_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  timescaledb_list:
+    image: timescale/timescaledb:latest-pg14
+    container_name: timescaledb-edge-list
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: edge_user_alt
+      POSTGRES_PASSWORD: edge_pass_alt
+      POSTGRES_DB: edge_db_alt
+    volumes:
+      - timescaledb_data_alt:/var/lib/postgresql/data
+    networks:
+      - edge_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "edge_user_alt", "-d", "edge_db_alt"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-api
+    ports:
+      - 5000:80
+    depends_on:
+      cassandra_centralized:
+        condition: service_healthy
+      cassandra_list:
+        condition: service_healthy
+      cassandra_range:
+        condition: service_healthy
+      mongos:
+        condition: service_healthy
+      mongos2:
+        condition: service_healthy
+      timescaledb_centralized:
+        condition: service_healthy
+      timescaledb_range:
+        condition: service_healthy
+      timescaledb_list:
+        condition: service_healthy
+    networks:
+      - central_net
+      - edge_net
+    restart: unless-stopped
+
+  mongo-init:
+    image: mongo:4.4
+    container_name: mongo-init
+    depends_on:
+      mongos:
+        condition: service_healthy
+      mongos2:
+        condition: service_healthy
+    volumes:
+      - ./mongo-init/init-replica.sh:/init-replica.sh
+    entrypoint: [ "bash", "/init-replica.sh" ]
+    networks:
+      - edge_net
+
+volumes:
+  cassandra_data:
+  cassandra_data_alt:
+  cassandra_central_data:
+  mongodb_central_data:
+  configsvr_data:
+  configsvr2_data:
+  shard1_data:
+  shard2_data:
+  shard3_data:
+  shard4_data:
+  timescaledb_data:
+  timescaledb_data_alt:
+  timescaledb_central_data:
+
+networks:
+  central_net:
+  edge_net:

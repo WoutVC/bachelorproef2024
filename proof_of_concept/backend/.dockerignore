@@ -1,0 +1,21 @@
+# Node modules niet meenemen (want die kunnen corrupt of te groot zijn)
+node_modules
+
+# Logs, temp bestanden
+*.log
+*.tmp
+tmp/
+logs/
+
+# Git bestanden
+.git
+.gitignore
+
+# Docker bestanden die niet relevant zijn voor build
+docker-compose.override.yml
+
+# Visual Studio, VSCode en OS bestanden
+.vscode
+*.user
+*.suo
+*.DS_Store

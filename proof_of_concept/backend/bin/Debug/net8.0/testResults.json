@@ -1,0 +1,314 @@
+[
+  {
+    "metric": "Realtime Latency",
+    "label": "Cassandra Centralized Realtime",
+    "value": 4.05
+  },
+  {
+    "metric": "Realtime Throughput",
+    "label": "Cassandra Centralized Realtime",
+    "value": 4.78
+  },
+  {
+    "metric": "Scalability",
+    "label": "Cassandra Centralized (1 records)",
+    "value": 5.15
+  },
+  {
+    "metric": "Scalability",
+    "label": "Cassandra Centralized (10 records)",
+    "value": 3.94
+  },
+  {
+    "metric": "Scalability",
+    "label": "Cassandra Centralized (100 records)",
+    "value": 2.14
+  },
+  {
+    "metric": "Consistency",
+    "label": "Cassandra Centralized",
+    "value": 10
+  },
+  {
+    "metric": "Realtime Latency",
+    "label": "Cassandra ListPartitioning Realtime",
+    "value": 2.82
+  },
+  {
+    "metric": "Realtime Latency",
+    "label": "Cassandra RangePartitioning Realtime",
+    "value": 3.7
+  },
+  {
+    "metric": "Realtime Throughput",
+    "label": "Cassandra ListPartitioning Realtime",
+    "value": 4.78
+  },
+  {
+    "metric": "Realtime Throughput",
+    "label": "Cassandra RangePartitioning Realtime",
+    "value": 4.8
+  },
+  {
+    "metric": "Scalability",
+    "label": "Cassandra ListPartitioning (1 records)",
+    "value": 5.13
+  },
+  {
+    "metric": "Scalability",
+    "label": "Cassandra ListPartitioning (10 records)",
+    "value": 6.57
+  },
+  {
+    "metric": "Scalability",
+    "label": "Cassandra ListPartitioning (100 records)",
+    "value": 2.67
+  },
+  {
+    "metric": "Scalability",
+    "label": "Cassandra RangePartitioning (1 records)",
+    "value": 3.14
+  },
+  {
+    "metric": "Scalability",
+    "label": "Cassandra RangePartitioning (10 records)",
+    "value": 2.47
+  },
+  {
+    "metric": "Scalability",
+    "label": "Cassandra RangePartitioning (100 records)",
+    "value": 2.24
+  },
+  {
+    "metric": "Consistency",
+    "label": "Cassandra ListPartitioning",
+    "value": 10
+  },
+  {
+    "metric": "Consistency",
+    "label": "Cassandra RangePartitioning",
+    "value": 10
+  },
+  {
+    "metric": "Realtime Latency",
+    "label": "TimescaleDB Centralized Realtime",
+    "value": 11.53
+  },
+  {
+    "metric": "Realtime Throughput",
+    "label": "TimescaleDB Centralized Realtime",
+    "value": 4.83
+  },
+  {
+    "metric": "Scalability",
+    "label": "TimescaleDB Centralized (1 records)",
+    "value": 6.56
+  },
+  {
+    "metric": "Scalability",
+    "label": "TimescaleDB Centralized (10 records)",
+    "value": 3.48
+  },
+  {
+    "metric": "Scalability",
+    "label": "TimescaleDB Centralized (100 records)",
+    "value": 4.87
+  },
+  {
+    "metric": "Consistency",
+    "label": "TimescaleDB Centralized",
+    "value": 10
+  },
+  {
+    "metric": "Realtime Latency",
+    "label": "TimescaleDB RangePartitioning Realtime",
+    "value": 9.35
+  },
+  {
+    "metric": "Realtime Latency",
+    "label": "TimescaleDB ListPartitioning Realtime",
+    "value": 11.2
+  },
+  {
+    "metric": "Realtime Throughput",
+    "label": "TimescaleDB RangePartitioning Realtime",
+    "value": 4.82
+  },
+  {
+    "metric": "Realtime Throughput",
+    "label": "TimescaleDB ListPartitioning Realtime",
+    "value": 4.86
+  },
+  {
+    "metric": "Scalability",
+    "label": "TimescaleDB RangePartitioning (1 records)",
+    "value": 6.77
+  },
+  {
+    "metric": "Scalability",
+    "label": "TimescaleDB RangePartitioning (10 records)",
+    "value": 5.26
+  },
+  {
+    "metric": "Scalability",
+    "label": "TimescaleDB RangePartitioning (100 records)",
+    "value": 4.97
+  },
+  {
+    "metric": "Scalability",
+    "label": "TimescaleDB ListPartitioning (1 records)",
+    "value": 3.64
+  },
+  {
+    "metric": "Scalability",
+    "label": "TimescaleDB ListPartitioning (10 records)",
+    "value": 5.26
+  },
+  {
+    "metric": "Scalability",
+    "label": "TimescaleDB ListPartitioning (100 records)",
+    "value": 5.28
+  },
+  {
+    "metric": "Consistency",
+    "label": "TimescaleDB RangePartitioning",
+    "value": 10
+  },
+  {
+    "metric": "Consistency",
+    "label": "TimescaleDB ListPartitioning",
+    "value": 10
+  },
+  {
+    "metric": "Realtime Latency",
+    "label": "MongoDB Centralized Realtime",
+    "value": 3.28
+  },
+  {
+    "metric": "Realtime Throughput",
+    "label": "MongoDB Centralized Realtime",
+    "value": 4.84
+  },
+  {
+    "metric": "Scalability",
+    "label": "MongoDB Centralized (1 records)",
+    "value": 3.59
+  },
+  {
+    "metric": "Scalability",
+    "label": "MongoDB Centralized (10 records)",
+    "value": 1.23
+  },
+  {
+    "metric": "Scalability",
+    "label": "MongoDB Centralized (100 records)",
+    "value": 1.04
+  },
+  {
+    "metric": "Consistency",
+    "label": "MongoDB Centralized",
+    "value": 10
+  },
+  {
+    "metric": "Realtime Latency",
+    "label": "MongoDB edge_range_partitioning Realtime",
+    "value": 3.93
+  },
+  {
+    "metric": "Realtime Latency",
+    "label": "MongoDB edge_list_partitioning Realtime",
+    "value": 3.57
+  },
+  {
+    "metric": "Realtime Throughput",
+    "label": "MongoDB edge_range_partitioning Realtime",
+    "value": 4.77
+  },
+  {
+    "metric": "Realtime Throughput",
+    "label": "MongoDB edge_list_partitioning Realtime",
+    "value": 4.78
+  },
+  {
+    "metric": "Scalability",
+    "label": "MongoDB edge_range_partitioning (1 records)",
+    "value": 3.59
+  },
+  {
+    "metric": "Scalability",
+    "label": "MongoDB edge_range_partitioning (10 records)",
+    "value": 2.01
+  },
+  {
+    "metric": "Scalability",
+    "label": "MongoDB edge_range_partitioning (100 records)",
+    "value": 1.39
+  },
+  {
+    "metric": "Scalability",
+    "label": "MongoDB edge_list_partitioning (1 records)",
+    "value": 2.23
+  },
+  {
+    "metric": "Scalability",
+    "label": "MongoDB edge_list_partitioning (10 records)",
+    "value": 2.61
+  },
+  {
+    "metric": "Scalability",
+    "label": "MongoDB edge_list_partitioning (100 records)",
+    "value": 1.27
+  },
+  {
+    "metric": "Consistency",
+    "label": "MongoDB edge_range_partitioning",
+    "value": 10
+  },
+  {
+    "metric": "Consistency",
+    "label": "MongoDB edge_list_partitioning",
+    "value": 10
+  },
+  {
+    "metric": "Fault Tolerance",
+    "label": "Cassandra Centralized",
+    "value": "Success"
+  },
+  {
+    "metric": "Fault Tolerance",
+    "label": "Cassandra ListPartitioning",
+    "value": "Success"
+  },
+  {
+    "metric": "Fault Tolerance",
+    "label": "Cassandra RangePartitioning",
+    "value": "Success"
+  },
+  {
+    "metric": "Fault Tolerance",
+    "label": "MongoDB edge_range_partitioning",
+    "value": "Success"
+  },
+  {
+    "metric": "Fault Tolerance",
+    "label": "MongoDB edge_list_partitioning",
+    "value": "Success"
+  },
+  {
+    "metric": "Fault Tolerance",
+    "label": "MongoDB Centralized",
+    "value": "Success"
+  },
+  { "metric": "Fault Tolerance", 
+    "label": "TimescaleDB Centralized", 
+    "value": "Success" 
+  },
+  { "metric": "Fault Tolerance", 
+    "label": "TimescaleDB RangePartitioning", 
+    "value": "Success"
+  },
+  { "metric": "Fault Tolerance", 
+    "label": "TimescaleDB ListPartitioning", 
+    "value": "Success" 
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "name": "edge-monitoring-injector",
+  "version": "1.0.0",
+  "description": "Script om testdata in te voegen in MongoDB, Cassandra en TimescaleDB",
+  "main": "InsertSensorData.js",
+  "scripts": {
+    "init": "node initDatabases.js",
+    "inject": "node InsertSensorData.js",
+    "testdata": "node InsertSensorData.js --fixed",
+    "realtime": "node InsertSensorData.js --realtime",
+    "analyze": "node analyzeResults.js",
+    "test": "node POCTests.js",
+    "chart": "node generateCharts.js"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "cassandra-driver": "^4.6.4",
+    "chartjs-node-canvas": "^5.0.0",
+    "edge-monitoring-injector": "file:",
+    "mongodb": "^6.3.0",
+    "pg": "^8.11.1",
+    "uuid": "^9.0.1"
+  }
+}
