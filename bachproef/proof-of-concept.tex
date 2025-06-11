@@ -140,7 +140,7 @@ De volgende prestatiekenmerken worden geëvalueerd:
 
 Om de opgeslagen sensordata zichtbaar te maken, werd een eenvoudige webinterface gebouwd met React. Via deze interface kunnen gebruikers live data bekijken, zoals CO₂-waarden, temperatuur en luchtdruk.
 
-De frontend haalt deze gegevens op via API-endpoints die worden aangeboden door het ASP.NET Core-backend. Dit backend-systeem is verbonden met de drie gebruikte databases: MongoDB, Cassandra en TimescaleDB.
+De frontend \href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/backend/POCTests.js}{POCTests.js} haalt deze gegevens op via API-endpoints die worden aangeboden door het ASP.NET Core-backend. Dit backend-systeem is verbonden met de drie gebruikte databases: MongoDB, Cassandra en TimescaleDB.
 
 Gebruikers kunnen in de interface kiezen van welk gebouw (bijvoorbeeld Gebouw A of B) ze data willen zien, en ook welke database gebruikt moet worden. Daarna verschijnt automatisch een grafiek met de meest recente meetwaarden.
 
@@ -159,7 +159,7 @@ Gebruikers kunnen in de interface kiezen van welk gebouw (bijvoorbeeld Gebouw A 
 \end{figure}
 
 \subsection{Resultaten en Grafieken}
-De resultaten van de uitgevoerde tests met het script \href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/POCTests.js}{POCTests.js} zijn hieronder weergegeven in grafieken. Elke grafiek toont hoe de verschillende database-opstellingen presteren op vlak van snelheid, betrouwbaarheid en schaalbaarheid.
+De resultaten van de uitgevoerde tests met het script \href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/backend/POCTests.js}{POCTests.js} zijn hieronder weergegeven in grafieken. Elke grafiek toont hoe de verschillende database-opstellingen presteren op vlak van snelheid, betrouwbaarheid en schaalbaarheid.
 
 \begin{figure}[H]
 	\centering
@@ -252,7 +252,7 @@ Naast de grafieken biedt deze tabel een samenvatting van de testresultaten.
 \end{table}
 
 \subsection{Conclusie}
-De evaluatie van de databases is gebaseerd op een gewogen scoresysteem (\href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/analyzeResults.js}{analyzeResults.js}), waarbij de volgende stappen worden uitgevoerd:
+De evaluatie van de databases is gebaseerd op een gewogen scoresysteem (\href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/backend/analyzeResults.js}{analyzeResults.js}), waarbij de volgende stappen worden uitgevoerd:
 
 \paragraph{Consolidatie van resultaten:} 
 Voor elke database worden de resultaten per meetwaarde samengevoegd. Voor meetwaarden zoals schaalbaarheid (Scalability) en fouttolerantie (Fault Tolerance), waarvoor meerdere metingen beschikbaar zijn, wordt het gemiddelde berekend.

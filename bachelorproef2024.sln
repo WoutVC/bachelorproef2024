@@ -1,0 +1,419 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "proof_of_concept", "proof_of_concept", "{D3E645DF-FC0E-A275-2D15-90880CBA5E60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\EdgeMonitoringSystem.csproj", "{F76AD716-A1DB-E8C8-1D02-5D1F1C3E1DB1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{FA9AD508-9B82-411F-F156-B13FAF600624}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{F060C73B-11D6-1B2D-D52A-5F1886CB9825}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{9281D4BF-FC49-C96A-4784-EC99B0DCDD39}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{D5B24DB3-3CA1-692E-00B5-7499ACBF562F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{8E1BBF94-4123-AF9B-534A-E4815ABB39AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{B48CE188-1ACC-1325-ABEE-A04367ABC10E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{C416D885-9D1A-DCE9-5B72-EBD982442B8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{3E82117B-19AC-7566-D329-963795A5FAA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{74A9D667-C632-435C-83EE-ECD92CE4CCE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{054C90F8-BA70-12BB-942C-93D262CA2085}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{FEB14C4F-3C8A-263C-B3CD-6682565CF46E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{32DC2E87-8776-4C32-5B4C-ED5B40CBD2E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{2F5C360E-4EE0-8726-8794-096C1917005E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{CF97BDF6-0822-9D49-E3DD-38D5748F725E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{16EA3568-498A-261C-97D4-5E03502BE24D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{CB494471-46E5-008E-EB05-AABBE82DEAEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{51BFFF22-15B3-8B69-5DB4-8768D06F0F95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{2DF13481-FE85-9311-A335-AAEB9890C8A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{B0AA89E5-B7A6-42E8-3CBA-6D91225D5BE8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{ABF5CF4F-FB75-341C-B879-D41A6606A230}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{89EB7694-C599-26C7-636E-D3270DAEEA31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{29B55BCD-4CA8-02F4-8DB5-0B20C78C1049}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{73C43E07-695F-9DA3-7EB4-65993C48C80A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{AF1149DF-04F0-EE11-3D62-4C558874AE20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{BAF33583-60AE-729B-2443-2E6E7F2367A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{AC5DCA7B-27E3-737D-BDEF-FBB6ACB12FA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{0BE06F41-0AA2-102D-50C2-B6E50CF7F345}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{A7781EF9-6B7A-5B49-64A2-0716DD5BABD3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{F7E1D87E-7661-CBE3-0F47-5D864F3B9E1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{0DE83E73-53F8-D506-4357-2224899793A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{D6601EAF-B88F-3534-372C-552D62F422EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{5960B890-EF5F-A240-87F6-8A94528E13F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{950099A3-E1E0-E2F7-E888-B2906D838443}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{F5C3CEB7-227C-64EC-E576-C2995B43B2BE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{10C33B89-6065-1965-54AA-A0F9EB1B54F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{F41BD072-640C-209B-F198-01837CF41062}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{54CDF9FA-5B5F-1BF4-95D6-55B122272CA6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{DFD4FF45-EEEB-72EB-2AC3-7B771A7020F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{EE670BDF-5D8E-FA7A-47CE-02B72EC7B2CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{D75EEC91-90D3-8C9A-9E23-86C7FF2E96A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{94CE7DF0-D585-2A81-7DDE-4B565C32321A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{FB63FF0E-4928-84CA-8606-EA3DEF1B11F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{6A216A2F-8C30-0D37-7C61-AE06679F1B68}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{377E49E1-B4E9-77E2-4C78-8833DCBA773B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{5D0EC4E7-948F-FF2D-BE53-C2DC2B59D97C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{87F7A598-D546-EA4E-AA56-1A472ED9EBC9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{D6A67DB4-CB9D-382B-5FBF-9847C083F1CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{1F4DF477-C2B9-8156-B10D-F4172E57D36F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{3AFB6650-5467-C100-62A5-A8BF0EC1B0C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{96B5004F-C568-F839-1E8D-77A641700B44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{650CE9A9-C64F-5F13-B7C9-2CE71B66B0A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{07DD334F-9AD1-F4C6-FA5B-CE5E2E06E394}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{0FB4CC5D-6D48-E6EB-522E-DDDBB323B15D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{570B55C9-1F27-0ACC-A7F3-EB2397D3421C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{D100864A-8E7A-03F1-EA98-DA179AAE5BE9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{34BA8846-391F-20BB-2BEA-6F00A116FAAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{62B80777-D3AA-62FC-4511-9E3E1B79F4E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{C04C82EC-9F0B-1DB8-DC24-337BE77306B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{34EC0014-7FFE-49E8-5EFC-3785BB859E2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{79169A59-85F4-38CF-E227-6DD353DD8BF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{4598613A-3450-0F9B-688B-E2D06182690D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{D3C05841-D3D5-445E-F93D-779E91600819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{9D8A525B-1C02-2A45-5803-08CCE935EC84}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{332FB9B8-7192-1BC2-E89F-37F44B5287D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{B24EEAD2-DE28-AD7C-6189-DFC56561F166}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{7C4C4596-8911-36DB-1A02-40A9D9CC46B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{24610EA5-0220-30C2-C58E-A30CCC2DB1A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{58D4C79E-19A2-84B1-6FFB-C8839283FF09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{175C2517-E731-1AB6-302C-59A9B032A6B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{8DA96427-2588-CFBD-8878-6F9E8FA05AA8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{E4583275-3380-E476-3BB1-5629C5AAA138}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{81256A4A-0E34-91A9-6E46-C92524B71AB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{07DDF0AA-8DCB-DFD6-3481-8426D771BDF7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{43C7D849-4237-3B71-C13E-D482F54C1814}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{39029FB2-B15F-7678-061E-A6E44FA3CD1D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{78E7395E-615C-07B3-5D55-5FEAFFDEBE83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{3AE4C08A-D3C5-876D-F2CD-0CC1394418AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{514D9E60-BA0F-BF34-178E-00B203A4BD0B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{2D1AC26D-0CDE-8CB6-7DE0-CC7E370D9C2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{7C66C90C-0918-DB27-A522-1E95407EF24C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{E3C19133-E845-A184-446C-5CE224BF9D98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{848733D8-B3B9-8D77-F58A-3AA2BF1C114F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{083DA166-7144-4955-D6F8-5C1D925936D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{D265D8E9-090A-A72A-1D20-61FDC98661FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{1DDA2320-8A30-0728-D5F0-8C7F09A7630D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{0E363368-29E0-FD18-62E4-00DF22541ED4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{2C9E637D-76D5-D26E-67B2-8098529B2FF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "edge-monitoring-injector", "edge-monitoring-injector", "{73A89686-272F-E632-A8D0-B04F10BA6CF9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "node_modules", "node_modules", "{9F0652E2-4908-E89C-A9E5-03D6CE189E49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeMonitoringSystem", "proof_of_concept\backend\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\node_modules\edge-monitoring-injector\EdgeMonitoringSystem.csproj", "{A9A96BE8-7D8C-C9F3-E52C-8DE80F1209BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F76AD716-A1DB-E8C8-1D02-5D1F1C3E1DB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F76AD716-A1DB-E8C8-1D02-5D1F1C3E1DB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F76AD716-A1DB-E8C8-1D02-5D1F1C3E1DB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F76AD716-A1DB-E8C8-1D02-5D1F1C3E1DB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9281D4BF-FC49-C96A-4784-EC99B0DCDD39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9281D4BF-FC49-C96A-4784-EC99B0DCDD39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9281D4BF-FC49-C96A-4784-EC99B0DCDD39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9281D4BF-FC49-C96A-4784-EC99B0DCDD39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B48CE188-1ACC-1325-ABEE-A04367ABC10E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B48CE188-1ACC-1325-ABEE-A04367ABC10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B48CE188-1ACC-1325-ABEE-A04367ABC10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B48CE188-1ACC-1325-ABEE-A04367ABC10E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74A9D667-C632-435C-83EE-ECD92CE4CCE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74A9D667-C632-435C-83EE-ECD92CE4CCE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74A9D667-C632-435C-83EE-ECD92CE4CCE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74A9D667-C632-435C-83EE-ECD92CE4CCE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32DC2E87-8776-4C32-5B4C-ED5B40CBD2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32DC2E87-8776-4C32-5B4C-ED5B40CBD2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32DC2E87-8776-4C32-5B4C-ED5B40CBD2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32DC2E87-8776-4C32-5B4C-ED5B40CBD2E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16EA3568-498A-261C-97D4-5E03502BE24D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16EA3568-498A-261C-97D4-5E03502BE24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16EA3568-498A-261C-97D4-5E03502BE24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16EA3568-498A-261C-97D4-5E03502BE24D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DF13481-FE85-9311-A335-AAEB9890C8A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF13481-FE85-9311-A335-AAEB9890C8A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF13481-FE85-9311-A335-AAEB9890C8A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF13481-FE85-9311-A335-AAEB9890C8A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89EB7694-C599-26C7-636E-D3270DAEEA31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89EB7694-C599-26C7-636E-D3270DAEEA31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89EB7694-C599-26C7-636E-D3270DAEEA31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89EB7694-C599-26C7-636E-D3270DAEEA31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF1149DF-04F0-EE11-3D62-4C558874AE20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF1149DF-04F0-EE11-3D62-4C558874AE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF1149DF-04F0-EE11-3D62-4C558874AE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF1149DF-04F0-EE11-3D62-4C558874AE20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BE06F41-0AA2-102D-50C2-B6E50CF7F345}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BE06F41-0AA2-102D-50C2-B6E50CF7F345}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BE06F41-0AA2-102D-50C2-B6E50CF7F345}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BE06F41-0AA2-102D-50C2-B6E50CF7F345}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DE83E73-53F8-D506-4357-2224899793A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DE83E73-53F8-D506-4357-2224899793A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DE83E73-53F8-D506-4357-2224899793A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DE83E73-53F8-D506-4357-2224899793A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{950099A3-E1E0-E2F7-E888-B2906D838443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{950099A3-E1E0-E2F7-E888-B2906D838443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{950099A3-E1E0-E2F7-E888-B2906D838443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{950099A3-E1E0-E2F7-E888-B2906D838443}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F41BD072-640C-209B-F198-01837CF41062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F41BD072-640C-209B-F198-01837CF41062}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F41BD072-640C-209B-F198-01837CF41062}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F41BD072-640C-209B-F198-01837CF41062}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE670BDF-5D8E-FA7A-47CE-02B72EC7B2CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE670BDF-5D8E-FA7A-47CE-02B72EC7B2CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE670BDF-5D8E-FA7A-47CE-02B72EC7B2CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE670BDF-5D8E-FA7A-47CE-02B72EC7B2CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB63FF0E-4928-84CA-8606-EA3DEF1B11F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB63FF0E-4928-84CA-8606-EA3DEF1B11F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB63FF0E-4928-84CA-8606-EA3DEF1B11F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB63FF0E-4928-84CA-8606-EA3DEF1B11F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D0EC4E7-948F-FF2D-BE53-C2DC2B59D97C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D0EC4E7-948F-FF2D-BE53-C2DC2B59D97C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D0EC4E7-948F-FF2D-BE53-C2DC2B59D97C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D0EC4E7-948F-FF2D-BE53-C2DC2B59D97C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F4DF477-C2B9-8156-B10D-F4172E57D36F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F4DF477-C2B9-8156-B10D-F4172E57D36F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F4DF477-C2B9-8156-B10D-F4172E57D36F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F4DF477-C2B9-8156-B10D-F4172E57D36F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{650CE9A9-C64F-5F13-B7C9-2CE71B66B0A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{650CE9A9-C64F-5F13-B7C9-2CE71B66B0A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{650CE9A9-C64F-5F13-B7C9-2CE71B66B0A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{650CE9A9-C64F-5F13-B7C9-2CE71B66B0A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{570B55C9-1F27-0ACC-A7F3-EB2397D3421C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{570B55C9-1F27-0ACC-A7F3-EB2397D3421C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{570B55C9-1F27-0ACC-A7F3-EB2397D3421C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{570B55C9-1F27-0ACC-A7F3-EB2397D3421C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62B80777-D3AA-62FC-4511-9E3E1B79F4E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62B80777-D3AA-62FC-4511-9E3E1B79F4E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62B80777-D3AA-62FC-4511-9E3E1B79F4E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62B80777-D3AA-62FC-4511-9E3E1B79F4E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79169A59-85F4-38CF-E227-6DD353DD8BF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79169A59-85F4-38CF-E227-6DD353DD8BF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79169A59-85F4-38CF-E227-6DD353DD8BF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79169A59-85F4-38CF-E227-6DD353DD8BF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D8A525B-1C02-2A45-5803-08CCE935EC84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D8A525B-1C02-2A45-5803-08CCE935EC84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D8A525B-1C02-2A45-5803-08CCE935EC84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D8A525B-1C02-2A45-5803-08CCE935EC84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C4C4596-8911-36DB-1A02-40A9D9CC46B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C4C4596-8911-36DB-1A02-40A9D9CC46B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C4C4596-8911-36DB-1A02-40A9D9CC46B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C4C4596-8911-36DB-1A02-40A9D9CC46B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{175C2517-E731-1AB6-302C-59A9B032A6B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{175C2517-E731-1AB6-302C-59A9B032A6B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{175C2517-E731-1AB6-302C-59A9B032A6B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{175C2517-E731-1AB6-302C-59A9B032A6B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81256A4A-0E34-91A9-6E46-C92524B71AB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81256A4A-0E34-91A9-6E46-C92524B71AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81256A4A-0E34-91A9-6E46-C92524B71AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81256A4A-0E34-91A9-6E46-C92524B71AB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39029FB2-B15F-7678-061E-A6E44FA3CD1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39029FB2-B15F-7678-061E-A6E44FA3CD1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39029FB2-B15F-7678-061E-A6E44FA3CD1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39029FB2-B15F-7678-061E-A6E44FA3CD1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{514D9E60-BA0F-BF34-178E-00B203A4BD0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{514D9E60-BA0F-BF34-178E-00B203A4BD0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{514D9E60-BA0F-BF34-178E-00B203A4BD0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{514D9E60-BA0F-BF34-178E-00B203A4BD0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3C19133-E845-A184-446C-5CE224BF9D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3C19133-E845-A184-446C-5CE224BF9D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3C19133-E845-A184-446C-5CE224BF9D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3C19133-E845-A184-446C-5CE224BF9D98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D265D8E9-090A-A72A-1D20-61FDC98661FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D265D8E9-090A-A72A-1D20-61FDC98661FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D265D8E9-090A-A72A-1D20-61FDC98661FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D265D8E9-090A-A72A-1D20-61FDC98661FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C9E637D-76D5-D26E-67B2-8098529B2FF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C9E637D-76D5-D26E-67B2-8098529B2FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C9E637D-76D5-D26E-67B2-8098529B2FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C9E637D-76D5-D26E-67B2-8098529B2FF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A96BE8-7D8C-C9F3-E52C-8DE80F1209BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A96BE8-7D8C-C9F3-E52C-8DE80F1209BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A96BE8-7D8C-C9F3-E52C-8DE80F1209BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A96BE8-7D8C-C9F3-E52C-8DE80F1209BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F76AD716-A1DB-E8C8-1D02-5D1F1C3E1DB1} = {D3E645DF-FC0E-A275-2D15-90880CBA5E60}
+		{FA9AD508-9B82-411F-F156-B13FAF600624} = {D3E645DF-FC0E-A275-2D15-90880CBA5E60}
+		{F060C73B-11D6-1B2D-D52A-5F1886CB9825} = {FA9AD508-9B82-411F-F156-B13FAF600624}
+		{9281D4BF-FC49-C96A-4784-EC99B0DCDD39} = {F060C73B-11D6-1B2D-D52A-5F1886CB9825}
+		{D5B24DB3-3CA1-692E-00B5-7499ACBF562F} = {F060C73B-11D6-1B2D-D52A-5F1886CB9825}
+		{8E1BBF94-4123-AF9B-534A-E4815ABB39AB} = {D5B24DB3-3CA1-692E-00B5-7499ACBF562F}
+		{B48CE188-1ACC-1325-ABEE-A04367ABC10E} = {8E1BBF94-4123-AF9B-534A-E4815ABB39AB}
+		{C416D885-9D1A-DCE9-5B72-EBD982442B8B} = {8E1BBF94-4123-AF9B-534A-E4815ABB39AB}
+		{3E82117B-19AC-7566-D329-963795A5FAA9} = {C416D885-9D1A-DCE9-5B72-EBD982442B8B}
+		{74A9D667-C632-435C-83EE-ECD92CE4CCE5} = {3E82117B-19AC-7566-D329-963795A5FAA9}
+		{054C90F8-BA70-12BB-942C-93D262CA2085} = {3E82117B-19AC-7566-D329-963795A5FAA9}
+		{FEB14C4F-3C8A-263C-B3CD-6682565CF46E} = {054C90F8-BA70-12BB-942C-93D262CA2085}
+		{32DC2E87-8776-4C32-5B4C-ED5B40CBD2E8} = {FEB14C4F-3C8A-263C-B3CD-6682565CF46E}
+		{2F5C360E-4EE0-8726-8794-096C1917005E} = {FEB14C4F-3C8A-263C-B3CD-6682565CF46E}
+		{CF97BDF6-0822-9D49-E3DD-38D5748F725E} = {2F5C360E-4EE0-8726-8794-096C1917005E}
+		{16EA3568-498A-261C-97D4-5E03502BE24D} = {CF97BDF6-0822-9D49-E3DD-38D5748F725E}
+		{CB494471-46E5-008E-EB05-AABBE82DEAEC} = {CF97BDF6-0822-9D49-E3DD-38D5748F725E}
+		{51BFFF22-15B3-8B69-5DB4-8768D06F0F95} = {CB494471-46E5-008E-EB05-AABBE82DEAEC}
+		{2DF13481-FE85-9311-A335-AAEB9890C8A9} = {51BFFF22-15B3-8B69-5DB4-8768D06F0F95}
+		{B0AA89E5-B7A6-42E8-3CBA-6D91225D5BE8} = {51BFFF22-15B3-8B69-5DB4-8768D06F0F95}
+		{ABF5CF4F-FB75-341C-B879-D41A6606A230} = {B0AA89E5-B7A6-42E8-3CBA-6D91225D5BE8}
+		{89EB7694-C599-26C7-636E-D3270DAEEA31} = {ABF5CF4F-FB75-341C-B879-D41A6606A230}
+		{29B55BCD-4CA8-02F4-8DB5-0B20C78C1049} = {ABF5CF4F-FB75-341C-B879-D41A6606A230}
+		{73C43E07-695F-9DA3-7EB4-65993C48C80A} = {29B55BCD-4CA8-02F4-8DB5-0B20C78C1049}
+		{AF1149DF-04F0-EE11-3D62-4C558874AE20} = {73C43E07-695F-9DA3-7EB4-65993C48C80A}
+		{BAF33583-60AE-729B-2443-2E6E7F2367A5} = {73C43E07-695F-9DA3-7EB4-65993C48C80A}
+		{AC5DCA7B-27E3-737D-BDEF-FBB6ACB12FA1} = {BAF33583-60AE-729B-2443-2E6E7F2367A5}
+		{0BE06F41-0AA2-102D-50C2-B6E50CF7F345} = {AC5DCA7B-27E3-737D-BDEF-FBB6ACB12FA1}
+		{A7781EF9-6B7A-5B49-64A2-0716DD5BABD3} = {AC5DCA7B-27E3-737D-BDEF-FBB6ACB12FA1}
+		{F7E1D87E-7661-CBE3-0F47-5D864F3B9E1E} = {A7781EF9-6B7A-5B49-64A2-0716DD5BABD3}
+		{0DE83E73-53F8-D506-4357-2224899793A8} = {F7E1D87E-7661-CBE3-0F47-5D864F3B9E1E}
+		{D6601EAF-B88F-3534-372C-552D62F422EE} = {F7E1D87E-7661-CBE3-0F47-5D864F3B9E1E}
+		{5960B890-EF5F-A240-87F6-8A94528E13F0} = {D6601EAF-B88F-3534-372C-552D62F422EE}
+		{950099A3-E1E0-E2F7-E888-B2906D838443} = {5960B890-EF5F-A240-87F6-8A94528E13F0}
+		{F5C3CEB7-227C-64EC-E576-C2995B43B2BE} = {5960B890-EF5F-A240-87F6-8A94528E13F0}
+		{10C33B89-6065-1965-54AA-A0F9EB1B54F7} = {F5C3CEB7-227C-64EC-E576-C2995B43B2BE}
+		{F41BD072-640C-209B-F198-01837CF41062} = {10C33B89-6065-1965-54AA-A0F9EB1B54F7}
+		{54CDF9FA-5B5F-1BF4-95D6-55B122272CA6} = {10C33B89-6065-1965-54AA-A0F9EB1B54F7}
+		{DFD4FF45-EEEB-72EB-2AC3-7B771A7020F8} = {54CDF9FA-5B5F-1BF4-95D6-55B122272CA6}
+		{EE670BDF-5D8E-FA7A-47CE-02B72EC7B2CD} = {DFD4FF45-EEEB-72EB-2AC3-7B771A7020F8}
+		{D75EEC91-90D3-8C9A-9E23-86C7FF2E96A0} = {DFD4FF45-EEEB-72EB-2AC3-7B771A7020F8}
+		{94CE7DF0-D585-2A81-7DDE-4B565C32321A} = {D75EEC91-90D3-8C9A-9E23-86C7FF2E96A0}
+		{FB63FF0E-4928-84CA-8606-EA3DEF1B11F2} = {94CE7DF0-D585-2A81-7DDE-4B565C32321A}
+		{6A216A2F-8C30-0D37-7C61-AE06679F1B68} = {94CE7DF0-D585-2A81-7DDE-4B565C32321A}
+		{377E49E1-B4E9-77E2-4C78-8833DCBA773B} = {6A216A2F-8C30-0D37-7C61-AE06679F1B68}
+		{5D0EC4E7-948F-FF2D-BE53-C2DC2B59D97C} = {377E49E1-B4E9-77E2-4C78-8833DCBA773B}
+		{87F7A598-D546-EA4E-AA56-1A472ED9EBC9} = {377E49E1-B4E9-77E2-4C78-8833DCBA773B}
+		{D6A67DB4-CB9D-382B-5FBF-9847C083F1CB} = {87F7A598-D546-EA4E-AA56-1A472ED9EBC9}
+		{1F4DF477-C2B9-8156-B10D-F4172E57D36F} = {D6A67DB4-CB9D-382B-5FBF-9847C083F1CB}
+		{3AFB6650-5467-C100-62A5-A8BF0EC1B0C2} = {D6A67DB4-CB9D-382B-5FBF-9847C083F1CB}
+		{96B5004F-C568-F839-1E8D-77A641700B44} = {3AFB6650-5467-C100-62A5-A8BF0EC1B0C2}
+		{650CE9A9-C64F-5F13-B7C9-2CE71B66B0A7} = {96B5004F-C568-F839-1E8D-77A641700B44}
+		{07DD334F-9AD1-F4C6-FA5B-CE5E2E06E394} = {96B5004F-C568-F839-1E8D-77A641700B44}
+		{0FB4CC5D-6D48-E6EB-522E-DDDBB323B15D} = {07DD334F-9AD1-F4C6-FA5B-CE5E2E06E394}
+		{570B55C9-1F27-0ACC-A7F3-EB2397D3421C} = {0FB4CC5D-6D48-E6EB-522E-DDDBB323B15D}
+		{D100864A-8E7A-03F1-EA98-DA179AAE5BE9} = {0FB4CC5D-6D48-E6EB-522E-DDDBB323B15D}
+		{34BA8846-391F-20BB-2BEA-6F00A116FAAB} = {D100864A-8E7A-03F1-EA98-DA179AAE5BE9}
+		{62B80777-D3AA-62FC-4511-9E3E1B79F4E1} = {34BA8846-391F-20BB-2BEA-6F00A116FAAB}
+		{C04C82EC-9F0B-1DB8-DC24-337BE77306B7} = {34BA8846-391F-20BB-2BEA-6F00A116FAAB}
+		{34EC0014-7FFE-49E8-5EFC-3785BB859E2E} = {C04C82EC-9F0B-1DB8-DC24-337BE77306B7}
+		{79169A59-85F4-38CF-E227-6DD353DD8BF5} = {34EC0014-7FFE-49E8-5EFC-3785BB859E2E}
+		{4598613A-3450-0F9B-688B-E2D06182690D} = {34EC0014-7FFE-49E8-5EFC-3785BB859E2E}
+		{D3C05841-D3D5-445E-F93D-779E91600819} = {4598613A-3450-0F9B-688B-E2D06182690D}
+		{9D8A525B-1C02-2A45-5803-08CCE935EC84} = {D3C05841-D3D5-445E-F93D-779E91600819}
+		{332FB9B8-7192-1BC2-E89F-37F44B5287D5} = {D3C05841-D3D5-445E-F93D-779E91600819}
+		{B24EEAD2-DE28-AD7C-6189-DFC56561F166} = {332FB9B8-7192-1BC2-E89F-37F44B5287D5}
+		{7C4C4596-8911-36DB-1A02-40A9D9CC46B6} = {B24EEAD2-DE28-AD7C-6189-DFC56561F166}
+		{24610EA5-0220-30C2-C58E-A30CCC2DB1A9} = {B24EEAD2-DE28-AD7C-6189-DFC56561F166}
+		{58D4C79E-19A2-84B1-6FFB-C8839283FF09} = {24610EA5-0220-30C2-C58E-A30CCC2DB1A9}
+		{175C2517-E731-1AB6-302C-59A9B032A6B3} = {58D4C79E-19A2-84B1-6FFB-C8839283FF09}
+		{8DA96427-2588-CFBD-8878-6F9E8FA05AA8} = {58D4C79E-19A2-84B1-6FFB-C8839283FF09}
+		{E4583275-3380-E476-3BB1-5629C5AAA138} = {8DA96427-2588-CFBD-8878-6F9E8FA05AA8}
+		{81256A4A-0E34-91A9-6E46-C92524B71AB3} = {E4583275-3380-E476-3BB1-5629C5AAA138}
+		{07DDF0AA-8DCB-DFD6-3481-8426D771BDF7} = {E4583275-3380-E476-3BB1-5629C5AAA138}
+		{43C7D849-4237-3B71-C13E-D482F54C1814} = {07DDF0AA-8DCB-DFD6-3481-8426D771BDF7}
+		{39029FB2-B15F-7678-061E-A6E44FA3CD1D} = {43C7D849-4237-3B71-C13E-D482F54C1814}
+		{78E7395E-615C-07B3-5D55-5FEAFFDEBE83} = {43C7D849-4237-3B71-C13E-D482F54C1814}
+		{3AE4C08A-D3C5-876D-F2CD-0CC1394418AD} = {78E7395E-615C-07B3-5D55-5FEAFFDEBE83}
+		{514D9E60-BA0F-BF34-178E-00B203A4BD0B} = {3AE4C08A-D3C5-876D-F2CD-0CC1394418AD}
+		{2D1AC26D-0CDE-8CB6-7DE0-CC7E370D9C2C} = {3AE4C08A-D3C5-876D-F2CD-0CC1394418AD}
+		{7C66C90C-0918-DB27-A522-1E95407EF24C} = {2D1AC26D-0CDE-8CB6-7DE0-CC7E370D9C2C}
+		{E3C19133-E845-A184-446C-5CE224BF9D98} = {7C66C90C-0918-DB27-A522-1E95407EF24C}
+		{848733D8-B3B9-8D77-F58A-3AA2BF1C114F} = {7C66C90C-0918-DB27-A522-1E95407EF24C}
+		{083DA166-7144-4955-D6F8-5C1D925936D0} = {848733D8-B3B9-8D77-F58A-3AA2BF1C114F}
+		{D265D8E9-090A-A72A-1D20-61FDC98661FE} = {083DA166-7144-4955-D6F8-5C1D925936D0}
+		{1DDA2320-8A30-0728-D5F0-8C7F09A7630D} = {083DA166-7144-4955-D6F8-5C1D925936D0}
+		{0E363368-29E0-FD18-62E4-00DF22541ED4} = {1DDA2320-8A30-0728-D5F0-8C7F09A7630D}
+		{2C9E637D-76D5-D26E-67B2-8098529B2FF4} = {0E363368-29E0-FD18-62E4-00DF22541ED4}
+		{73A89686-272F-E632-A8D0-B04F10BA6CF9} = {0E363368-29E0-FD18-62E4-00DF22541ED4}
+		{9F0652E2-4908-E89C-A9E5-03D6CE189E49} = {73A89686-272F-E632-A8D0-B04F10BA6CF9}
+		{A9A96BE8-7D8C-C9F3-E52C-8DE80F1209BB} = {9F0652E2-4908-E89C-A9E5-03D6CE189E49}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F7724C4-2FFD-4CF4-9A0A-A164673BDFAC}
+	EndGlobalSection
+EndGlobal
