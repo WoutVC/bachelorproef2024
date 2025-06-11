@@ -13,54 +13,48 @@
 % niet duidelijk zijn?
 % Heeft het onderzoek geleid tot nieuwe vragen die uitnodigen tot verder 
 %onderzoek?
-\chapter{Conclusie}%
-\label{ch:conclusie}
 
-Deze bachelorproef onderzocht hoe data-partitioneringstechnieken en edge-databases de prestaties van real-time dataverwerking beïnvloeden binnen een Edge Computing-architectuur. De proof of concept werd uitgevoerd in een gesimuleerd scenario gebaseerd op een HoGent-use case, waarin elk lokaal via een edge-node sensordata verzamelt over \ce{CO2}, temperatuur en luchtdruk.
+In dit onderzoek werd nagegaan hoe data-partitioneringstechnieken en edge-databases de prestaties van real-time dataverwerking beïnvloeden binnen een Edge Computing-architectuur. De proof of concept werd uitgevoerd in een gesimuleerd scenario gebaseerd op een HoGent-use case, waarin elk lokaal via een edge-node sensordata verzamelt over \ce{CO2}, temperatuur en luchtdruk.
 
-De resultaten tonen duidelijk aan dat een edge-gebaseerde aanpak aanzienlijke voordelen biedt ten opzichte van centrale verwerking. Door data lokaal te verwerken en op te slaan, daalt de latentie en wordt het netwerk ontlast. Partitioneringstechnieken bleken een bepalende factor voor databaseprestaties op vlak van snelheid, schaalbaarheid en fouttolerantie.
+De resultaten tonen aan dat een edge-gebaseerde aanpak aanzienlijke voordelen biedt ten opzichte van centrale verwerking. Door data lokaal te verwerken en op te slaan, daalt de latentie en wordt het netwerk minder belast. Partitioneringstechnieken bleken bovendien een bepalende factor te zijn voor databaseprestaties op het vlak van snelheid, schaalbaarheid en fouttolerantie.
 
-Vergelijking van databases
+\section{Vergelijking van databases}
+
 De evaluatie van TimescaleDB, Cassandra en MongoDB in zowel gecentraliseerde als edge-opstellingen leverde de volgende inzichten op:
 
-TimescaleDB met range-based partitionering behaalde de hoogste totaalscore (7.76). Deze configuratie presteerde bijzonder sterk op vlak van schaalbaarheid (score 5.67) en consistentie, en biedt uitstekende ondersteuning voor tijdreeksdata in real-time toepassingen.
-
-Cassandra met list-based partitionering volgde kort daarna (7.74) en leverde de laagste latentie (2.82 ms). Het is dus een sterke keuze in contexten waar reactiesnelheid cruciaal is en fouttolerantie vereist is.
-
-MongoDB behaalde goede resultaten op gebied van consistentie en throughput, maar scoorde het laagst op schaalbaarheid (1.95) en eindigde buiten de top drie.
+\begin{itemize}
+    \item \textbf{TimescaleDB met range-based partitionering} behaalde de hoogste totaalscore (7.76). Deze configuratie scoorde goed op schaalbaarheid (5.67) en consistentie, en is zeer geschikt voor toepassingen met tijdreeksdata.
+    \item \textbf{Cassandra met list-based partitionering} volgde kort daarna (7.74) en behaalde de laagste gemeten latentie (2.82 ms). Dit maakt Cassandra een sterke keuze in omgevingen waar reactiesnelheid en fouttolerantie belangrijk zijn.
+    \item \textbf{MongoDB} had goede resultaten voor consistentie en throughput, maar scoorde het laagst op schaalbaarheid (1.95) en eindigde buiten de top drie.
+\end{itemize}
 
 \section{Beantwoording van de deelvragen}
 
 \textbf{Welke uitdagingen ontstaan bij het verwerken van grote hoeveelheden IoT-data in een centrale cloudomgeving?} \\
-Centrale verwerking resulteerde in hogere latentie, beperkte schaalbaarheid en kwetsbaarheid bij netwerkstoringen. Edge Computing kan deze beperkingen effectief opvangen.
+Centrale verwerking zorgt voor hogere latentie, beperkte schaalbaarheid en is kwetsbaar bij netwerkproblemen. Edge Computing kan deze problemen deels oplossen.
 
 \textbf{Wat zijn de functionele vereisten van databases voor het verwerken van real-time sensordata in een edge-context met beperkte connectiviteit?} \\
-De databases moeten fouttolerant zijn, lage latentie bieden, schaalbaar zijn zonder herconfiguratie, offline kunnen werken en eenvoudig beheerbaar zijn in resource-beperkte omgevingen.
+Databases moeten fouttolerant zijn, snel reageren (lage latentie), goed kunnen schalen, offline blijven werken en eenvoudig te beheren zijn in kleine, lokale systemen.
 
 \textbf{Hoe beïnvloeden verschillende data-partitioneringstechnieken de latentie in een Edge Computing-omgeving?} \\
-Cassandra met list-based partitionering had de laagste latentie (2.82 ms), gevolgd door MongoDB met list-based sharding (3.57 ms). De gekozen partitioneringsmethode heeft dus een duidelijke impact op reactietijd.
+Cassandra met list-based partitionering had de laagste latentie (2.82 ms), gevolgd door MongoDB met list-based sharding (3.57 ms). De gekozen partitioneringstechniek heeft dus een duidelijke invloed op de reactiesnelheid.
 
 \textbf{Wat is het effect van partitionering op netwerkbelasting en doorvoersnelheid?} \\
-TimescaleDB met list-partitionering behaalde de hoogste throughput (4.86 records/s), gevolgd door andere TimescaleDB- en MongoDB-configuraties. List- en range-partitionering dragen bij aan vlotte dataverwerking.
+TimescaleDB met list-partitionering behaalde de hoogste throughput (4.86 records/s), gevolgd door andere TimescaleDB en MongoDB-configuraties. Zowel list als range-partitionering dragen bij aan een vlotte verwerking van data.
 
 \textbf{Wat is de impact van partitioneringsstrategieën op schaalbaarheid bij toenemende datavolumes?} \\
-TimescaleDB met range-partitionering scoorde het hoogst op schaalbaarheid (5.67), gevolgd door Cassandra (list-based, 4.79). Dit wijst op een betere aanpasbaarheid aan grotere datasets bij gebruik van deze technieken.
+TimescaleDB met range-partitionering scoorde het hoogst op schaalbaarheid (5.67), gevolgd door Cassandra met list-based partitionering (4.79). Deze technieken zijn dus geschikt voor grotere hoeveelheden data.
 
 \textbf{Welke database biedt de beste prestaties in termen van latentie, fouttolerantie en schaalbaarheid in de HoGent-use case?} \\
-De combinatie van schaalbaarheid, fouttolerantie en consistente prestaties maakt TimescaleDB met range-partitionering de aanbevolen keuze. Cassandra is het alternatief bij focus op lage latentie.
-
+De combinatie van goede schaalbaarheid, fouttolerantie en stabiele prestaties maakt TimescaleDB met range-partitionering de beste keuze. Cassandra is een goed alternatief wanneer vooral lage latentie belangrijk is.
 
 \section{Reflectie en Aanbevelingen}
 
-Deze studie bevestigt het potentieel van Edge Computing en data-partitionering om real-time dataverwerking efficiënter en betrouwbaarder te maken in IoT-contexten. De resultaten tonen aan dat databasekeuze en partitioneringstechniek niet los van elkaar mogen worden bekeken, maar als geïntegreerde beslissingen moeten worden genomen op basis van contextuele prioriteiten zoals snelheid, schaalbaarheid of fouttolerantie.
+Deze studie bevestigt dat Edge Computing en data-partitionering real-time dataverwerking efficiënter en betrouwbaarder kunnen maken in IoT-toepassingen. De resultaten tonen aan dat databasekeuze en partitioneringstechniek samen gekozen moeten worden, afhankelijk van wat het belangrijkste is: snelheid, schaalbaarheid of fouttolerantie.
 
 \textbf{Aanbevelingen voor verder onderzoek:}
 \begin{itemize}
-    \item Onderzoek naar de impact van langdurige offline werking en de robuustheid van synchronisatie bij herverbinding.
-    \item Evaluatie van onderhouds- en beheerkosten van edge-nodes bij grootschalige uitrol.
-    \item Vergelijking met andere databaseoplossingen zoals Redis, InfluxDB of Apache IoTDB, inclusief hun compatibiliteit met edge-gebruik.
-    \item Verkenning van hybride partitioneringsmodellen die dynamisch kunnen schakelen tussen strategieën op basis van workload.
-    \item Integratie van een \textbf{Fog Computing}-laag tussen edge en cloud: dit kan dienen als tussenlaag voor aggregatie, pre-processing en beslissingslogica, en vormt een mogelijke volgende stap voor organisaties die zowel schaalbaarheid als controle wensen in grootschalige netwerken.
+    \item Vergelijking met andere databaseoplossingen zoals Redis, InfluxDB of Apache IoTDB, inclusief hun geschiktheid voor gebruik in edge-omgevingen.
+    \item Verkenning van hybride partitioneringsmodellen die automatisch kunnen schakelen op basis van datavolume of gebruik.
+    \item Integratie van een Fog Computing-laag tussen edge en cloud, om data eerst lokaal te verwerken of samen te voegen voordat het naar de cloud gaat.
 \end{itemize}
-
-Met deze proof of concept levert dit werk een praktijkgerichte bijdrage aan het optimaliseren van Edge Computing-oplossingen voor real-time monitoring. De bevindingen zijn inzetbaar voor organisaties zoals HoGent of Optis die inzetten op performante en schaalbare IoT-infrastructuur.

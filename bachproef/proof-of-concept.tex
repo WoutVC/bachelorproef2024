@@ -72,7 +72,7 @@ De applicatie is opgebouwd als een real-time monitoringdashboard in een edge-omg
 \begin{itemize}
     \item \textbf{IoT-sensor (gesimuleerd):} Genereert elke 5 seconden meetgegevens.
     \item \textbf{Edge-node:} Verwerkt en slaat lokaal data op met een te testen database-engine.
-    \item \textbf{Backend (Node.js):} Verwerkt sensordata, detecteert overschrijding van drempelwaarden en verstuurt meldingen.
+    \item \textbf{Backend (ASP.NET Core):} Verwerkt sensordata, detecteert overschrijding van drempelwaarden en verstuurt meldingen.
     \item \textbf{Frontend (React):} Visualiseert live-data en historische grafieken.
     \item \textbf{Docker Compose:} Beheert de opstelling van verschillende databases, backend en frontend in afzonderlijke containers.
 \end{itemize}
@@ -136,27 +136,55 @@ De volgende prestatiekenmerken worden geëvalueerd:
     \item \textbf{Offline gedrag:} blijft Gebouw B operationeel zonder internet?
 \end{itemize}
 
-\subsection{Visualisatie van sensordata in de webinterface}
+\section{Visualisatie van sensordata in de frontend}
 
-Om de opgeslagen sensordata zichtbaar te maken, werd een eenvoudige webinterface gebouwd met React. Via deze interface kunnen gebruikers live data bekijken, zoals CO₂-waarden, temperatuur en luchtdruk.
+Voor de realtime visualisatie van sensordata werd een webinterface gebouwd met React.
+ De interface stelt gebruikers in staat om live metingen van CO$_2$, temperatuur en luchtdruk te bekijken, afkomstig van verschillende gebouwen (zoals Gebouw A en B) en ondersteund door drie databackends: MongoDB, Cassandra en TimescaleDB.
 
-De frontend \href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/backend/POCTests.js}{POCTests.js} haalt deze gegevens op via API-endpoints die worden aangeboden door het ASP.NET Core-backend. Dit backend-systeem is verbonden met de drie gebruikte databases: MongoDB, Cassandra en TimescaleDB.
+De frontend maakt gebruik van de \texttt{axios}-bibliotheek om op regelmatige tijdstippen sensorgegevens op te halen via API-endpoints van de ASP.NET Core-backend.
+ Afhankelijk van de geselecteerde configuratie (gebouw en database) wordt automatisch een dynamische lijngrafiek weergegeven, gevisualiseerd met de \texttt{Recharts}-bibliotheek.
 
-Gebruikers kunnen in de interface kiezen van welk gebouw (bijvoorbeeld Gebouw A of B) ze data willen zien, en ook welke database gebruikt moet worden. Daarna verschijnt automatisch een grafiek met de meest recente meetwaarden.
+Een waarschuwing wordt getoond wanneer het \ce{CO2}-niveau een bepaalde drempelwaarde overschrijdt. Dit stelt gebruikers in staat om snel te reageren op afwijkende omstandigheden binnen het monitoring systeem.
+
+Een voorbeeld van de gebruikte logica in React:
+
+\begin{verbatim}
+useEffect(() => {
+  const interval = setInterval(async () => {
+    try {
+      const res = await axios.get('/api/sensordata/latest', { params: { building, type } });
+      setData(prev => {
+        const combined = [...prev.slice(-19), res.data];
+        return combined.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+      });
+    } catch (err) {
+      console.error('Fout bij ophalen data:', err.message);
+    }
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, [building, type]);
+\end{verbatim}
+
+Gebruikers kunnen in de interface kiezen van welk gebouw en welke database ze data willen zien. 
+ Daarna verschijnt automatisch een grafiek met de meest recente meetwaarden.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{GebouwA_TimeScale_Website.png}
-	\caption{Website van TimescaleDB met de centrale database-architectuur voor Gebouw A.}
+	\caption{Frontendweergave met centrale database-architectuur (TimescaleDB, Gebouw A).}
     \label{fig:gebouw-a-architecture}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{GebouwB_MongoDb_Website.png}
-    \caption{Website van TimescaleDB met de edge computing-architectuur voor Gebouw B.}
+    \caption{Frontendweergave met edge computing-architectuur (MongoDB, Gebouw B).}
     \label{fig:gebouw-b-architecture}
 \end{figure}
+
+De volledige code van het dashboard is beschikbaar via GitHub: \\
+\href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/frontend/src/components/LiveDashBoard.js}{LiveDashBoard.js}
 
 \subsection{Resultaten en Grafieken}
 De resultaten van de uitgevoerde tests met het script \href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/backend/POCTests.js}{POCTests.js} zijn hieronder weergegeven in grafieken. Elke grafiek toont hoe de verschillende database-opstellingen presteren op vlak van snelheid, betrouwbaarheid en schaalbaarheid.
@@ -212,7 +240,7 @@ Het aantal records werd stapsgewijs verhoogd (10, 50, 100) en de verwerkingstijd
 Nieuwe gegevens werden weggeschreven en onmiddellijk opgehaald. Het aantal direct beschikbare records werd gemeten. Een database waarbij data meteen zichtbaar is, wordt als consistent beschouwd.
 
 \paragraph{Resultaat en analyse:}
-Alle databases scoorden 10/10, wat betekent dat elke nieuwe record direct beschikbaar was. Dit is essentieel voor toepassingen die onmiddellijke juiste data vereisen, zoals alarmen en monitoring.
+Alle databases scoorden 10/10, wat betekent dat elke nieuwe record direct beschikbaar was.
 
 \begin{figure}[H]
     \centering
@@ -296,13 +324,13 @@ Om de verschillende databases goed met elkaar te kunnen vergelijken, werd voor e
 Op basis van deze berekening ziet de top 3 er als volgt uit:
 
 \begin{itemize}
-    \item \textbf{TimescaleDB (Range-Based Partitioning) [Gebouw B]} – Score: \textbf{7.76}  
+    \item \textbf{TimescaleDB (Range-Based Partitioning) [Gebouw B]} Score: \textbf{7.76}  
     Deze configuratie scoorde het best. Vooral op het vlak van schaalbaarheid en snelheid presteert deze database zeer goed, wat ze ideaal maakt voor realtime toepassingen in een edge-omgeving.
 
-    \item \textbf{Cassandra (List-Based Partitioning) [Gebouw B]} – Score: \textbf{7.74}  
+    \item \textbf{Cassandra (List-Based Partitioning) [Gebouw B]} Score: \textbf{7.74}  
     Cassandra met list-based partitioning presteerde het beste op vlak van latency. Dankzij zijn combinatie van snelheid, fouttolerantie en goede prestaties is dit een sterke keuze voor realtime monitoring aan de rand van het netwerk.
 
-    \item \textbf{TimescaleDB (List-Based Partitioning) [Gebouw B]} – Score: \textbf{7.56}  
+    \item \textbf{TimescaleDB (List-Based Partitioning) [Gebouw B]} Score: \textbf{7.56}  
     Deze configuratie scoort vooral goed op throughput en is een stabiele keuze voor systemen die continu veel data moeten verwerken, zoals dashboards of IoT-systemen.
 \end{itemize}
 

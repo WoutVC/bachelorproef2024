@@ -101,8 +101,28 @@ Deze toepassingen tonen aan dat Edge Computing de basis legt voor duurzamere en 
 
 \section{Data-partitioneringstechnieken: Overzicht en Analyse}
 
-Data-partitionering is een essentiële techniek in gedistribueerde databasesystemen, vooral in Edge Computing-omgevingen. Partitionering helpt bij het verdelen van data over meerdere nodes, wat kan leiden tot betere prestaties, schaalbaarheid en beschikbaarheid \autocite{Karger1997}.
-In deze sectie worden de meest gebruikte technieken besproken, gevolgd door een analyse van hun toepassingsmogelijkheden in Edge Computing.
+Data-partitionering is een essentiële techniek in gedistribueerde databasesystemen, vooral in Edge Computing-omgevingen. Partitionering helpt bij het verdelen van data over meerdere nodes (servers), wat kan leiden tot betere prestaties, schaalbaarheid en beschikbaarheid \autocite{Karger1997}.
+Deze sectie geeft eerst een kort overzicht van veelgebruikte partitioneringstechnieken. Daarna volgt een uitgebreidere bespreking van \textbf{range-based} en \textbf{list-based} partitionering, aangezien deze methodes het meest relevant zijn voor real-time verwerking van sensordata in een Edge Monitoring System.
+
+\subsection{Overzicht van partitioneringstechnieken}
+
+Hieronder volgt een beknopt overzicht van de belangrijkste vormen van data-partitionering:
+
+\begin{itemize}
+    \item \textbf{Range-based partitionering}: Gegevens worden verdeeld op basis van reeksen, zoals tijdstippen of numerieke waarden. Deze methode is efficiënt voor tijdgebaseerde opvragingen, maar kan leiden tot een ongelijke verdeling (data skew) als sommige reeksen veel drukker zijn dan andere.
+    
+    \item \textbf{List-based partitionering}: Data wordt toegewezen aan partities op basis van vaste, vooraf bepaalde waarden (bijvoorbeeld sensornamen of types). Deze methode is geschikt voor gegevens die in duidelijke categorieën vallen.
+    
+    \item \textbf{Hash-based partitionering}: Een hashfunctie bepaalt in welke partitie de data terechtkomt. Dit zorgt voor een evenwichtige verdeling, maar maakt het moeilijker om gegevens op volgorde (zoals tijd) op te vragen.
+    
+    \item \textbf{Round-robin partitionering}: Data wordt afwisselend verdeeld over de partities, onafhankelijk van de inhoud. Deze eenvoudige methode houdt geen rekening met het soort data of de verdeling ervan.
+    
+    \item \textbf{Consistent hashing}: Een flexibelere vorm van hash-partitionering die beter werkt in systemen waar servers vaak worden toegevoegd of verwijderd. Deze aanpak is krachtig, maar technisch complexer.
+    
+    \item \textbf{Subpartitionering}: Hierbij worden meerdere technieken gecombineerd. Een voorbeeld is eerst partitioneren op regio (list) en daarna op tijd (range). Dit verhoogt de controle, maar maakt het systeem ook ingewikkelder.
+\end{itemize}
+
+De focus binnen dit onderzoek ligt op \textbf{range-based} en \textbf{list-based partitionering}, aangezien deze technieken het best aansluiten bij de structuur en noden van een real-time Edge Monitoring System. De volgende paragrafen gaan hier dieper op in.
 
 \subsection{Range-based Partitionering}
 Range-based partitionering verdeelt data op basis van specifieke waarde-intervallen zoals datums of numerieke bereiken. Elk interval wordt toegewezen aan een specifieke partitie. Bijvoorbeeld, een dataset met verkoopdata kan worden verdeeld in kwartaal-intervallen: Q1 (januari-maart), Q2 (april-juni), enzovoort.
@@ -134,37 +154,6 @@ Het toevoegen van nieuwe datumbereiken vereist vaak handmatige herpartitionering
     \item IoT-toepassingen: Tijdgebaseerde sensorlogs verdelen \autocite{Ponnusamy2024}.
     \item Sensornetwerken: Tijdgebaseerde opslag van temperatuurmetingen van sensoren in gebouwen of landbouwtoepassingen \autocite{Mahmud2020}.
 \end{itemize}
-
-\subsection{Hash-based Partitionering}
-Hash-partitionering gebruikt een hash-functie op een sleutel zoals een gebruikers-ID of productnummer. De hashwaarde bepaalt de toewijzing van data aan partities.
-
-\paragraph{Voordelen:}
-\begin{itemize}
-    \item Gelijke verdeling van data: Door de hash-functie wordt data willekeurig en gelijkmatig verdeeld over de beschikbare partities \autocite{Ponnusamy2024}.
-    \item Schaalbaarheid: Kan dynamisch meer partities toevoegen zonder herverdeling van alle data \autocite{Mahmud2020}.
-\end{itemize}
-
-\paragraph{Nadelen:}
-\begin{itemize}
-    \item Complexiteit voor range queries: Range-gebaseerde queries vereisen het combineren van data uit meerdere partities \autocite{Kleppmann2017}.
-    \item Afhankelijk van hash-algoritme: Slecht ontworpen hash-functies kunnen data skew veroorzaken \autocite{Ponnusamy2024}.
-\end{itemize}
-
-\paragraph{Invloed op latentie} 
-De gelijkmatige verdeling van data voorkomt piekbelastingen en zorgt voor consistente latentie. Een nadeel is dat range-queries minder efficiënt zijn \autocite{Kleppmann2017}.
-
-\paragraph{Invloed op bandbreedte en netwerkprestaties} 
-De uniforme verdeling voorkomt netwerkpieken en optimaliseert het gebruik van bandbreedte. Samengestelde queries kunnen echter leiden tot een toename in netwerkverkeer \autocite{Ponnusamy2024}.
-
-\paragraph{Invloed op schaalbaarheid} 
-Hash-based partitionering biedt een hoge mate van schaalbaarheid doordat nieuwe partities eenvoudig kunnen worden toegevoegd \autocite{Mahmud2020}. Deze techniek wordt effectief toegepast in Cassandra \autocite{CassandraDocumentation}.
-
-\paragraph{Toepassingen:}
-\begin{itemize}
-    \item E-commerce: Data zoals product-ID's evenredig verdelen over servers.
-    \item Sociale media: Gebruikersgegevens verdelen over meerdere datacenters \autocite{Mahmud2020}.
-    \item Sensornetwerken: Verdeling van data afkomstig van honderden IoT-sensoren op basis van unieke sensor-ID's om load balancing te garanderen \autocite{Shi2016}.
-\end{itemize}
  
 \subsection{List-based Partitionering}
 List-partitionering verdeelt data op basis van specifieke discrete waarden. Elke waarde of groep waarden wordt toegewezen aan een specifieke partitie.
@@ -195,105 +184,6 @@ List-based partitionering is minder geschikt voor dynamische of sterk groeiende 
     \item Logistiek: Orders verdelen op basis van leveringsregio.
     \item Retail: Klantgegevens opsplitsen per filiaal \autocite{Ponnusamy2024}.
     \item Sensornetwerken: Opsplitsing van gegevens per sensortype (temperatuur, luchtvochtigheid, lichtintensiteit) om gerichte analyse te vergemakkelijken \autocite{Mahmud2020}.
-\end{itemize}
- 
-\subsection{Round-robin Partitionering}
-Round-robin partitionering verdeelt records gelijkmatig en cyclisch over alle beschikbare partities.
- 
-\paragraph{Voordelen:}
-\begin{itemize}
-    \item Eenvoudig te implementeren: Geen geavanceerde algoritmen nodig \autocite{Mahmud2020}.
-    \item Evenwichtige belasting: Gelijke verdeling van de werkbelasting over partities.
-\end{itemize}
- 
-\paragraph{Nadelen:}
-\begin{itemize}
-    \item Inefficiënt voor gerelateerde queries: Bijvoorbeeld, het combineren van gerelateerde data uit verschillende partities vereist meer bewerkingen.
-    \item Geen optimalisatie voor specifieke querypatronen \autocite{Ponnusamy2024}.
-\end{itemize}
- 
-\paragraph{Invloed op latentie} 
-De eenvoudige structuur van round-robin zorgt voor gebalanceerde querytijden voor niet-gerelateerde data. Voor gerelateerde data, waarbij gegevens uit meerdere partities moeten worden gecombineerd, kan de latentie toenemen \autocite{Mahmud2020}.
- 
-\paragraph{Invloed op bandbreedte en netwerkprestaties} 
-Deze techniek voorkomt netwerkpieken door data gelijkmatig te verdelen over partities, wat het bandbreedtegebruik optimaliseert. In sommige gevallen zoals bij gerelateerde data, kan de noodzaak om meerdere partities tegelijk te benaderen leiden tot extra netwerkverkeer \autocite{Mahmud2020}.
- 
-\paragraph{Invloed op schaalbaarheid} 
-Round-robin partitionering is eenvoudig te implementeren en biedt een goede basis voor voorspelbare datastromen. Het mist echter optimalisatie voor specifieke querypatronen, wat in sommige toepassingen een beperking kan zijn \autocite{Ponnusamy2024}.
- 
-\paragraph{Toepassingen:}
-\begin{itemize}
-    \item Sensorlogdata: Data van meerdere sensoren gelijkmatig verdelen.
-    \item Real-time verwerking: Data gelijkmatig opslaan voor streamingtoepassingen \autocite{Mahmud2020}.
-    \item Sensornetwerken: Gelijke verdeling van real-time sensordata over edge-nodes om gelijktijdige verwerking mogelijk te maken \autocite{Mahmud2020}.
-\end{itemize}
-
-\subsubsection{Consistent Hashing}
-Consistent hashing is een methode om data evenwichtig te verdelen over meerdere nodes in een gedistribueerd systeem. In plaats van data strikt te verdelen volgens vaste regels of bereiken, gebruikt consistent hashing een hash-functie om elk data-item aan een specifieke node toe te wijzen \autocite{Kleppmann2017}.
-
-\paragraph{Voordelen:}
-\begin{itemize}
-    \item \textbf{Efficiëntie:} Slechts een klein deel van de data wordt herverdeeld wanneer een node wordt toegevoegd of verwijderd, wat downtime minimaliseert \autocite{Kleppmann2017}.
-    \item \textbf{Flexibiliteit:} Geschikt voor dynamische omgevingen waar nodes regelmatig veranderen \autocite{Kleppmann2017}.
-    \item \textbf{Schaalbaarheid:} Ondersteunt grootschalige en dynamische systemen zoals Edge Computing \autocite{Kleppmann2017}.
-\end{itemize}
-
-\paragraph{Nadelen:}
-\begin{itemize}
-    \item \textbf{Complexiteit:} Vereist een geavanceerde implementatie van hash-algoritmen \autocite{Kleppmann2017}.
-    \item \textbf{Inefficiënt bij range queries:} Data-items zijn willekeurig verdeeld, wat samengestelde queries kan vertragen \autocite{Mahmud2020}.
-\end{itemize}
-
-\paragraph{Toepassingen:}
-\begin{itemize}
-    \item Gedistribueerde caching (bijvoorbeeld Memcached) \autocite{Kleppmann2017}.
-    \item Load balancing in grootschalige cloud-omgevingen \autocite{Kleppmann2017}.
-    \item Sensornetwerken: Dynamische verdeling van sensordata in slimme steden waarbij nodes op flexibele wijze toegevoegd of verwijderd kunnen worden \autocite{Shi2016}.
-\end{itemize}
-
-\subsection{Subpartitionering}
-Subpartitionering is een techniek waarbij een bestaande partitie verder wordt onderverdeeld in subpartities. Dit biedt flexibiliteit en nauwkeurigheid bij het beheer van data \autocite{Kleppmann2017}.
-
-\paragraph{Voordelen:}
-\begin{itemize}
-    \item \textbf{Geoptimaliseerde opslag:} Subpartities kunnen specifiek worden geconfigureerd om gerelateerde gegevens fysiek dichter bij elkaar te houden \autocite{Kleppmann2017}.
-    \item \textbf{Schaalbaarheid:} Verhoogt de schaalbaarheid zonder de oorspronkelijke partitiestructuur volledig te veranderen \autocite{TimescaleDBDocumentation}.
-\end{itemize}
-
-\paragraph{Nadelen:}
-\begin{itemize}
-    \item \textbf{Complexiteit:} Het onderhoud van subpartities kan een uitdaging zijn, vooral in dynamische datadomeinen \autocite{Taheri2020}.
-    \item \textbf{Latentie:} Kan leiden tot meer complexiteit bij queries die data uit meerdere subpartities combineren \autocite{Kleppmann2017}.
-\end{itemize}
-
-\paragraph{Toepassingen:}
-\begin{itemize}
-    \item Tijdreeksdatabases: Tijdgebaseerde hypertables in TimescaleDB \autocite{TimescaleDBDocumentation}.
-    \item Regionale datapartities in multi-geografische systemen \autocite{Taheri2020}.
-    \item Sensornetwerken: Opslag van tijdsreeksen per regio en per tijdseenheid (bv per uur of per locatie) voor efficiënte lokale verwerking \autocite{Kleppmann2017}.
-\end{itemize}
-
-\subsection{Hybrid Partitionering}
-Hybrid partitionering combineert meerdere technieken zoals range-based en hash-based partitionering, om de voordelen van beide te benutten. Dit biedt een evenwicht tussen efficiëntie, flexibiliteit en schaalbaarheid \autocite{Ponnusamy2024}.
-
-\paragraph{Voordelen:}
-\begin{itemize}
-    \item \textbf{Balans:} Lost de nadelen van individuele technieken op zoals een ongelijke data-distributie in range-based partitionering \autocite{Ponnusamy2024}.
-    \item \textbf{Efficiëntie:} Geschikt voor zowel range queries als willekeurige toegangsverzoeken \autocite{Kleppmann2017}.
-    \item \textbf{Flexibiliteit:} Ondersteunt complexere queryvereisten en dynamische datasets \autocite{Taheri2020}.
-\end{itemize}
-
-\paragraph{Nadelen:}
-\begin{itemize}
-    \item \textbf{Beheerslast:} De configuratie en optimalisatie van hybride technieken kan uitdagend zijn \autocite{Ponnusamy2024}.
-    \item \textbf{Complexiteit:} Vereist gespecialiseerde software of frameworks \autocite{Taheri2020}.
-\end{itemize}
-
-\paragraph{Toepassingen:}
-\begin{itemize}
-    \item Grootschalige IoT-systemen: Tijdgebaseerde logging gecombineerd met gelijke verdeling \autocite{Shi2016}.
-    \item Financiële analysesystemen: Segmentatie op basis van regio's en accounttypen \autocite{Ponnusamy2024}.
-    \item Sensornetwerken: Combinatie van tijdgebaseerde en locatiegebaseerde verdeling van sensorlogs voor precisielandbouw \autocite{Taheri2020}.
 \end{itemize}
 
 \subsection{Horizontale en Verticale Schaling in Edge Computing}
