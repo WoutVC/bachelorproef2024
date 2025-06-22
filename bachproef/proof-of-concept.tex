@@ -26,28 +26,79 @@ De functionele eisen beschrijven wat het systeem concreet moet doen. Voor deze p
 Niet-functionele eisen beschrijven de kwaliteitseigenschappen van het systeem. Dit zijn de niet-functionele eisen voor het systeem:
 
 \begin{itemize}
-    \item \textbf{Performantie:} Het systeem moet lage latentie hebben ($<$ 500 ms) bij het tonen van nieuwe meetdata.
-    \item \textbf{Schaalbaarheid:} Het systeem moet uitbreidbaar zijn naar meerdere lokalen zonder herconfiguratie. Ook horizontale schaalbaarheid over meerdere nodes moet ondersteund worden zonder prestatiedaling.
-    \item \textbf{Fouttolerantie:} Het systeem moet blijven functioneren bij netwerkstoringen of node-uitval, zonder dataverlies.
-    \item \textbf{Offline werking en synchronisatie:} Het systeem moet tijdelijk lokaal data kunnen opslaan en veilig synchroniseren zodra netwerkverbinding is hersteld.
-    \item \textbf{Lokale verwerking:} De edge-node moet in staat zijn om data lokaal te verwerken om latentie en netwerkbelasting te minimaliseren.
-    \item \textbf{Geheugengebruik en CPU-belasting:} De database moet efficiënt werken op edge-devices met beperkte hardwarecapaciteit.
-    \item \textbf{Doorvoersnelheid:} Het systeem moet hoge frequenties van sensordata kunnen verwerken (inserts per seconde).
-    \item \textbf{Gegevensconsistentie:} Alle nodes moeten beschikken over een betrouwbare en gelijke data.
-    \item \textbf{Beheer en onderhoud:} De configuratie, monitoring en foutafhandeling van het systeem moeten eenvoudig zijn.
-    %\item \textbf{Gebruiksvriendelijkheid:} De gebruikersinterface moet duidelijk en eenvoudig te gebruiken zijn.
-    \item \textbf{Beveiliging:} Data moet veilig worden opgeslagen en enkel toegankelijk zijn voor bevoegde gebruikers.
-    %\item \textbf{Beheerbaarheid:} Het systeem moet eenvoudig instelbaar zijn via een \texttt{.env}-bestand of dashboard.
+    \item \textbf{Performantie (Must):} Het systeem moet lage latentie hebben ($<$ 500 ms) bij het tonen van nieuwe meetdata.
+    \item \textbf{Schaalbaarheid (Must):} Het systeem moet uitbreidbaar zijn naar meerdere lokalen zonder herconfiguratie. Ook horizontale schaalbaarheid over meerdere nodes moet ondersteund worden zonder prestatiedaling.
+    \item \textbf{Fouttolerantie (Must):} Het systeem moet blijven functioneren bij netwerkstoringen of node-uitval, zonder dataverlies.
+    \item \textbf{Offline werking en synchronisatie (Should):} Het systeem moet tijdelijk lokaal data kunnen opslaan en veilig synchroniseren zodra netwerkverbinding is hersteld.
+    \item \textbf{Lokale verwerking (Must):} De edge-node moet in staat zijn om data lokaal te verwerken om latentie en netwerkbelasting te minimaliseren.
+    \item \textbf{Geheugengebruik en CPU-belasting (Should):} De database moet efficiënt werken op edge-devices met beperkte hardwarecapaciteit.
+    \item \textbf{Doorvoersnelheid (Must):} Het systeem moet hoge frequenties van sensordata kunnen verwerken (inserts per seconde).
+    \item \textbf{Gegevensconsistentie (Must):} Alle nodes moeten beschikken over een betrouwbare en gelijke data.
+    \item \textbf{Beheer en onderhoud (Should):} De configuratie, monitoring en foutafhandeling van het systeem moeten eenvoudig zijn.
+    \item \textbf{Beveiliging (Must):} Data moet veilig worden opgeslagen en enkel toegankelijk zijn voor bevoegde gebruikers.
+    \item \textbf{Automatische compressie en retentie (Could):} Het systeem moet automatisch oudere gegevens kunnen comprimeren of verwijderen. Zo blijft de opslag beperkt en raakt de edge-node niet vol. Bijvoorbeeld: alleen de data van de laatste 7 dagen wordt volledig bewaard, oudere data wordt samengevat of verwijderd.
 \end{itemize}
 
-\section{Architectuurscenario's per gebouw}
-\subsection{Gebouw A - Centrale Database Architectuur}
+\section{Architectuur van de testopstelling}
+\label{sec:architectuur-testopstelling}
 
-Gebouw A maakt gebruik van een traditionele architectuur waarin alle meetgegevens van de sensoren in de lokalen (zoals A101, A102, A103) via het netwerk worden doorgestuurd naar een centrale server. Deze server bevat een relationele database waarin alle data centraal wordt opgeslagen.
+De testopstelling is gebaseerd op een simulatie van een school met twee gebouwen: Gebouw A en Gebouw B. Elk gebouw stelt een ander soort database-architectuur voor. Op die manier kan getest worden wat het verschil is tussen centrale opslag van data en lokale verwerking aan de rand van het netwerk (edge computing).
 
-\subsection{Gebouw B - Edge Computing Architectuur}
+\subsection{Gebouw A: Centrale verwerking}
 
-Gebouw B is uitgerust met een edge computing-opzet waarbij elk lokaal (zoals B101, B102, B103) beschikt over een eigen edge-node. Deze node bevat een lokale database waarin meetgegevens direct worden opgeslagen en verwerkt. Drempelwaarde-evaluatie (bijvoorbeeld \ce{CO2} > 800 ppm) gebeurt lokaal, zonder dat een centrale server nodig is voor de initiële verwerking.
+Gebouw A stelt een centrale serverruimte voor waar alle meetgegevens verzameld worden. De data van de sensoren wordt naar deze centrale locatie gestuurd. Daar worden de gegevens opgeslagen en verwerkt met behulp van de databases MongoDB, Cassandra of TimescaleDB. Alles gebeurt dus op een centrale plaats, zonder verdeling over meerdere locaties.
+
+\subsection{Gebouw B: Edge-verwerking per lokaal}
+
+Gebouw B stelt een edge-omgeving voor. In dit gebouw heeft elk lokaal zijn eigen edge-node, dus zijn eigen kleine database. In totaal zijn er zes lokalen (B101 tot B106). Elk lokaal gebruikt een andere combinatie van database en partitionering:
+
+\begin{itemize}
+  \item B101: MongoDB met list-partitionering
+  \item B102: MongoDB met range-partitionering
+  \item B103: Cassandra met list-partitionering
+  \item B104: Cassandra met range-partitionering
+  \item B105: TimescaleDB met list-achtige partitionering
+  \item B106: TimescaleDB met range-partitionering
+\end{itemize}
+
+De sensordata wordt lokaal opgeslagen en verwerkt. Als bijvoorbeeld het \ce{CO2}-niveau te hoog is, wordt dit direct opgemerkt door de lokale database, zonder dat de centrale server daarvoor nodig is. De edge-databases communiceren niet met elkaar en ook niet met Gebouw A. Zo kunnen de prestaties van elk systeem apart worden gemeten.
+
+\subsection{Verschil in resources tussen centrale en edge-opstelling}
+
+Om het verschil tussen een centrale en een edge-architectuur realistisch te simuleren, werden in Docker Compose verschillende CPU en geheugenlimieten ingesteld.
+ De centrale node (Gebouw A) krijgt meer resources, terwijl de edge-nodes (Gebouw B) beperkter geconfigureerd zijn.
+Op die manier wordt het verschil gesimuleerd tussen een datacenteromgeving en een edge-device zoals een Raspberry Pi of IoT-controller.
+ Dit benadert de typische situatie waarbij centrale systemen op krachtige infrastructuur draaien en edge-devices gebruikmaken van beperkte hardware.
+\begin{table}[H]
+\centering
+\begin{resizebox}{\textwidth}{!}{
+  \begin{tabular}{|l|c|c|}
+  \hline
+  \textbf{Eigenschap} & \textbf{Centrale databases (Gebouw A)} & \textbf{Edge-databases (Gebouw B)} \\
+  \hline
+  Rolverdeling & Verzamelen en verwerken van alle data & Lokale opslag en alarmering per lokaal \\
+  Geheugen (RAM) & 1024MB (1 GB) & 512MB of 768MB \\
+  CPU-limiet & 1.0 core & 0.5 core \\
+  Verbinding & Permanent (stabiel netwerk) & Mogelijk onstabiel of tijdelijk offline \\
+  Voorbeelden van containers & \texttt{timescaledb-central}, \texttt{mongodb-central} & \texttt{mongos2}, \texttt{cassandra-edge-range}, \texttt{timescaledb-edge-list} \\
+  \hline
+  \end{tabular}
+}
+\end{resizebox}
+\caption{Simulatie van resourceverschillen tussen centrale en edge-opstellingen.}
+\label{tab:resources}
+\end{table}
+
+\subsection{Visueel overzicht van de architectuur}
+
+De onderstaande figuur toont hoe de opstelling eruitziet. Links staat Gebouw A met de drie centrale databases. Rechts staan de zes lokalen van Gebouw B, elk met hun eigen edge-database. Er is geen verbinding tussen de gebouwen tijdens de tests, zodat de resultaten per systeem goed vergeleken kunnen worden.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{SchemaPoC.png}
+  \caption{Overzicht van de testopstelling. Elke ruimte in Gebouw B heeft een eigen edge-database. In Gebouw A worden de centrale databases getest.}
+  \label{fig:school-architectuur}
+\end{figure}
 
 \subsection{Testdoelen in beide gebouwen:}
 \begin{itemize}
@@ -64,6 +115,7 @@ Gebouw B is uitgerust met een edge computing-opzet waarbij elk lokaal (zoals B10
 \section{Ontwikkeling van de Applicatie}
 
 De proof of concept is gerealiseerd met Docker Compose en gesimuleerde sensordata. De werking van de applicatie wordt getest aan de hand van concrete functionele eisen zoals het genereren van een waarschuwing wanneer het \ce{CO2}-gehalte hoger is dan 800 ppm.
+Cassandra werd in deze proof of concept via Docker gebruikt op een virtuele edge-server per lokaal. Hoewel dit geen echte IoT-hardware is, vormt het een goede benadering om de prestaties en partitionering van Cassandra in een edge-omgeving te testen.
 
 \subsection{Architectuur}
 
@@ -131,7 +183,7 @@ De volgende prestatiekenmerken worden geëvalueerd:
 \begin{itemize}
     \item \textbf{Doorvoersnelheid:} hoeveel metingen kunnen per seconde worden verwerkt?
     \item \textbf{Latency:} hoe snel worden data en waarschuwingen zichtbaar?
-    \item \textbf{Schaalbaarheid:} wat gebeurt er bij verdubbeling van het aantal lokalen?
+    \item \textbf{Verticale schaalbaarheid:} hoe reageert een database op meerdere gelijktijdige bewerkingen binnen één edge-node?
     \item \textbf{Fouttolerantie:} wat gebeurt er bij netwerk- of node-uitval?
     \item \textbf{Offline gedrag:} blijft Gebouw B operationeel zonder internet?
 \end{itemize}
@@ -187,73 +239,141 @@ De volledige code van het dashboard is beschikbaar via GitHub: \\
 \href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/frontend/src/components/LiveDashBoard.js}{LiveDashBoard.js}
 
 \subsection{Resultaten en Grafieken}
-De resultaten van de uitgevoerde tests met het script \href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/backend/POCTests.js}{POCTests.js} zijn hieronder weergegeven in grafieken. Elke grafiek toont hoe de verschillende database-opstellingen presteren op vlak van snelheid, betrouwbaarheid en schaalbaarheid.
+
+De resultaten van de uitgevoerde tests met het script \href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/backend/POCTests.js}{POCTests.js} zijn hieronder weergegeven in grafieken. Deze metingen tonen aan hoe goed de verschillende databases presteren op vlak van snelheid, betrouwbaarheid en schaalbaarheid in een edge-omgeving.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{Latency.png}
-	\caption{Latentie van Cassandra, MongoDB en TimescaleDB (hoe snel data wordt gelezen).}
+	\caption{Latentie van Cassandra, MongoDB en TimescaleDB (tijd om één record op te slaan).}
 	\label{fig:latency-comparison}
 \end{figure}
 
 \paragraph{Hoe werd latentie getest?}
-Latentie werd getest door 100 keer data op te vragen en te meten hoe lang dat gemiddeld duurde. Dit geeft aan hoe snel een database reageert op leesverzoeken.
+Voor deze test werd de functie \texttt{testRealtimeLatency()} gebruikt uit het script. Elke seconde werd een meetwaarde naar de database gestuurd. Daarna werd gemeten hoeveel milliseconden het duurde om die actie uit te voeren. Dit werd meerdere keren herhaald om een gemiddelde te berekenen.
+
+\begin{verbatim}
+async function testRealtimeLatency(client, queryFn, label, intervalMs = 1000, durationSeconds = 10) {
+  const records = Math.floor(durationSeconds * 1000 / intervalMs);
+  let totalLatency = 0;
+  for (let i = 0; i < records; i++) {
+    const start = performance.now();
+    await executeQuery(queryFn);
+    const end = performance.now();
+    totalLatency += (end - start);
+    await sleep(intervalMs);
+  }
+  const avgLatency = totalLatency / records;
+  testResults.push({ metric: "Realtime Latency", label, value: avgLatency });
+}
+\end{verbatim}
 
 \paragraph{Resultaat en analyse:}
-\textit{Cassandra met list-partitionering} had de laagste latentie (2.82 ms), gevolgd door \textit{MongoDB met list-sharding} (3.57 ms). \textit{TimescaleDB met range-partitionering} was trager (9.35 ms). Dat betekent dat Cassandra en MongoDB iets beter zijn voor toepassingen waar snelheid belangrijk is.
+\textit{Cassandra met list-partitionering} had de laagste latentie (2.82 ms), gevolgd door \textit{MongoDB met list-sharding} (3.57 ms). \textit{TimescaleDB met range-partitionering} was trager (9.35 ms). Dat betekent dat Cassandra en MongoDB iets sneller reageren op het opslaan van meetwaarden in real-time situaties.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{Throughput.png}
-	\caption{Throughput (hoeveel data per seconde) van de databases.}
+	\caption{Throughput: hoeveel meetwaarden per seconde werden opgeslagen.}
 	\label{fig:throughput-comparison}
 \end{figure}
 
 \paragraph{Hoe werd throughput getest?}
-Hierbij werd 100 keer data opgeslagen in elke database. Daarna werd berekend hoeveel records per seconde verwerkt werden. Dit toont hoe snel een database kan schrijven.
+De functie \texttt{testRealtimeThroughput()} werd hiervoor gebruikt. Tijdens deze test werd gedurende tien seconden om de 200 milliseconden een datapunt ingestuurd. Daarna werd berekend hoeveel meetpunten per seconde de database kon verwerken.
+
+\begin{verbatim}
+async function testRealtimeThroughput(client, queryFn, label, intervalMs = 200, durationSeconds = 10) {
+  let operationCount = 0;
+  const start = performance.now();
+  const endTime = start + durationSeconds * 1000;
+  while (performance.now() < endTime) {
+    await executeQuery(queryFn);
+    operationCount++;
+    await sleep(intervalMs);
+  }
+  const throughput = operationCount / ((performance.now() - start) / 1000);
+  testResults.push({ metric: "Realtime Throughput", label, value: throughput });
+}
+\end{verbatim}
 
 \paragraph{Resultaat en analyse:}
-De verschillen in throughput waren klein. \textit{TimescaleDB met list-partitionering} scoorde het best (4.86 records/s), gevolgd door \textit{TimescaleDB centraal} en \textit{MongoDB centraal}. Alle databases presteerden dus vrij goed en gelijkaardig op dit vlak.
+De verschillen tussen de databases waren klein. \textit{TimescaleDB met list-partitionering} scoorde het best (4.86 records/s), gevolgd door \textit{TimescaleDB centraal} en \textit{MongoDB centraal}. Alle databases konden dus op een vergelijkbare manier snelle data-invoer aan.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{Scalability.png}
-	\caption{Schaalbaarheid (hoe goed presteren bij grotere hoeveelheden data).}
+	\caption{Verticale schaalbaarheid: tijdsduur bij gelijktijdige bewerkingen binnen één database-instantie.}
 	\label{fig:scalability-comparison}
 \end{figure}
 
 \paragraph{Hoe werd schaalbaarheid getest?}
-Het aantal records werd stapsgewijs verhoogd (10, 50, 100) en de verwerkingstijd werd gemeten. Hoe minder vertraging er optrad bij grote hoeveelheden data, hoe beter de schaalbaarheid.
+De functie \texttt{testScalability()} simuleerde hoeveel tijd het kost om meerdere meetwaarden tegelijk op te slaan (bijvoorbeeld 10, 50 of 100 gelijktijdige inserts). Deze test evalueert de \textbf{verticale schaalbaarheid} van een database: hoe goed één node of container omgaat met piekbelasting door meerdere gelijktijdige schrijfacties.
+
+\begin{verbatim}
+async function testScalability(client, query, label, scaleFactors) {
+  for (const factor of scaleFactors) {
+    const concurrentOps = Array.from({ length: factor }, () => executeQuery(query));
+    const start = performance.now();
+    await Promise.all(concurrentOps);
+    const end = performance.now();
+    const duration = end - start;
+    testResults.push({ metric: "Scalability", label: `${label} (${factor} ops)`, value: duration });
+  }
+}
+\end{verbatim}
 
 \paragraph{Resultaat en analyse:}
-\textit{TimescaleDB met range-partitionering} behaalde de hoogste score van 5,67. Ook \textit{Cassandra met list-partitionering} (4,79) en \textit{TimescaleDB centraal} (4,97) presteerden goed. \textit{MongoDB centraal} had met 1,95 de laagste score, wat duidt op minder goede schaalbaarheid bij grote datasets.
+\textit{TimescaleDB met range-partitionering} presteerde het best bij hoge belasting (5.67). Daarna kwamen \textit{TimescaleDB centraal} (4.97) en \textit{Cassandra met list-partitionering} (4.79). \textit{MongoDB centraal} had de laagste score (1.95) en is dus minder geschikt bij grote hoeveelheden gelijktijdige data. Aangezien deze test op één node werd uitgevoerd, zeggen deze resultaten iets over de \textbf{verwerkingssnelheid bij lokale piekbelasting}, niet over het gedrag bij uitbreiding met meerdere nodes.
 
 \subsection{Consistentie}
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{Consistency.png}
-\caption{Consistentie (hoe snel nieuwe data zichtbaar wordt voor gebruikers).}
+\caption{Consistentie: hoeveel records onmiddellijk beschikbaar waren.}
 \label{fig:consistency-comparison}
 \end{figure}
 
 \paragraph{Hoe werd consistentie getest?}
-Nieuwe gegevens werden weggeschreven en onmiddellijk opgehaald. Het aantal direct beschikbare records werd gemeten. Een database waarbij data meteen zichtbaar is, wordt als consistent beschouwd.
+De functie \texttt{testConsistency()} schreef tien records weg met elk een andere timestamp. Daarna werd om de paar milliseconden gecontroleerd hoeveel van die records zichtbaar waren in de database.
+
+\begin{verbatim}
+async function testConsistency(client, queryFn, label) {
+  const baseTimestamp = new Date();
+  const timestamps = [...Array(10)].map((_, i) => new Date(baseTimestamp.getTime() + i * 1000));
+  await Promise.all(timestamps.map(ts => queryFn(ts)));
+  const waitIntervals = [0, 500, 1000, 2000];
+  for (const delay of waitIntervals) {
+    await sleep(delay);
+    // tel aantal zichtbare records op basis van timestamp
+  }
+}
+\end{verbatim}
 
 \paragraph{Resultaat en analyse:}
-Alle databases scoorden 10/10, wat betekent dat elke nieuwe record direct beschikbaar was.
+Alle databases behaalden een score van 10/10. Dat wil zeggen dat alle ingevoerde gegevens direct beschikbaar waren bij het opvragen. Dit is belangrijk voor toepassingen waar nieuwe metingen meteen zichtbaar moeten zijn.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Fault_Tolerance.png}
-    \caption{Fouttolerantie (hoe goed een database omgaat met fouten of verbindingsproblemen).}
+    \caption{Fouttolerantie: werking na onderbreking van de verbinding.}
     \label{fig:fault-tolerance-comparison}
 \end{figure}
 
 \paragraph{Hoe werd fouttolerantie getest?}
-Tijdens deze test werd de databaseverbinding tijdelijk onderbroken. Daarna werd getest of het systeem zich automatisch herstelde en correct verder werkte.
+Tijdens deze test werd de verbinding met de database handmatig verbroken (via shutdown of disconnect). Daarna werd opnieuw verbonden en gekeken of het systeem correct verder werkte. Hiervoor werd \texttt{testFaultTolerance()} gebruikt.
+
+\begin{verbatim}
+async function testFaultTolerance(client, label, createNewClient) {
+  await client.shutdown();
+  client = createNewClient();
+  await client.connect();
+  testResults.push({ metric: "Fault Tolerance", label, value: "Success" });
+}
+\end{verbatim}
 
 \paragraph{Resultaat en analyse:}
-Alle databases haalden een score van 1.00. Ze konden dus allemaal goed herstellen van de fout en er ging geen data verloren. Dat is belangrijk in een echte IoT-omgeving waar netwerkproblemen kunnen voorkomen.
+Alle databases slaagden in deze test. Ze konden zonder fout verderwerken na een tijdelijke storing. Dit toont aan dat de systemen robuust zijn en goed om kunnen gaan met netwerkproblemen, wat belangrijk is in een edge-context.
 
 \subsection{Testresultaten en Tabeloverzicht}
 Naast de grafieken biedt deze tabel een samenvatting van de testresultaten.
@@ -275,7 +395,7 @@ Naast de grafieken biedt deze tabel een samenvatting van de testresultaten.
         MongoDB (List-Based Sharding) [Gebouw B]          & 1                       & 2.04                 & 3.57                      & 4.78                         & 10                   \\ \hline
     \end{tabular}
     }
-    \caption{Vergelijking van prestaties tussen Cassandra, MongoDB en TimescaleDB in centrale en edge (Gebouw B) configuraties.}
+    \caption{Vergelijking van prestaties tussen Cassandra, MongoDB en TimescaleDB in centrale (Gebouw A) en edge (Gebouw B) configuraties.}
     \label{tab:test-results}
 \end{table}
 
@@ -283,7 +403,7 @@ Naast de grafieken biedt deze tabel een samenvatting van de testresultaten.
 De evaluatie van de databases is gebaseerd op een gewogen scoresysteem (\href{https://github.com/WoutVC/bachelorproef2024/blob/main/proof_of_concept/backend/analyzeResults.js}{analyzeResults.js}), waarbij de volgende stappen worden uitgevoerd:
 
 \paragraph{Consolidatie van resultaten:} 
-Voor elke database worden de resultaten per meetwaarde samengevoegd. Voor meetwaarden zoals schaalbaarheid (Scalability) en fouttolerantie (Fault Tolerance), waarvoor meerdere metingen beschikbaar zijn, wordt het gemiddelde berekend.
+Voor elke database worden de resultaten per meetwaarde samengevoegd. Voor meetwaarden zoals schaalbaarheid (Scalability), waarvoor meerdere metingen beschikbaar zijn, wordt het gemiddelde berekend.
 
 \paragraph{Normalisatie van scores:} 
 De numerieke scores voor elke meetwaarde worden genormaliseerd naar een schaal van 0 tot 1 op basis van het minimum en maximum onder alle databases:
@@ -325,7 +445,7 @@ Op basis van deze berekening ziet de top 3 er als volgt uit:
 
 \begin{itemize}
     \item \textbf{TimescaleDB (Range-Based Partitioning) [Gebouw B]} Score: \textbf{7.76}  
-    Deze configuratie scoorde het best. Vooral op het vlak van schaalbaarheid en snelheid presteert deze database zeer goed, wat ze ideaal maakt voor realtime toepassingen in een edge-omgeving.
+    Deze configuratie scoorde het best. Vooral op het vlak van schaalbaarheid en snelheid presteert deze database zeer goed wat ze ideaal maakt voor realtime toepassingen in een edge-omgeving.
 
     \item \textbf{Cassandra (List-Based Partitioning) [Gebouw B]} Score: \textbf{7.74}  
     Cassandra met list-based partitioning presteerde het beste op vlak van latency. Dankzij zijn combinatie van snelheid, fouttolerantie en goede prestaties is dit een sterke keuze voor realtime monitoring aan de rand van het netwerk.
@@ -336,4 +456,4 @@ Op basis van deze berekening ziet de top 3 er als volgt uit:
 
 \paragraph{Conclusie:}
 De testresultaten tonen aan dat databases in de edge-omgeving (Gebouw B) met een goede partitionering beter presteren dan gecentraliseerde databases.  
-Binnen de context van de HoGent-use case blijkt \textbf{TimescaleDB met range-based partitioning} de meest geschikte keuze. Deze database biedt een goede balans tussen schaalbaarheid, snelheid en betrouwbaarheid, wat belangrijke eigenschappen zijn voor een systeem dat voortdurend grote hoeveelheden sensordata moet verwerken.
+Binnen de context van de HoGent-use case blijkt \textbf{TimescaleDB met range-based partitioning} de meest geschikte keuze. Deze database biedt een goede balans tussen schaalbaarheid, snelheid en betrouwbaarheid wat belangrijke eigenschappen zijn voor een systeem dat voortdurend grote hoeveelheden sensordata moet verwerken.
