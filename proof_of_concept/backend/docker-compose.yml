@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # === CENTRALIZED (Gebouw A) ===
   cassandra_centralized:
@@ -10,8 +8,8 @@ services:
     volumes:
       - cassandra_central_data:/var/lib/cassandra
     environment:
-      MAX_HEAP_SIZE: 512M
-      HEAP_NEWSIZE: 100M
+      MAX_HEAP_SIZE: 1024M
+      HEAP_NEWSIZE: 200M
     networks:
       - central_net
     restart: unless-stopped
@@ -20,6 +18,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    cpus: 1.0
+    profiles: ["default", "cassandra", "central"]
 
   mongodb_centralized:
     image: mongo:4.4
@@ -36,6 +36,9 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    mem_limit: 1024m
+    cpus: 1.0
+    profiles: ["default", "mongodb", "central"]
 
   timescaledb_centralized:
     image: timescale/timescaledb:latest-pg14
@@ -56,6 +59,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 1024m
+    cpus: 1.0
+    profiles: ["default", "timescaledb", "central"]
 
   # === EDGE (Gebouw B) ===
   cassandra_list:
@@ -76,6 +82,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    cpus: 1.0
+    profiles: ["default", "cassandra", "edge"]
 
   cassandra_range:
     image: cassandra:latest
@@ -92,6 +100,8 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    cpus: 1.0
+    profiles: ["default", "cassandra", "edge"]
 
   configsvr:
     image: mongo:4.4
@@ -102,6 +112,9 @@ services:
     networks:
       - edge_net
     restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "mongodb", "edge"]
 
   shard1:
     image: mongo:4.4
@@ -112,6 +125,9 @@ services:
     networks:
       - edge_net
     restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "mongodb", "edge"]
 
   shard2:
     image: mongo:4.4
@@ -122,6 +138,19 @@ services:
     networks:
       - edge_net
     restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "mongodb", "edge"]
+
+  mongo-init:
+    image: mongo:4.4
+    container_name: mongo-init
+    volumes:
+      - ./mongo-init/init-replica.sh:/init-replica.sh
+    entrypoint: [ "bash", "/init-replica.sh" ]
+    networks:
+      - edge_net
+    profiles: ["default", "init"]
 
   mongos:
     image: mongo:4.4
@@ -141,6 +170,9 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "mongodb", "edge"]
 
   configsvr2:
     image: mongo:4.4
@@ -153,6 +185,9 @@ services:
     networks:
       - edge_net
     restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "mongodb", "mongos", "edge"]
 
   shard3:
     image: mongo:4.4
@@ -165,6 +200,9 @@ services:
     networks:
       - edge_net
     restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "mongodb", "edge"]
 
   shard4:
     image: mongo:4.4
@@ -177,6 +215,9 @@ services:
     networks:
       - edge_net
     restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "mongodb", "edge"]
 
   mongos2:
     image: mongo:4.4
@@ -196,6 +237,9 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "mongodb", "mongos", "edge"]
 
   timescaledb_range:
     image: timescale/timescaledb:latest-pg14
@@ -216,6 +260,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "timescaledb", "edge"]
 
   timescaledb_list:
     image: timescale/timescaledb:latest-pg14
@@ -236,7 +283,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
+    mem_limit: 512m
+    cpus: 1.0
+    profiles: ["default", "timescaledb", "edge"]
 
   backend:
     build:
@@ -245,41 +294,12 @@ services:
     container_name: backend-api
     ports:
       - 5000:80
-    depends_on:
-      cassandra_centralized:
-        condition: service_healthy
-      cassandra_list:
-        condition: service_healthy
-      cassandra_range:
-        condition: service_healthy
-      mongos:
-        condition: service_healthy
-      mongos2:
-        condition: service_healthy
-      timescaledb_centralized:
-        condition: service_healthy
-      timescaledb_range:
-        condition: service_healthy
-      timescaledb_list:
-        condition: service_healthy
+
     networks:
       - central_net
       - edge_net
     restart: unless-stopped
-
-  mongo-init:
-    image: mongo:4.4
-    container_name: mongo-init
-    depends_on:
-      mongos:
-        condition: service_healthy
-      mongos2:
-        condition: service_healthy
-    volumes:
-      - ./mongo-init/init-replica.sh:/init-replica.sh
-    entrypoint: [ "bash", "/init-replica.sh" ]
-    networks:
-      - edge_net
+    profiles: ["default", "backend", "cassandra", "mongodb", "timescaledb"]
 
 volumes:
   cassandra_data:

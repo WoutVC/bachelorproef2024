@@ -82,8 +82,10 @@ function getRandomRoom(building) {
   return rooms[randomIndex];
 }
 
-function generateRandomData(building, index = 0, prevData = null) {
+function generateRandomData(building, index = 0, prevData = null, fixedRoom = null) {
   const timestamp = new Date(START_TIME.getTime() + index * 5000);
+
+  const room = fixedRoom ?? getRandomRoom(building);
 
   function varyValue(prev, min, max, maxDelta) {
     if (prev === null) {
@@ -115,7 +117,7 @@ function generateRandomData(building, index = 0, prevData = null) {
     co2,
     pressure,
     building,
-    room: getRandomRoom(building),
+    room,
   };
 }
 
@@ -131,6 +133,15 @@ function generateFixedData(i) {
     room: getRandomRoom(building),
   };
 }
+
+const edgeRooms = {
+  mongo_list: 'B101',
+  mongo_range: 'B102',
+  cassandra_list: 'B103',
+  cassandra_range: 'B104',
+  timescale_list: 'B105',
+  timescale_range: 'B106',
+};
 
 async function clearAllData() {
   await Promise.all([
@@ -183,16 +194,22 @@ async function insertIntoPostgres(client, data) {
 async function insertRandomBulk() {
   console.log(`Start bulk insert RANDOM data van ${BULK_SIZE} records per database...`);
   for (let i = 0; i < BULK_SIZE; i++) {
-    const dataEdge = generateRandomData('GebouwB', i);
+    const dataEdgeList = generateRandomData('GebouwB', i, null, edgeRooms.mongo_list);
+    const dataEdgeRange = generateRandomData('GebouwB', i, null, edgeRooms.mongo_range);
+    const dataEdgeCassList = generateRandomData('GebouwB', i, null, edgeRooms.cassandra_list);
+    const dataEdgeCassRange = generateRandomData('GebouwB', i, null, edgeRooms.cassandra_range);
+    const dataEdgePgList = generateRandomData('GebouwB', i, null, edgeRooms.timescale_list);
+    const dataEdgePgRange = generateRandomData('GebouwB', i, null, edgeRooms.timescale_range);
+
     const dataCentral = generateRandomData('GebouwA', i);
     await Promise.all([
-      insertIntoCassandra(cassandraClientsEdge.list, dataEdge),
-      insertIntoMongo(mongoDbEdgeList, dataEdge),
-      insertIntoPostgres(pgClientsEdge.list, dataEdge),
+      insertIntoCassandra(cassandraClientsEdge.list, dataEdgeCassList),
+      insertIntoMongo(mongoDbEdgeList, dataEdgeList),
+      insertIntoPostgres(pgClientsEdge.list, dataEdgePgList),
 
-      insertIntoCassandra(cassandraClientsEdge.range, dataEdge),
-      insertIntoMongo(mongoDbEdgeRange, dataEdge),
-      insertIntoPostgres(pgClientsEdge.range, dataEdge),
+      insertIntoCassandra(cassandraClientsEdge.range, dataEdgeCassRange),
+      insertIntoMongo(mongoDbEdgeRange, dataEdgeRange),
+      insertIntoPostgres(pgClientsEdge.range, dataEdgePgRange),
 
       insertIntoCassandra(cassClientCentral, dataCentral),
       insertIntoMongo(mongoDbCentral, dataCentral),

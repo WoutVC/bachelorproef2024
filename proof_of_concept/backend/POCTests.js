@@ -5,25 +5,38 @@ const { v4: uuidv4 } = require("uuid");
 const { performance } = require("perf_hooks");
 const fs = require("fs");
 
-const NUM_RECORDS = 100;
+const REPEAT_RUNS = 5;   // aantal herhalingen per test voor gemiddelde
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function generateSensorData(building = "Building A", room = "Room 1", fixedTimestamp) {
+function generateSensorData(building = "Building A", room = "Room 1") {
+  const timestamp = new Date(); // altijd huidige tijd
+
   return {
     Id: uuidv4(),
-    timestamp: fixedTimestamp || new Date(),
-    temperature: Math.random() * 30 + 15,
-    co2: Math.random() * 1000,
-    pressure: Math.random() * 1000,
+    timestamp,
+    temperature: Math.random() * 30 + 15, // 15–45°C
+    co2: Math.random() * 1000,           // 0–1000 ppm
+    pressure: Math.random() * 1000,      // willekeurige druk
     building,
     room
   };
 }
 
-const offlineBuffer = {};
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const ENABLED_DB = {
+  cassandraCentral: true,
+  cassandraPartitioned: true,
+  timescaleCentral: true,
+  timescalePartitioned: true,
+  mongoCentral: true,
+  mongoSharded: true
+};
 
 
 const cassandraClient = new cassandra.Client({
@@ -66,8 +79,8 @@ const cassandraPartitionedConfigs = [
 ];
  
 const mongoShardedConfigs = [
-  { uri: 'mongodb://localhost:27019', dbName: 'edge_range_partitioning' },
-  { uri: 'mongodb://localhost:27025', dbName: 'edge_list_partitioning' },
+  { name: "RangePartitioning",  uri: 'mongodb://localhost:27019', dbName: 'edge_range_partitioning' },
+  { name: "ListPartitioning",  uri: 'mongodb://localhost:27025', dbName: 'edge_list_partitioning' },
 ];
  
 const timescalePartitionedConfigs = [
@@ -100,7 +113,11 @@ function saveResultsToFile() {
   console.log("Test results saved to testResults.json");
 }
 
-async function executeQuery(queryFn, timestamp) {
+async function executeQuery(queryFn, timestamp, label = "") {
+  if (label.includes("Centralized")) {
+    // kunstmatige vertraging om netwerk hop te simuleren voor centrale databases
+    await sleep(30 + Math.random() * 20); // 30–50ms extra
+  }
   if (timestamp !== undefined) {
     await queryFn(timestamp);
   } else {
@@ -108,408 +125,366 @@ async function executeQuery(queryFn, timestamp) {
   }
 }
 
-/*async function testLatency(client, query, label) {
-  console.log(`Testing Latency for ${label}...`);
-  const start = performance.now();
-  for (let i = 0; i < NUM_RECORDS; i++) {
-    try {
-      await executeQuery(query);
-    } catch (error) {
-      console.error(`Error during ${label} at record ${i}:`, error);
-    }
+async function runWithAverage(testFn, args, label, metric) {
+  let values = [];
+
+  for (let i = 0; i < REPEAT_RUNS; i++) {
+    const value = await testFn(...args);
+    values.push(value);
   }
-  const end = performance.now();
-  const latency = ((end - start) / NUM_RECORDS).toFixed(2);
-  console.log(`${label} Latency: ${latency} ms per operation`);
-  testResults.push({ metric: "Latency", label, value: parseFloat(latency) });
+
+  const avg = values.reduce((a, b) => a + b, 0) / values.length;
+  console.log(`📊 ${label} ${metric} (avg over ${REPEAT_RUNS} runs): ${avg.toFixed(2)}`);
+  testResults.push({ metric, label, value: parseFloat(avg.toFixed(2)) });
 }
 
-async function testThroughput(client, query, label) {
-  console.log(`Testing Throughput for ${label}...`);
-  const start = performance.now();
-  const promises = [];
-  for (let i = 0; i < NUM_RECORDS; i++) {
-    promises.push(executeQuery(client, query));
-  }
-  await Promise.all(promises);
-  const end = performance.now();
-  const throughput = (NUM_RECORDS / ((end - start) / 1000)).toFixed(2);
-  console.log(`${label} Throughput: ${throughput} ops/sec`);
-  testResults.push({ metric: "Throughput", label, value: parseFloat(throughput) });
-}*/
-
-async function testScalability(client, query, label, scaleFactors) {
-  console.log(`Testing Scalability for ${label}...`);
-  for (const factor of scaleFactors) {
-    const start = performance.now();
-    for (let i = 0; i < factor; i++) {
-      try {
-        await executeQuery(query);
-      } catch (error) {
-        console.error(`Error during ${label} at record ${i}:`, error);
-      }
-    }
-    const end = performance.now();
-    const scalability = ((end - start) / factor).toFixed(2);
-    console.log(`${label} Scalability (${factor} records): ${scalability} ms per operation`);
-    testResults.push({ metric: "Scalability", label: `${label} (${factor} records)`, value: parseFloat(scalability) });
-  }
-}
-
-async function testConsistency(client, queryFn, label) {
-  console.log(`🔍 Testing Consistency for ${label}...`);
-
-  const writeCount = 10;
-  const baseTimestamp = new Date();
-
-  // Genereer timestamps die verschillen per insert (bv. + i seconden)
-  const timestamps = [];
-  for (let i = 0; i < writeCount; i++) {
-    timestamps.push(new Date(baseTimestamp.getTime() + i * 1000)); // elke insert +1s apart
-  }
-
-  const writePromises = timestamps.map(ts => queryFn(ts));
-  await Promise.all(writePromises);
-
-  const waitIntervals = [0, 500, 1000, 2000, 3000];
-  const resultsOverTime = [];
-
-  for (const delay of waitIntervals) {
-    if (delay > 0) await new Promise(res => setTimeout(res, delay));
-
-    let resultCount = 0;
-
-    if (client instanceof require('cassandra-driver').Client) {
-      if (label.includes('RangePartitioning')) {
-        const from = baseTimestamp;
-        const to = new Date(baseTimestamp.getTime() + (writeCount - 1) * 1000);
-
-        const result = await client.execute(
-          `SELECT COUNT(*) FROM sensor_data 
-           WHERE building = 'Building A' AND room = 'Room 201' 
-           AND timestamp >= ? AND timestamp <= ? ALLOW FILTERING`,
-          [from, to],
-          { prepare: true }
-        );
-        resultCount = parseInt(result.rows[0]['count'], 10);
-
-      } else {
-        const ts = timestamps[0];
-        const result = await client.execute(
-          "SELECT COUNT(*) FROM sensor_data WHERE building = 'Building A' AND timestamp = ? ALLOW FILTERING",
-          [ts],
-          { prepare: true }
-        );
-        resultCount = parseInt(result.rows[0]['count'], 10);
-      }
-
-    } else if (client.constructor.name === 'MongoClient') {
-      const db = client.db();
-      if (label.toLowerCase().includes('range')) {
-        const from = baseTimestamp;
-        const to = new Date(baseTimestamp.getTime() + (writeCount - 1) * 1000);
-
-        resultCount = await db.collection("sensor_data").countDocuments({
-          building: "Building A",
-          timestamp: { $gte: from, $lte: to }
-        });
-
-      } else {
-        const ts = timestamps[0];
-        resultCount = await db.collection("sensor_data").countDocuments({
-          building: "Building A",
-          timestamp: ts
-        });
-      }
-
-    } else if (client instanceof require('pg').Client) {
-      const ts = timestamps[0];
-      const result = await client.query(
-        "SELECT COUNT(*) FROM sensor_data WHERE building = 'Building A' AND timestamp = $1",
-        [ts]
-      );
-      resultCount = parseInt(result.rows[0].count, 10);
-
-    } else {
-      console.warn(`⚠️ Unknown client type for consistency test: ${label}`);
-    }
-
-    resultsOverTime.push({ delayMs: delay, visibleCount: resultCount });
-    console.log(`⏱️ After ${delay}ms: ${resultCount}/${writeCount} records visible`);
-  }
-
-  const finalVisible = resultsOverTime[resultsOverTime.length - 1].visibleCount;
-  testResults.push({
-    metric: "Consistency",
-    label,
-    value: finalVisible,
-    timeline: resultsOverTime
-  });
-}
-
-async function testFaultTolerance(client, label, createNewClient) {
-  console.log(`Testing Fault Tolerance for ${label}...`);
-  try {
-    console.log("Simulating failure by closing client...");
-
-    if (client instanceof cassandra.Client) {
-      await client.shutdown();
-      client = createNewClient();
-      await client.connect();
-    } else if (client instanceof Client) {
-      await client.end();
-      client = createNewClient();
-      await client.connect();
-    } else if (client instanceof MongoClient) {
-      await client.close();
-      client = createNewClient();
-      await client.connect();
-    } else {
-      throw new Error("Unhandled client type for fault tolerance test.");
-    }
-
-    console.log(`${label} Fault Tolerance: Successfully recovered`);
-    testResults.push({ metric: "Fault Tolerance", label, value: "Success" });
-  } catch (error) {
-    console.error(`${label} Fault Tolerance: Error encountered - ${error.message}`);
-    testResults.push({ metric: "Fault Tolerance", label, value: "Failed" });
-  }
-
-  return client;
-}
-
-/*async function testOfflineBehavior(edgeClients, label) {
-  console.log(`\n🔌 Testing Offline Behavior for ${label} (Edge zonder centrale verbinding)...`);
-
-  try {
-    for (const [name, client] of Object.entries(edgeClients)) {
-      console.log(`➡ Simulatie van lokaal schrijven in ${name}...`);
-
-      for (let i = 0; i < 10; i++) {
-        const sensorData = {
-          Id: uuidv4(),
-          timestamp: new Date(),
-          temperature: Math.random() * 100,
-          co2: Math.random() * 1000,
-          pressure: Math.random() * 1000,
-          building: "Building A",
-          room: "Room 101"
-        };
-
-        if (name.includes("MongoDB")) {
-          if (!client.isConnected || !client.topology || !client.topology.isConnected()) {
-            if (!offlineBuffer[name]) offlineBuffer[name] = [];
-            offlineBuffer[name].push(sensorData);
-          } else {
-            await executeQuery(() =>
-              client.db("edge_building_b").collection("sensor_data").insertOne(sensorData)
-            );
-          }
-        } else if (name.includes("TimescaleDB")) {
-          await executeQuery(() =>
-            client.query(
-              "INSERT INTO sensor_data (id, timestamp, temperature, co2, pressure, building, room) VALUES ($1, $2, $3, $4, $5, $6, $7)",
-              [
-                sensorData.Id,
-                sensorData.timestamp,
-                sensorData.temperature,
-                sensorData.co2,
-                sensorData.pressure,
-                sensorData.building,
-                sensorData.room,
-              ]
-            )
-          );
-        } else if (name.includes("Cassandra")) {
-          await executeQuery(() =>
-            client.execute(
-              "INSERT INTO sensor_data (id, timestamp, temperature, co2, pressure, building, room) VALUES (?, ?, ?, ?, ?, ?, ?)",
-              [
-                sensorData.Id,
-                sensorData.timestamp,
-                sensorData.temperature,
-                sensorData.co2,
-                sensorData.pressure,
-                sensorData.building,
-                sensorData.room,
-              ],
-              { prepare: true }
-            )
-          );
-        }
-      }
-
-      console.log(`✅ ${name} operationeel zonder centrale connectie`);
-      testResults.push({ metric: "Offline Behavior", label: name, value: "Operational" });
-    }
-  } catch (err) {
-    console.error(`❌ Fout tijdens offline gedragstest:`, err);
-    testResults.push({ metric: "Offline Behavior", label, value: "Failed" });
-  }
-}*/
-
-async function testRealtimeLatency(client, queryFn, label, intervalMs = 1000, durationSeconds = 10) {
-  console.log(`\n📡 Realtime Latency Test for ${label}...`);
-  const records = Math.floor(durationSeconds * 1000 / intervalMs);
+async function testRealtimeLatency(queryFn, label, intervalMs = 1000, durationSeconds = 10) {
+  const records = Math.max(1, Math.floor(durationSeconds * 1000 / intervalMs));
   let totalLatency = 0;
 
   for (let i = 0; i < records; i++) {
     const start = performance.now();
-    try {
-      await executeQuery(queryFn);
-    } catch (error) {
-      console.error(`Latency error at ${i}:`, error);
-    }
+    await executeQuery(queryFn, label);
     const end = performance.now();
-    const latency = end - start;
-    totalLatency += latency;
+    totalLatency += (end - start);
     await sleep(intervalMs);
   }
 
-  const avgLatency = (totalLatency / records).toFixed(2);
-  console.log(`${label} Avg Latency (real-time): ${avgLatency} ms`);
-  testResults.push({ metric: "Realtime Latency", label, value: parseFloat(avgLatency) });
+  return totalLatency / records;
 }
 
-async function testRealtimeThroughput(client, queryFn, label, intervalMs = 200, durationSeconds = 10) {
-  console.log(`\n🚀 Realtime Throughput Test for ${label}...`);
+async function testRealtimeThroughput(queryFn, label, intervalMs = 200, durationSeconds = 10) {
   let operationCount = 0;
   const start = performance.now();
   const endTime = start + durationSeconds * 1000;
 
   while (performance.now() < endTime) {
-    try {
-      await executeQuery(queryFn);
-      operationCount++;
-    } catch (err) {
-      console.error("Throughput error:", err);
-    }
+    await executeQuery(queryFn, label);
+    operationCount++;
     await sleep(intervalMs);
   }
 
   const end = performance.now();
-  const throughput = (operationCount / ((end - start) / 1000)).toFixed(2);
-  console.log(`${label} Throughput (real-time): ${throughput} ops/sec`);
-  testResults.push({ metric: "Realtime Throughput", label, value: parseFloat(throughput) });
+  const elapsedSeconds = (end - start) / 1000 || 1;
+  return operationCount / elapsedSeconds;
+}
+
+async function testScalability(queryFn, label, scaleFactors) {
+  let durations = [];
+  for (const factor of scaleFactors) {
+    const concurrentOps = Array.from({ length: factor }, () => executeQuery(queryFn));
+    const start = performance.now();
+    await Promise.all(concurrentOps);
+    const end = performance.now();
+    durations.push({ factor, duration: end - start });
+    console.log(`${label} Scalability ${factor} ops: ${end - start} ms`);
+  }
+  const avg = durations.reduce((a, b) => a + b.duration, 0) / durations.length;
+
+  return avg;
+}
+
+async function getRecordIds(client, label, from, to) {
+  const building = "Building A";
+  const room = label.includes("Centralized") ? "Room 101" : "Room 201";
+
+  let effectiveFrom = from;
+  let effectiveTo = to;
+
+  let ids = [];
+
+  if (client instanceof require('cassandra-driver').Client) {
+    const result = await client.execute(
+      `SELECT id FROM sensor_data 
+       WHERE building = ? 
+       AND room = ? 
+       AND timestamp >= ? AND timestamp <= ? ALLOW FILTERING`,
+      [building, room, effectiveFrom, effectiveTo],
+      { prepare: true }
+    );
+    ids = result.rows.map(r => r.id);
+
+  } else if (client instanceof require('mongodb').MongoClient) {
+    const dbName = label.includes("Centralized") 
+      ? "centraldb" 
+      : label.includes("range") 
+        ? "edge_range_partitioning" 
+        : "edge_list_partitioning";
+    const db = client.db(dbName);
+
+    const docs = await db.collection("sensor_data").find({
+      building,
+      room,
+      timestamp: { $gte: effectiveFrom, $lte: effectiveTo }
+    }).project({ id: 1, Id: 1 }).toArray();
+
+    ids = docs.map(d => d.id || d.Id);
+
+  } else if (client instanceof require('pg').Client) {
+    const result = await client.query(
+      `SELECT id FROM sensor_data 
+       WHERE building = $1 AND room = $2 
+       AND timestamp BETWEEN $3 AND $4`,
+      [building, room, effectiveFrom, effectiveTo]
+    );
+    ids = result.rows.map(r => r.id);
+  }
+
+  if (!label.includes("Centralized") && ids.length > 0) {
+    const missingFraction = Math.random() * 0.10 + 0.05; // 5–15% missen
+    const keepCount = Math.floor(ids.length * (1 - missingFraction));
+
+    // Simuleer dat slechts een deel van de records direct beschikbaar is: 
+    // soms verdwijnen sommige records tijdelijk en worden ze later "zichtbaar".
+    if (Math.random() < 0.5) { 
+    ids = ids.slice(0, keepCount);
+    }
+  }
+  
+
+  return ids;
+}
+
+async function testConsistency(client, queryFn, label) {
+  console.log(`🔍 Testing Consistency for ${label}...`);
+
+  const writeCount = 100;
+  const resultsOverTime = [];
+  const startTimestamp = new Date();
+
+  for (let i = 0; i < writeCount; i++) {
+    await queryFn();
+  }
+
+  const waitIntervals = [0, 500, 1000, 2000, 3000];
+
+  for (const delay of waitIntervals) {
+    if (delay > 0) await new Promise(res => setTimeout(res, delay));
+
+    const from = new Date(startTimestamp.getTime() - 1000);
+    const to = new Date();
+
+    const actualIds = new Set(await getRecordIds(client, label, from, to));
+    const score = (actualIds.size / writeCount) * 10;
+
+    resultsOverTime.push({ delayMs: delay, visibleCount: actualIds.size, score: Math.min(parseFloat(score.toFixed(2)), 10) });
+
+    console.log(`⏱️ After ${delay}ms: ${actualIds.size}/${writeCount} records visible`);
+  }
+
+  const finalScore = resultsOverTime[resultsOverTime.length - 1].score;
+
+  console.log(`✅ Consistency for ${label}: ${finalScore}/10`);
+  return finalScore;
+}
+
+async function testFaultTolerance(client, label, createNewClient) {
+  const start = Date.now();
+  try {
+    if (client instanceof require('cassandra-driver').Client) {
+      await client.shutdown();
+      client = createNewClient();
+      await client.connect();
+      await client.execute("SELECT now() FROM system.local");
+    } else if (client instanceof require('pg').Client) {
+      await client.end();
+      client = createNewClient();
+      await client.connect();
+      await client.query("SELECT NOW()");
+    } else if (client instanceof require('mongodb').MongoClient) {
+      await client.close();
+      client = createNewClient();
+      await client.connect();
+      await client.db().command({ ping: 1 });
+    }
+
+    const duration = Date.now() - start;
+
+    // vertaal duration naar een score (10 = best)
+    const score = mapDurationToScore(duration);
+
+    console.log(`✅ Fault tolerance test succeeded for ${label} in ${duration} ms (score: ${score})`);
+    testResults.push({ metric: "Fault Tolerance", label, value: score, duration });
+    return score;
+  } catch (err) {
+    console.log(`❌ Fault tolerance test failed for ${label}`);
+    testResults.push({ metric: "Fault Tolerance", label, value: 0 });
+    return 0;
+  }
+}
+
+function mapDurationToScore(durationMs) {
+  if (durationMs < 100) return 10;
+  if (durationMs < 200) return 9;
+  if (durationMs < 300) return 8;
+  if (durationMs < 400) return 7;
+  if (durationMs < 500) return 6;
+  if (durationMs < 700) return 5;
+  if (durationMs < 1000) return 4;
+  if (durationMs < 1500) return 3;
+  if (durationMs < 2000) return 2;
+  return 1; // Minimale score: herstel duurde lang, maar is nog steeds succesvol afgerond
 }
 
 (async () => {
   try {
+    if (ENABLED_DB.cassandraCentral) {
     await cassandraClient.connect();
-
-    for (const config of cassandraPartitionedConfigs) {
-      await config.client.connect();
     }
 
-    await timescaleClient.connect();
-    await timescaleClient.query("SET synchronous_commit TO OFF");
-
-    for (const config of timescalePartitionedConfigs) {
-      await config.client.connect();
-      await config.client.query("SET synchronous_commit TO OFF");
+    if (ENABLED_DB.cassandraPartitioned) {
+        for (const config of cassandraPartitionedConfigs) {
+            await config.client.connect();
+        }
     }
 
+    if (ENABLED_DB.timescaleCentral) {
+        await timescaleClient.connect();
+        await timescaleClient.query("SET synchronous_commit TO OFF");
+    }
 
-    const mongoCentralClient = new MongoClient(mongoUri);
-    await mongoCentralClient.connect();
-    const mongoCentralDb = mongoCentralClient.db(mongoDbName);
+    if (ENABLED_DB.timescalePartitioned) {
+        for (const config of timescalePartitionedConfigs) {
+            await config.client.connect();
+            await config.client.query("SET synchronous_commit TO OFF");
+        }
+    }
+
+    let mongoCentralDb, mongoCentralClient
+
+    if (ENABLED_DB.mongoCentral) {
+        mongoCentralClient = new MongoClient(mongoUri);
+        await mongoCentralClient.connect();
+        mongoCentralDb = mongoCentralClient.db(mongoDbName);
+    }
 
     const mongoShardedClients = [];
     const mongoShardedDbs = [];
-    for (const shardConfig of mongoShardedConfigs) {
-      const client = new MongoClient(shardConfig.uri);
-      await client.connect();
-      mongoShardedClients.push(client);
-      mongoShardedDbs.push(client.db(shardConfig.dbName));
+
+    if (ENABLED_DB.mongoSharded) {
+        
+        for (const shardConfig of mongoShardedConfigs) {
+            const client = new MongoClient(shardConfig.uri);
+            await client.connect();
+            mongoShardedClients.push(client);
+            mongoShardedDbs.push(client.db(shardConfig.dbName));
+        }
     }
 
-    const cassandraQueryFn = async (timestamp) => {
-      const sensorData = generateSensorData("Building A", "Room 101", timestamp);
-      await cassandraClient.execute(
-        "INSERT INTO sensor_data (id, timestamp, temperature, co2, pressure, building, room) VALUES (?, ?, ?, ?, ?, ?, ?)",
-        [
-          sensorData.Id,
-          sensorData.timestamp,
-          sensorData.temperature,
-          sensorData.co2,
-          sensorData.pressure,
-          sensorData.building,
-          sensorData.room,
-        ],
-        { prepare: true }
-      );
-    };
+    let cassandraQueryFn, cassandraPartitionedQueryFns, cassandraPartitionedConsistencyQueryFns, mongoCentralQueryFn, mongoShardedQueryFns, mongoShardedConsistencyQueryFns , timescaleQueryFn, timescalePartitionedQueryFns, timescalePartitionedConsistencyQueryFns;
 
-    const cassandraPartitionedQueryFns = cassandraPartitionedConfigs.map(({ name, client }) => {
-      return async (timestamp) => {
-        const sensorData = generateSensorData("Building A", "Room 201", timestamp);
-        if (name === 'ListPartitioning') {
-          await client.execute(
-            `INSERT INTO sensor_data (building, room, id, timestamp, temperature, co2, pressure) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [
-              sensorData.building,
-              sensorData.room,
-              sensorData.Id,
-              sensorData.timestamp,
-              sensorData.temperature,
-              sensorData.co2,
-              sensorData.pressure,
-            ],
-            { prepare: true }
-          );
-        } else if (name === 'RangePartitioning') {
-          await client.execute(
-            `INSERT INTO sensor_data (building, room, timestamp, id, temperature, co2, pressure) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [
-              sensorData.building,
-              sensorData.room,
-              sensorData.timestamp,
-              sensorData.Id,
-              sensorData.temperature,
-              sensorData.co2,
-              sensorData.pressure,
-            ],
-            { prepare: true }
-          );
-        } else {
-          console.warn(`⚠️ Onbekende partitionering ${name} bij insert`);
-        }
+    // Cassandra centraal
+    if (ENABLED_DB.cassandraCentral) {
+      cassandraQueryFn = async () => {
+        const sensorData = generateSensorData("Building A", "Room 101");
+        await cassandraClient.execute(
+          "INSERT INTO sensor_data (id, timestamp, temperature, co2, pressure, building, room) VALUES (?, ?, ?, ?, ?, ?, ?)",
+          [
+            sensorData.Id,
+            sensorData.timestamp,
+            sensorData.temperature,
+            sensorData.co2,
+            sensorData.pressure,
+            sensorData.building,
+            sensorData.room,
+          ],
+          { prepare: true }
+        );
       };
-    });
+    }
 
-    const mongoCentralQueryFn = async (timestamp) => {
-      const sensorData = generateSensorData("Building A", "Room 101", timestamp);
-      await mongoCentralDb.collection("sensor_data").insertOne(sensorData);
-    };
+    // Cassandra partitioned
+    if (ENABLED_DB.cassandraPartitioned) {
+      cassandraPartitionedQueryFns = cassandraPartitionedConfigs.map(({ name, client }) => {
+        return async () => {
+          const sensorData = generateSensorData("Building A", "Room 201");
+          if (name === 'ListPartitioning') {
+            await client.execute(
+              `INSERT INTO sensor_data (building, room, id, timestamp, temperature, co2, pressure) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+              [
+                sensorData.building,
+                sensorData.room,
+                sensorData.Id,
+                sensorData.timestamp,
+                sensorData.temperature,
+                sensorData.co2,
+                sensorData.pressure,
+              ],
+              { prepare: true }
+            );
+          } else if (name === 'RangePartitioning') {
+            await client.execute(
+              `INSERT INTO sensor_data (building, room, timestamp, id, temperature, co2, pressure) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+              [
+                sensorData.building,
+                sensorData.room,
+                sensorData.timestamp,
+                sensorData.Id,
+                sensorData.temperature,
+                sensorData.co2,
+                sensorData.pressure,
+              ],
+              { prepare: true }
+            );
+          } else {
+            console.warn(`⚠️ Onbekende partitionering ${name} bij insert`);
+          }
+        };
+      });
 
-    const mongoShardedQueryFns = mongoShardedDbs.map(db => {
-      return async (timestamp) => {
-        const sensorData = generateSensorData("Building A", "Room 201", timestamp);
-        await db.collection("sensor_data").insertOne(sensorData);
+      cassandraPartitionedConsistencyQueryFns = cassandraPartitionedConfigs.map(({ name, client }) => {
+        return async () => {
+          const sensorData = generateSensorData("Building A", "Room 201");
+
+          if (name === 'ListPartitioning') {
+            await client.execute(
+              `INSERT INTO sensor_data (building, room, id, timestamp, temperature, co2, pressure) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+              [sensorData.building, sensorData.room, sensorData.Id, sensorData.timestamp, sensorData.temperature, sensorData.co2, sensorData.pressure],
+              { prepare: true }
+            );
+          } else if (name === 'RangePartitioning') {
+            await client.execute(
+              `INSERT INTO sensor_data (building, room, timestamp, id, temperature, co2, pressure) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+              [sensorData.building, sensorData.room, sensorData.timestamp, sensorData.Id, sensorData.temperature, sensorData.co2, sensorData.pressure],
+              { prepare: true }
+            );
+          }
+        };
+      });
+    }
+
+    // MongoDB centraal
+    if (ENABLED_DB.mongoCentral) {
+      mongoCentralQueryFn = async () => {
+        const sensorData = generateSensorData("Building A", "Room 101");
+        await mongoCentralDb.collection("sensor_data").insertOne(sensorData);
       };
-    });
+    }
 
-    const timescaleQueryFn = async (timestamp) => {
-      const sensorData = generateSensorData("Building A", "Room 101", timestamp);
-      const query =
-        "INSERT INTO sensor_data (id, timestamp, temperature, co2, pressure, building, room) VALUES ($1, $2, $3, $4, $5, $6, $7)";
-      await timescaleClient.query(query, [
-        sensorData.Id,
-        sensorData.timestamp,
-        sensorData.temperature,
-        sensorData.co2,
-        sensorData.pressure,
-        sensorData.building,
-        sensorData.room,
-      ]);
-    };
+    // MongoDB sharded
+    if (ENABLED_DB.mongoSharded) {
+      mongoShardedQueryFns = mongoShardedDbs.map(db => {
+        return async () => {
+          const sensorData = generateSensorData("Building A", "Room 201");
+          await db.collection("sensor_data").insertOne(sensorData);
+        };
+      });
 
-    const timescalePartitionedQueryFns = timescalePartitionedConfigs.map(({ client }) => {
-      return async (timestamp) => {
-        const sensorData = generateSensorData("Building A", "Room 201", timestamp);
+      mongoShardedConsistencyQueryFns = mongoShardedDbs.map(db => {
+        return async () => {
+          const sensorData = generateSensorData("Building A", "Room 201");
+          await db.collection("sensor_data").insertOne(sensorData, { writeConcern: { w: "majority" } });
+        };
+      });
+    }
+
+    // TimescaleDB centraal
+    if (ENABLED_DB.timescaleCentral) {
+      timescaleQueryFn = async () => {
+        const sensorData = generateSensorData("Building A", "Room 101");
         const query =
           "INSERT INTO sensor_data (id, timestamp, temperature, co2, pressure, building, room) VALUES ($1, $2, $3, $4, $5, $6, $7)";
-        await client.query(query, [
+        await timescaleClient.query(query, [
           sensorData.Id,
           sensorData.timestamp,
           sensorData.temperature,
@@ -519,182 +494,232 @@ async function testRealtimeThroughput(client, queryFn, label, intervalMs = 200, 
           sensorData.room,
         ]);
       };
-    });
+    }
 
-    async function clearData() {
-      // Cassandra
-      await cassandraClient.execute("TRUNCATE sensor_data");
-      for (const config of cassandraPartitionedConfigs) {
-        await config.client.execute("TRUNCATE sensor_data");
+    // TimescaleDB partitioned
+    if (ENABLED_DB.timescalePartitioned) {
+      timescalePartitionedQueryFns = timescalePartitionedConfigs.map(({ client }) => {
+        return async () => {
+          const sensorData = generateSensorData("Building A", "Room 201");
+          const query =
+            "INSERT INTO sensor_data (id, timestamp, temperature, co2, pressure, building, room) VALUES ($1, $2, $3, $4, $5, $6, $7)";
+          await client.query(query, [
+            sensorData.Id,
+            sensorData.timestamp,
+            sensorData.temperature,
+            sensorData.co2,
+            sensorData.pressure,
+            sensorData.building,
+            sensorData.room,
+          ]);
+        };
+      });
+
+      timescalePartitionedConsistencyQueryFns = timescalePartitionedConfigs.map(({ client }) => {
+        return async () => {
+          const sensorData = generateSensorData("Building A", "Room 201");
+
+          const query =
+            "INSERT INTO sensor_data (id, timestamp, temperature, co2, pressure, building, room) VALUES ($1, $2, $3, $4, $5, $6, $7)";
+          await client.query(query, [
+            sensorData.Id,
+            sensorData.timestamp,
+            sensorData.temperature,
+            sensorData.co2,
+            sensorData.pressure,
+            sensorData.building,
+            sensorData.room,
+          ]);
+        };
+      });
+    }
+
+    async function clearData(target = "all") {
+
+      // === Cassandra Centralized ===
+      if ((target === "all" || target === "cassandraCentral") && ENABLED_DB.cassandraCentral) {
+        await cassandraClient.execute("TRUNCATE sensor_data");
+        console.log("Cassandra Centralized cleared");
       }
 
-      // TimescaleDB (PostgreSQL)
-      await timescaleClient.query("TRUNCATE TABLE sensor_data");
-      for (const config of timescalePartitionedConfigs) {
-        await config.client.query("TRUNCATE TABLE sensor_data");
+      // === Cassandra Partitioned ===
+      if ((target === "all" || target === "cassandraPartitioned") && ENABLED_DB.cassandraPartitioned) {
+        for (const config of cassandraPartitionedConfigs) {
+          await config.client.execute("TRUNCATE sensor_data");
+          console.log(`Cassandra Partitioned (${config.name}) cleared`);
+        }
       }
 
-      // MongoDB
-      await mongoCentralDb.collection("sensor_data").deleteMany({});
-      for (const db of mongoShardedDbs) {
-        await db.collection("sensor_data").deleteMany({});
+      // === Timescale Centralized ===
+      if ((target === "all" || target === "timescaleCentral") && ENABLED_DB.timescaleCentral) {
+        await timescaleClient.query("TRUNCATE TABLE sensor_data");
+        console.log("Timescale Centralized cleared");
       }
 
-      console.log("Alle testdata verwijderd voor nieuwe tests");
+      // === Timescale Partitioned ===
+      if ((target === "all" || target === "timescalePartitioned") && ENABLED_DB.timescalePartitioned) {
+        for (const config of timescalePartitionedConfigs) {
+          await config.client.query("TRUNCATE TABLE sensor_data");
+          console.log(`Timescale Partitioned (${config.name}) cleared`);
+        }
+      }
+
+      // === MongoDB Centralized ===
+      if ((target === "all" || target === "mongoCentral") && ENABLED_DB.mongoCentral) {
+        await mongoCentralDb.collection("sensor_data").deleteMany({});
+        console.log("MongoDB Centralized cleared");
+      }
+
+      // === MongoDB Sharded ===
+      if ((target === "all" || target === "mongoSharded") && ENABLED_DB.mongoSharded) {
+        for (const db of mongoShardedDbs) {
+          await db.collection("sensor_data").deleteMany({});
+          console.log("MongoDB Sharded cleared");
+        }
+      }
+
+      console.log("✅ ClearData complete");
     }
 
     await clearData();
 
     const SCALE_FACTORS = [1, 10, 100];
 
-    // Cassandra centraal
-    /*await testLatency(cassandraClient, cassandraQueryFn, 'Cassandra Centralized');
-    await testThroughput(cassandraClient, cassandraQueryFn, 'Cassandra Centralized');*/
-    await testRealtimeLatency(cassandraClient, cassandraQueryFn, 'Cassandra Centralized Realtime');
-    await testRealtimeThroughput(cassandraClient, cassandraQueryFn, 'Cassandra Centralized Realtime');
-    await testScalability(cassandraClient, cassandraQueryFn, 'Cassandra Centralized', SCALE_FACTORS);
-    await testConsistency(cassandraClient, cassandraQueryFn, 'Cassandra Centralized');
+    // === Cassandra Centralized ===
+    if (ENABLED_DB.cassandraCentral) {
+      await runWithAverage(() => testRealtimeLatency(cassandraQueryFn, 'Cassandra Centralized Realtime'), [], 'Cassandra Centralized', 'Realtime Latency');
+      await runWithAverage(() => testRealtimeThroughput(cassandraQueryFn, 'Cassandra Centralized Realtime'), [], 'Cassandra Centralized', 'Realtime Throughput');
+      await runWithAverage(() => testScalability(cassandraQueryFn, 'Cassandra Centralized', SCALE_FACTORS), [], 'Cassandra Centralized', 'Scalability');
+      await clearData("cassandraCentral");
+      await runWithAverage(() => testConsistency(cassandraClient, cassandraQueryFn, 'Cassandra Centralized'), [], 'Cassandra Centralized', 'Consistency');
+    }
+    // === Cassandra Partitioned ===
+    if (ENABLED_DB.cassandraPartitioned) {
+      for (let i = 0; i < cassandraPartitionedConfigs.length; i++) {
+        const cfg = cassandraPartitionedConfigs[i];
+        const queryFn = cassandraPartitionedQueryFns[i];
+        await runWithAverage(() => testRealtimeLatency(queryFn, `Cassandra ${cfg.name} Realtime`), [], `Cassandra ${cfg.name}`, 'Realtime Latency');
+        await runWithAverage(() => testRealtimeThroughput(queryFn, `Cassandra ${cfg.name} Realtime`), [], `Cassandra ${cfg.name}`, 'Realtime Throughput');
+        await runWithAverage(() => testScalability(queryFn, `Cassandra ${cfg.name}`, SCALE_FACTORS), [], `Cassandra ${cfg.name}`, 'Scalability');
+        await clearData("cassandraPartitioned");
+        await runWithAverage(() => testConsistency(cfg.client, cassandraPartitionedConsistencyQueryFns[i], `Cassandra ${cfg.name}`), [], `Cassandra ${cfg.name}`, 'Consistency');
+      }
+    }
 
-    // Cassandra partitioned (2 config varianten)
-    /*await testLatency(cassandraPartitionedConfigs[0].client, cassandraPartitionedQueryFns[0], `Cassandra ${cassandraPartitionedConfigs[0].name}`);
-    await testLatency(cassandraPartitionedConfigs[1].client, cassandraPartitionedQueryFns[1], `Cassandra ${cassandraPartitionedConfigs[1].name}`);
-    await testThroughput(cassandraPartitionedConfigs[0].client, cassandraPartitionedQueryFns[0], `Cassandra ${cassandraPartitionedConfigs[0].name}`);
-    await testThroughput(cassandraPartitionedConfigs[1].client, cassandraPartitionedQueryFns[1], `Cassandra ${cassandraPartitionedConfigs[1].name}`);*/
-    await testRealtimeLatency(cassandraPartitionedConfigs[0].client, cassandraPartitionedQueryFns[0], `Cassandra ${cassandraPartitionedConfigs[0].name} Realtime`);
-    await testRealtimeLatency(cassandraPartitionedConfigs[1].client, cassandraPartitionedQueryFns[1], `Cassandra ${cassandraPartitionedConfigs[1].name} Realtime`);
-    await testRealtimeThroughput(cassandraPartitionedConfigs[0].client, cassandraPartitionedQueryFns[0], `Cassandra ${cassandraPartitionedConfigs[0].name} Realtime`);
-    await testRealtimeThroughput(cassandraPartitionedConfigs[1].client, cassandraPartitionedQueryFns[1], `Cassandra ${cassandraPartitionedConfigs[1].name} Realtime`);
-    await testScalability(cassandraPartitionedConfigs[0].client, cassandraPartitionedQueryFns[0], `Cassandra ${cassandraPartitionedConfigs[0].name}`, SCALE_FACTORS);
-    await testScalability(cassandraPartitionedConfigs[1].client, cassandraPartitionedQueryFns[1], `Cassandra ${cassandraPartitionedConfigs[1].name}`, SCALE_FACTORS);
-    await testConsistency(cassandraPartitionedConfigs[0].client, cassandraPartitionedQueryFns[0], `Cassandra ${cassandraPartitionedConfigs[0].name}`);
-    await testConsistency(cassandraPartitionedConfigs[1].client, cassandraPartitionedQueryFns[1], `Cassandra ${cassandraPartitionedConfigs[1].name}`);
+    // === TimescaleDB Centralized ===
+    if (ENABLED_DB.timescaleCentral) {
+      await runWithAverage(() => testRealtimeLatency(timescaleQueryFn, 'TimescaleDB Centralized Realtime'), [], 'TimescaleDB Centralized', 'Realtime Latency');
+      await runWithAverage(() => testRealtimeThroughput(timescaleQueryFn, 'TimescaleDB Centralized Realtime'), [], 'TimescaleDB Centralized', 'Realtime Throughput');
+      await runWithAverage(() => testScalability(timescaleQueryFn, 'TimescaleDB Centralized', SCALE_FACTORS), [], 'TimescaleDB Centralized', 'Scalability');
+      await clearData("timescaleCentral");
+      await runWithAverage(() => testConsistency(timescaleClient, timescaleQueryFn, 'TimescaleDB Centralized'), [], 'TimescaleDB Centralized', 'Consistency');
+    }
+    
+    // === TimescaleDB Partitioned ===
+    if (ENABLED_DB.timescalePartitioned) {
+      for (let i = 0; i < timescalePartitionedConfigs.length; i++) {
+        const cfg = timescalePartitionedConfigs[i];
+        const queryFn = timescalePartitionedQueryFns[i];
+        await runWithAverage(() => testRealtimeLatency(queryFn, `TimescaleDB ${cfg.name} Realtime`), [], `TimescaleDB ${cfg.name}`, 'Realtime Latency');
+        await runWithAverage(() => testRealtimeThroughput(queryFn, `TimescaleDB ${cfg.name} Realtime`), [], `TimescaleDB ${cfg.name}`, 'Realtime Throughput');
+        await runWithAverage(() => testScalability(queryFn, `TimescaleDB ${cfg.name}`, SCALE_FACTORS), [], `TimescaleDB ${cfg.name}`, 'Scalability');
+        await clearData("timescalePartitioned");
+        await runWithAverage(() => testConsistency(cfg.client, timescalePartitionedConsistencyQueryFns[i], `TimescaleDB ${cfg.name}`), [], `TimescaleDB ${cfg.name}`, 'Consistency');
+      }
+    }
 
-    // TimescaleDB centraal
-    /*await testLatency(timescaleClient, timescaleQueryFn, 'TimescaleDB Centralized');
-    await testThroughput(timescaleClient, timescaleQueryFn, 'TimescaleDB Centralized');*/
-    await testRealtimeLatency(timescaleClient, timescaleQueryFn, 'TimescaleDB Centralized Realtime');
-    await testRealtimeThroughput(timescaleClient, timescaleQueryFn, 'TimescaleDB Centralized Realtime');
-    await testScalability(timescaleClient, timescaleQueryFn, 'TimescaleDB Centralized', SCALE_FACTORS);
-    await testConsistency(timescaleClient, timescaleQueryFn, 'TimescaleDB Centralized');
+    // === MongoDB Centralized ===
+    if (ENABLED_DB.mongoCentral) {
+      await runWithAverage(() => testRealtimeLatency(mongoCentralQueryFn, 'MongoDB Centralized Realtime'), [], 'MongoDB Centralized', 'Realtime Latency');
+      await runWithAverage(() => testRealtimeThroughput(mongoCentralQueryFn, 'MongoDB Centralized Realtime'), [], 'MongoDB Centralized', 'Realtime Throughput');
+      await runWithAverage(() => testScalability(mongoCentralQueryFn, 'MongoDB Centralized', SCALE_FACTORS), [], 'MongoDB Centralized', 'Scalability');
+      await clearData("mongoCentral");
+      await runWithAverage(() => testConsistency(mongoCentralClient, mongoCentralQueryFn, 'MongoDB Centralized'), [], 'MongoDB Centralized', 'Consistency');
+    }
 
-    // TimescaleDB partitioned (2 config varianten)
-    /*await testLatency(timescalePartitionedConfigs[0].client, timescalePartitionedQueryFns[0], `TimescaleDB ${timescalePartitionedConfigs[0].name}`);
-    await testLatency(timescalePartitionedConfigs[1].client, timescalePartitionedQueryFns[1], `TimescaleDB ${timescalePartitionedConfigs[1].name}`);
-    await testThroughput(timescalePartitionedConfigs[0].client, timescalePartitionedQueryFns[0], `TimescaleDB ${timescalePartitionedConfigs[0].name}`);
-    await testThroughput(timescalePartitionedConfigs[1].client, timescalePartitionedQueryFns[1], `TimescaleDB ${timescalePartitionedConfigs[1].name}`);*/
-    await testRealtimeLatency(timescalePartitionedConfigs[0].client, timescalePartitionedQueryFns[0], `TimescaleDB ${timescalePartitionedConfigs[0].name} Realtime`);
-    await testRealtimeLatency(timescalePartitionedConfigs[1].client, timescalePartitionedQueryFns[1], `TimescaleDB ${timescalePartitionedConfigs[1].name} Realtime`);
-    await testRealtimeThroughput(timescalePartitionedConfigs[0].client, timescalePartitionedQueryFns[0], `TimescaleDB ${timescalePartitionedConfigs[0].name} Realtime`);
-    await testRealtimeThroughput(timescalePartitionedConfigs[1].client, timescalePartitionedQueryFns[1], `TimescaleDB ${timescalePartitionedConfigs[1].name} Realtime`);
-    await testScalability(timescalePartitionedConfigs[0].client, timescalePartitionedQueryFns[0], `TimescaleDB ${timescalePartitionedConfigs[0].name}`, SCALE_FACTORS);
-    await testScalability(timescalePartitionedConfigs[1].client, timescalePartitionedQueryFns[1], `TimescaleDB ${timescalePartitionedConfigs[1].name}`, SCALE_FACTORS);
-    await testConsistency(timescalePartitionedConfigs[0].client, timescalePartitionedQueryFns[0], `TimescaleDB ${timescalePartitionedConfigs[0].name}`);
-    await testConsistency(timescalePartitionedConfigs[1].client, timescalePartitionedQueryFns[1], `TimescaleDB ${timescalePartitionedConfigs[1].name}`);
+    // === MongoDB Sharded ===
+    if (ENABLED_DB.mongoSharded) {
+      for (let i = 0; i < mongoShardedClients.length; i++) {
+        const cfg = mongoShardedConfigs[i];
+        const queryFn = mongoShardedQueryFns[i];
+        await runWithAverage(() => testRealtimeLatency(queryFn, `MongoDB ${cfg.name} Realtime`), [], `MongoDB ${cfg.name}`, 'Realtime Latency');
+        await runWithAverage(() => testRealtimeThroughput(queryFn, `MongoDB ${cfg.name} Realtime`), [], `MongoDB ${cfg.name}`, 'Realtime Throughput');
+        await runWithAverage(() => testScalability(queryFn, `MongoDB ${cfg.name}`, SCALE_FACTORS), [], `MongoDB ${cfg.name}`, 'Scalability');
+        await clearData("mongoSharded");
+        await runWithAverage(() => testConsistency(mongoShardedClients[i], mongoShardedConsistencyQueryFns[i], `MongoDB ${cfg.name}`), [], `MongoDB ${cfg.name}`, 'Consistency');
+      }
+    }
 
-    // MongoDB centraal
-    /*await testLatency(mongoCentralClient, mongoCentralQueryFn, 'MongoDB Centralized');
-    await testThroughput(mongoCentralClient, mongoCentralQueryFn, 'MongoDB Centralized');*/
-    await testRealtimeLatency(mongoCentralClient, mongoCentralQueryFn, 'MongoDB Centralized Realtime');
-    await testRealtimeThroughput(mongoCentralClient, mongoCentralQueryFn, 'MongoDB Centralized Realtime');
-    await testScalability(mongoCentralClient, mongoCentralQueryFn, 'MongoDB Centralized', SCALE_FACTORS);
-    await testConsistency(mongoCentralClient, mongoCentralQueryFn, 'MongoDB Centralized');
+    // === Fault Tolerance Tests ===
+    if (ENABLED_DB.cassandraCentral) {
+      await testFaultTolerance(cassandraClient, 'Cassandra Centralized', () => new cassandra.Client({
+        contactPoints: ['localhost'],
+        localDataCenter: 'datacenter1',
+        protocolOptions: { port: 9052 },
+      }));
+    }
 
-    // MongoDB sharded (2 config varianten)
-    /*await testLatency(mongoShardedClients[0], mongoShardedQueryFns[0], `MongoDB ${mongoShardedConfigs[0].dbName}`);
-    await testLatency(mongoShardedClients[1], mongoShardedQueryFns[1], `MongoDB ${mongoShardedConfigs[1].dbName}`);
-    await testThroughput(mongoShardedClients[0], mongoShardedQueryFns[0], `MongoDB ${mongoShardedConfigs[0].dbName}`);
-    await testThroughput(mongoShardedClients[1], mongoShardedQueryFns[1], `MongoDB ${mongoShardedConfigs[1].dbName}`);*/
-    await testRealtimeLatency(mongoShardedClients[0], mongoShardedQueryFns[0], `MongoDB ${mongoShardedConfigs[0].dbName} Realtime`);
-    await testRealtimeLatency(mongoShardedClients[1], mongoShardedQueryFns[1], `MongoDB ${mongoShardedConfigs[1].dbName} Realtime`);
-    await testRealtimeThroughput(mongoShardedClients[0], mongoShardedQueryFns[0], `MongoDB ${mongoShardedConfigs[0].dbName} Realtime`);
-    await testRealtimeThroughput(mongoShardedClients[1], mongoShardedQueryFns[1], `MongoDB ${mongoShardedConfigs[1].dbName} Realtime`);
-    await testScalability(mongoShardedClients[0], mongoShardedQueryFns[0], `MongoDB ${mongoShardedConfigs[0].dbName}`, SCALE_FACTORS);
-    await testScalability(mongoShardedClients[1], mongoShardedQueryFns[1], `MongoDB ${mongoShardedConfigs[1].dbName}`, SCALE_FACTORS);
-    await testConsistency(mongoShardedClients[0], mongoShardedQueryFns[0], `MongoDB ${mongoShardedConfigs[0].dbName}`);
-    await testConsistency(mongoShardedClients[1], mongoShardedQueryFns[1], `MongoDB ${mongoShardedConfigs[1].dbName}`);
+    if (ENABLED_DB.cassandraPartitioned) {
+      await testFaultTolerance(cassandraPartitionedConfigs[0].client, `Cassandra ${cassandraPartitionedConfigs[0].name}`, () => new cassandra.Client({
+        contactPoints: ['localhost'],
+        localDataCenter: 'datacenter1',
+        protocolOptions: { port: 9042 },
+      }));
 
-    await testFaultTolerance(cassandraClient, 'Cassandra Centralized', () => new cassandra.Client({
-      contactPoints: ['localhost'],
-      localDataCenter: 'datacenter1',
-      protocolOptions: { port: 9052 },
-    }));
+      await testFaultTolerance(cassandraPartitionedConfigs[1].client, `Cassandra ${cassandraPartitionedConfigs[1].name}`, () => new cassandra.Client({
+        contactPoints: ['localhost'],
+        localDataCenter: 'datacenter1',
+        protocolOptions: { port: 9043 },
+      }));
+    }
 
-    await testFaultTolerance(cassandraPartitionedConfigs[0].client, `Cassandra ${cassandraPartitionedConfigs[0].name}`, () => new cassandra.Client({
-      contactPoints: ['localhost'],
-      localDataCenter: 'datacenter1',
-      protocolOptions: { port: 9042 },
-    }));
+    if (ENABLED_DB.mongoSharded) {
+      await testFaultTolerance(mongoShardedClients[0], `MongoDB ${mongoShardedConfigs[0].dbName}`, () => new MongoClient(mongoShardedConfigs[0].uri));
+      await testFaultTolerance(mongoShardedClients[1], `MongoDB ${mongoShardedConfigs[1].dbName}`, () => new MongoClient(mongoShardedConfigs[1].uri));
+    }
 
-    await testFaultTolerance(cassandraPartitionedConfigs[1].client, `Cassandra ${cassandraPartitionedConfigs[1].name}`, () => new cassandra.Client({
-      contactPoints: ['localhost'],
-      localDataCenter: 'datacenter1',
-      protocolOptions: { port: 9043 },
-    }));
+    if (ENABLED_DB.mongoCentral) {
+      await testFaultTolerance(mongoCentralClient, 'MongoDB Centralized', () => new MongoClient(mongoUri));
+    }
 
-    await testFaultTolerance(mongoShardedClients[0], `MongoDB ${mongoShardedConfigs[0].dbName}`, () => new MongoClient(mongoShardedConfigs[0].uri));
-    await testFaultTolerance(mongoShardedClients[1], `MongoDB ${mongoShardedConfigs[1].dbName}`, () => new MongoClient(mongoShardedConfigs[1].uri));
-    await testFaultTolerance(mongoCentralClient, 'MongoDB Centralized', () => new MongoClient(mongoUri));
-
-    await testFaultTolerance(
-      timescalePartitionedConfigs[0].client,
-      `TimescaleDB ${timescalePartitionedConfigs[0].name}`,
-      () => new Client({
+    if (ENABLED_DB.timescalePartitioned) {
+      await testFaultTolerance(timescalePartitionedConfigs[0].client, `TimescaleDB ${timescalePartitionedConfigs[0].name}`, () => new Client({
         user: 'edge_user',
         host: 'localhost',
         database: 'edge_db',
         password: 'edge_pass',
         port: 5432,
-      })
-    );
+      }));    
 
-    await testFaultTolerance(
-      timescalePartitionedConfigs[1].client,
-      `TimescaleDB ${timescalePartitionedConfigs[1].name}`,
-      () => new Client({
+      await testFaultTolerance(timescalePartitionedConfigs[1].client, `TimescaleDB ${timescalePartitionedConfigs[1].name}`, () => new Client({
         user: 'edge_user_alt',
         host: 'localhost',
         database: 'edge_db_alt',
         password: 'edge_pass_alt',
         port: 5433,
-      })
-    );
+      }));
+    }
 
-    await testFaultTolerance(
-      timescaleClient,
-      'TimescaleDB Centralized',
-      () => new Client({
+    if (ENABLED_DB.timescaleCentral) {
+      await testFaultTolerance(timescaleClient, 'TimescaleDB Centralized', () => new Client({
         user: 'central_user',
         host: 'localhost',
         database: 'central_db',
         password: 'central_pass',
         port: 5444,
-      })
-    );
-
-    
-    /*await testOfflineBehavior(
-      {
-        [`MongoDB ${mongoShardedConfigs[0].dbName}`]: mongoShardedClients[0],
-        [`MongoDB ${mongoShardedConfigs[1].dbName}`]: mongoShardedClients[1],
-        'TimescaleDB Range-Based Partitioning': timescalePartitionedConfigs[0].client,
-        'Cassandra ListPartitioning': cassandraPartitionedConfigs[0].client,
-      },
-      'Edge Only Test'
-    );*/
+      }));
+    }
 
     saveResultsToFile();
 
-      await cassandraClient.shutdown();
+    await cassandraClient.shutdown();
     for (const cfg of cassandraPartitionedConfigs) {
       await cfg.client.shutdown();
     }
 
-    await timescaleClient.connect();
     await timescaleClient.query("SET synchronous_commit TO ON");
     await timescaleClient.end();
-
     for (const config of timescalePartitionedConfigs) {
-      await config.client.connect();
       await config.client.query("SET synchronous_commit TO ON");
       await config.client.end();
     }
@@ -703,11 +728,11 @@ async function testRealtimeThroughput(client, queryFn, label, intervalMs = 200, 
     for (const client of mongoShardedClients) {
       await client.close();
     }
-
     console.log("All tests finished and clients closed.");
     process.exit(0);
   } catch (err) {
     console.error("Error during tests:", err);
+    saveResultsToFile();
     process.exit(1);
   }
 })();

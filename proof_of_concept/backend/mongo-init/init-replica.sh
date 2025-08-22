@@ -2,10 +2,9 @@
 
 # Wacht op mongod componenten
 echo "Wachten tot MongoDB nodes beschikbaar zijn..."
+sleep 30  # Geef containers voldoende tijd om op te starten
 
-sleep 15  # Wacht even zodat containers tijd hebben om op te starten
-
-echo "Initialiseren van replicasets..."
+echo "Initialiseren van replica-sets..."
 
 # === Config replicaset voor list-based cluster ===
 mongo --host configsvr:27017 <<EOF
@@ -57,16 +56,32 @@ rs.initiate({
 })
 EOF
 
-# === Voeg shards toe aan mongos (list) ===
+# === Voeg shards toe aan mongos (list-based) ===
 mongo --host mongos:27019 <<EOF
 sh.addShard("shard1ReplSet/shard1:27018")
 sh.addShard("shard2ReplSet/shard2:27020")
+
+# Schakel sharding in en stel shard key in op building + room
+sh.enableSharding("edge_list_partitioning")
+sh.shardCollection("edge_list_partitioning.sensor_data", { building: 1, room: 1 })
+
+# Voeg samengestelde index toe
+db = db.getSiblingDB("edge_list_partitioning")
+db.sensor_data.createIndex({ building: 1, room: 1, timestamp: 1 })
 EOF
 
-# === Voeg shards toe aan mongos2 (range) ===
+# === Voeg shards toe aan mongos2 (range-based) ===
 mongo --host mongos2:27025 <<EOF
 sh.addShard("shard3ReplSet/shard3:27018")
 sh.addShard("shard4ReplSet/shard4:27020")
+
+# Schakel sharding in en stel shard key in op timestamp
+sh.enableSharding("edge_range_partitioning")
+sh.shardCollection("edge_range_partitioning.sensor_data", { timestamp: 1 })
+
+# Voeg samengestelde index toe
+db = db.getSiblingDB("edge_range_partitioning")
+db.sensor_data.createIndex({ building: 1, room: 1, timestamp: 1 })
 EOF
 
 echo "Replica-sets en sharding zijn geconfigureerd."

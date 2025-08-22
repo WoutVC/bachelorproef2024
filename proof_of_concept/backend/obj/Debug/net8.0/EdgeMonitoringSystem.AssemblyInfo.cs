@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EdgeMonitoringSystem")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8dc4c0cfbaebf374596a4f374a6278fe29c00a96")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4356822ee8b093ab3610e27873ae4df911229786")]
 [assembly: System.Reflection.AssemblyProductAttribute("EdgeMonitoringSystem")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EdgeMonitoringSystem")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -86,7 +86,6 @@ async function initCassandra() {
       pressure double
     );
   `);
-  await cassandraClient.shutdown();
   console.log(`✅ Centrale Cassandra keyspace/tabel geïnitieerd`);
 }
 
@@ -96,7 +95,6 @@ async function initMongo() {
   const db = client.db(mongoDbName);
   await db.createCollection('sensor_data').catch(() => {});
   await db.createCollection('logs').catch(() => {});
-  await client.close();
   console.log(`✅ Centrale MongoDB database geïnitieerd`);
 }
 
@@ -117,7 +115,6 @@ async function initTimescale() {
   await timescaleClient.query(`
     SELECT create_hypertable('sensor_data', 'timestamp', if_not_exists => TRUE);
   `);
-  await timescaleClient.end();
   console.log(`✅ Centrale TimescaleDB hypertable geïnitieerd`);
 }
 
@@ -160,13 +157,30 @@ async function initCassandraPartitioned() {
       console.warn(`⚠️ Onbekende partitioneringstechniek: ${name}`);
     }
 
-    await client.shutdown();
     console.log(`✅ Cassandra (${name}) keyspace '${keyspace}' geïnitieerd`);
+  }
+}
+
+async function waitForMongo(uri) {
+  let connected = false;
+  while (!connected) {
+    try {
+      const client = new MongoClient(uri);
+      await client.connect();
+      await client.db("admin").command({ ping: 1 });
+      connected = true;
+      console.log(`✅ Mongo router beschikbaar op ${uri}`);
+    } catch (err) {
+      console.log(`⏳ Wachten op ${uri}...`);
+      await new Promise(res => setTimeout(res, 5000));
+    }
   }
 }
 
 async function initMongoSharded() {
   for (const { uri, dbName } of mongoShardedConfigs) {
+    await waitForMongo(uri);
+
     const client = new MongoClient(uri);
     await client.connect();
     const db = client.db(dbName);
@@ -188,7 +202,6 @@ async function initMongoSharded() {
       }).catch(() => {});
     }
 
-    await client.close();
     console.log(`✅ MongoDB (sharded cluster) database '${dbName}' met juiste shard key geïnitieerd`);
   }
 }
@@ -234,8 +247,6 @@ async function initTimescalePartitioned() {
     } else {
       console.warn(`⚠️ Onbekende partitioneringstechniek TimescaleDB: ${name}`);
     }
-
-    await client.end();
     console.log(`✅ TimescaleDB (${name}) hypertable 'sensor_data' geïnitieerd`);
   }
 }

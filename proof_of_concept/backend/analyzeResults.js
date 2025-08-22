@@ -39,6 +39,10 @@ function normalizeLabel(label) {
     name = "MongoDB (List-Based Sharding)";
   } else if (label.includes("MongoDB edge_range_partitioning")) {
     name = "MongoDB (Range-Based Sharding)";
+  } else if (label.includes("MongoDB ListPartitioning")) {
+    name = "MongoDB (List-Based Sharding)";
+  } else if (label.includes("MongoDB RangePartitioning")) {
+    name = "MongoDB (Range-Based Sharding)"
   } else if (label.includes("MongoDB Centralized")) {
     name = "MongoDB Centralized";
   }
@@ -67,17 +71,8 @@ function consolidateResults() {
 
     const normalizedLabel = normalizeLabel(label);
     if (!consolidatedResults[normalizedLabel]) consolidatedResults[normalizedLabel] = {};
-    if (!consolidatedResults[normalizedLabel][metric]) consolidatedResults[normalizedLabel][metric] =
-      metric === "Scalability" || metric === "Fault Tolerance" ? [] : null;
-
-    if (metric === "Fault Tolerance") {
-      consolidatedResults[normalizedLabel][metric].push(value === "Success" ? 1 : 0);
-    } else if (metric === "Scalability" && !isNaN(parseFloat(value))) {
-      if (!scalabilityData[normalizedLabel]) scalabilityData[normalizedLabel] = [];
-      scalabilityData[normalizedLabel].push(parseFloat(value));
-    } else if (metric !== "Scalability") {
-      consolidatedResults[normalizedLabel][metric] = parseFloat(value);
-    }
+    consolidatedResults[normalizedLabel][metric] = parseFloat(value);
+    
   });
 
   for (const dbKey in scalabilityData) {

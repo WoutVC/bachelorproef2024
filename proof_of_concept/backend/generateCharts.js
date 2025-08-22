@@ -26,9 +26,9 @@ const normalizeLabel = (label) => {
     name = "Cassandra (Range-Based Partitioning)";
   } else if (label.includes("Cassandra Centralized")) {
     name = "Cassandra Centralized";
-  } else if (label.includes("MongoDB edge_list_partitioning")) {
+  } else if (label.includes("MongoDB ListPartitioning")) {
     name = "MongoDB (List-Based Sharding)";
-  } else if (label.includes("MongoDB edge_range_partitioning")) {
+  } else if (label.includes("MongoDB RangePartitioning")) {
     name = "MongoDB (Range-Based Sharding)";
   } else if (label.includes("MongoDB Centralized")) {
     name = "MongoDB Centralized";
@@ -77,35 +77,11 @@ const groupByLabel = (data) => {
   }, {});
 };
 
-const calculateAverages = (groupedData) => {
-  const averages = {};
-
-  for (const [label, entries] of Object.entries(groupedData)) {
-    const values10 = entries.filter(e => e.label.includes("(10 records)")).map(e => e.value);
-    const values50 = entries.filter(e => e.label.includes("(50 records)")).map(e => e.value);
-    const values100 = entries.filter(e => e.label.includes("(100 records)")).map(e => e.value);
-
-    const allValues = values10.concat(values50, values100);
-    const averageValue = allValues.reduce((sum, value) => sum + value, 0) / allValues.length;
-
-    averages[label] = averageValue;
-  }
-
-  return averages;
-};
-
 async function createBarChart(metric, data, outputFile) {
   let labels, values;
 
-  if (metric === "Scalability") {
-    const groupedData = groupByLabel(data);
-    const averages = calculateAverages(groupedData);
-    labels = Object.keys(averages);
-    values = Object.values(averages);
-  } else {
-    labels = data.map(entry => normalizeLabel(entry.label));
-    values = data.map(entry => entry.value);
-  }
+  labels = data.map(entry => normalizeLabel(entry.label));
+  values = data.map(entry => entry.value);  
 
   const colors = labels.map(label => labelColorMap[label] || "hsl(0, 0%, 50%)");
   const borderColors = labels.map(label =>
@@ -224,7 +200,7 @@ const metrics = Array.from(new Set(testResults.map((entry) => entry.metric)));
       return false;
     });
     const outputFile = path.join(outputDir, `${metric.replace(' ', '_')}.png`);
-    if (metric !== "Fault Tolerance" && metric !== "Offline Scenario") {
+    if (metric !== "Offline Scenario") {
       await createBarChart(metric, data, outputFile);
     } else {
       await createPieChart(metric, data, outputFile);
